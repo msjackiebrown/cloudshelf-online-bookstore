@@ -1,9 +1,7 @@
----
 name: Implementation Issue
 description: Template for feature implementation issues (e.g., catalog page, details page, cart page)
 labels: feature
-assignees: ""
----
+assignees: []
 
 ### Feature Title
 
@@ -28,5 +26,7 @@ Describe the feature to be implemented and its purpose.
 - [ ] Low
 
 ### Additional Notes
+
+Add any other relevant information or context.
 
 Add any other relevant information or context.
