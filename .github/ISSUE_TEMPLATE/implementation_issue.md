@@ -1,7 +1,7 @@
 name: Implementation Issue
 description: Template for feature implementation issues (e.g., catalog page, details page, cart page)
 labels: feature
-assignees: []
+assignees: [msjackiebrown]
 
 ### Feature Title
 
