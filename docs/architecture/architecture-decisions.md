@@ -56,80 +56,23 @@ Phase 4: Distribution Layer (FOURTH)
 **Why VPC Must Come First:**
 
 1. **Dependency Chain**: Most AWS resources require VPC/subnet references
-
-   ```
-   RDS → Requires: VPC, Subnets, Security Groups
-   Lambda → Requires: VPC, Subnets, Security Groups (if VPC-enabled)
-   ALB → Requires: VPC, Public Subnets, Security Groups
-   ```
-
 2. **Security Foundation**: Security groups must exist before resources that use them
-
-   - Database instances require security group references at creation time
-   - Lambda functions need security groups for VPC connectivity
-   - Load balancers must have security groups defined before deployment
-
-3. **Circular Dependency Prevention**:
-
-   - ❌ **Wrong**: Create RDS → Need Security Group → Need VPC
-   - ✅ **Right**: Create VPC → Security Groups → RDS
-
+3. **Circular Dependency Prevention**: VPC → Security Groups → Application Resources
 4. **IP Address Planning**: CIDR blocks must be planned before resource creation
 
-### Best Practice Implementation
+### Architecture Strategy
 
-**Step 1: VPC and Core Networking**
+**Network Foundation First**:
 
-- Create VPC with CIDR block: `10.0.0.0/16`
-- Enable DNS hostnames and DNS support
-- Create public subnet: `10.0.1.0/24` (first AZ)
-- Create private subnet: `10.0.2.0/24` (second AZ)
-- Attach Internet Gateway to VPC
-- Configure route tables for public/private subnet routing
+- VPC and subnets provide the network foundation
+- Security groups define access controls
+- All application resources deploy within established boundaries
 
-**Step 2: Security Groups (All at Once)**
+**Security Group Strategy**:
 
-- `cloudshelf-lambda-sg`: Security group for Lambda functions
-- `cloudshelf-rds-sg`: Security group for RDS database
-  - Allow inbound TCP port 5432 from Lambda security group
-  - Deny all other inbound traffic
-- `cloudshelf-alb-sg`: Security group for load balancer (if needed)
-  - Allow inbound HTTP (80) and HTTPS (443) from internet
-
-**Step 3: Application Resources**
-
-- RDS instance references the database security group
-- Lambda functions reference the Lambda security group
-- All resources deployed within the established VPC
-
-### Security Group Creation Strategy
-
-**Create ALL security groups in Phase 1**, even for resources not yet created:
-
-- ✅ `cloudshelf-lambda-sg` (for future Lambda functions)
-- ✅ `cloudshelf-rds-sg` (for future RDS instance)
-- ✅ `cloudshelf-alb-sg` (for future load balancer)
-
-**Benefits:**
-
-- No circular dependencies
-- Security rules defined upfront
-- Easy resource association later
-- Clear security boundaries from start
-
-### Common Mistakes to Avoid
-
-❌ **Don't Do This:**
-
-- Attempting to create RDS instance before VPC and security groups exist
-- Creating resources in random order without considering dependencies
-- Mixing security group creation with application resource deployment
-
-✅ **Do This Instead:**
-
-- Plan and create VPC foundation first
-- Create all security groups before any application resources
-- Follow systematic deployment order: Network → Security → Data → Application
+- Create all security groups during network foundation phase
+- Define security rules before deploying application resources
+- Avoid circular dependencies between resources and security groups
 
 ### Consequences
 
@@ -146,19 +89,6 @@ Phase 4: Distribution Layer (FOURTH)
 - ⚠️ Requires upfront network planning and CIDR design
 - ⚠️ Initial complexity before seeing application functionality
 - ⚠️ Must understand networking concepts before starting
-
-### Reference Implementation
-
-For CloudShelf project, follow this exact sequence:
-
-1. **First**: Network Foundation (VPC, subnets, gateways, route tables)
-2. **Second**: Security Groups (all security groups for future resources)
-3. **Third**: Data Layer (RDS instance and DynamoDB tables)
-4. **Fourth**: Application Layer (Lambda functions)
-5. **Fifth**: API Layer (API Gateway)
-6. **Sixth**: Distribution Layer (S3 and CloudFront)
-
-This approach ensures proper dependency management and successful resource deployment.
 
 ---
 
@@ -221,26 +151,26 @@ Need to select an appropriate relational database engine for the CloudShelf book
 
 **Database Design Benefits**:
 
-- **Schema Flexibility**: JSON columns for extensible book metadata
-- **Search Capabilities**: Built-in full-text search without external dependencies
-- **Data Integrity**: Strong referential integrity and constraint enforcement
-- **Performance**: Advanced indexing strategies for complex queries
+- Schema flexibility with JSON columns for extensible book metadata
+- Built-in full-text search capabilities without external dependencies
+- Strong referential integrity and constraint enforcement
+- Advanced indexing strategies for complex queries
 
 **Integration Considerations**:
 
-- **Lambda Compatibility**: Excellent Python/Node.js PostgreSQL drivers
-- **API Performance**: Optimized for REST API query patterns
-- **Caching Strategy**: Compatible with Redis/ElastiCache for query caching
-- **Analytics**: Supports complex reporting and business intelligence queries
+- Excellent compatibility with serverless Lambda functions
+- Optimized for REST API query patterns
+- Compatible with caching strategies (Redis/ElastiCache)
+- Supports complex reporting and analytics queries
 
 ### Migration Path
 
-**Development → Production Evolution**:
+**Scalability Evolution**:
 
-- **Phase 1**: Single RDS instance with PostgreSQL
-- **Phase 2**: Read replicas for scaling read operations
-- **Phase 3**: Consider Aurora PostgreSQL for high-availability requirements
-- **Phase 4**: Implement sharding or multi-region if needed
+- Phase 1: Single RDS instance with PostgreSQL
+- Phase 2: Read replicas for scaling read operations
+- Phase 3: Consider Aurora PostgreSQL for high-availability requirements
+- Phase 4: Implement sharding or multi-region if needed
 
 ### Consequences
 
@@ -259,11 +189,118 @@ Need to select an appropriate relational database engine for the CloudShelf book
 - ⚠️ May be over-engineered for very simple use cases
 - ⚠️ Requires PostgreSQL-specific optimization knowledge
 
-**Architectural Validation**:
+---
 
-- ✅ Schema design compatible with both PostgreSQL and MySQL (future flexibility)
-- ✅ Query patterns optimized for PostgreSQL capabilities
-- ✅ Development team can leverage advanced PostgreSQL features
-- ✅ Migration path established for scaling requirements
+## ADR-003: DynamoDB for Shopping Cart Storage
+
+**Date**: 2025-09-01  
+**Status**: ✅ Accepted  
+**Decision Makers**: Solutions Architect
+
+### Context
+
+Need to select an appropriate storage solution for shopping cart data that provides fast performance, flexible schema evolution, and cost-effective scaling for user session data.
+
+### Decision
+
+**DynamoDB** is selected for shopping cart storage, complementing PostgreSQL RDS for the book catalog.
+
+### Options Considered
+
+| Storage Option    | Pros                                                  | Cons                                       | Decision      |
+| ----------------- | ----------------------------------------------------- | ------------------------------------------ | ------------- |
+| **DynamoDB**      | Fast performance, flexible schema, serverless scaling | NoSQL learning curve, eventual consistency | ✅ **Chosen** |
+| **RDS (same DB)** | Single database, ACID transactions, familiar SQL      | Performance impact, rigid schema           | ❌            |
+| **ElastiCache**   | Very fast, good for session data                      | Volatile, requires backup strategy         | ❌            |
+| **S3**            | Cost-effective, durable                               | Not designed for frequent updates          | ❌            |
+
+### Rationale
+
+**Why DynamoDB for Shopping Carts:**
+
+1. **Performance Characteristics**:
+
+   - Single-digit millisecond latency for cart operations
+   - Predictable performance at any scale
+   - Auto-scaling based on demand
+   - No connection pooling or database connection management
+
+2. **Schema Flexibility**:
+
+   - Shopping cart requirements evolve frequently
+   - Easy to add new attributes without schema migrations
+   - JSON-like document structure supports complex cart data
+
+3. **Cost Efficiency**:
+
+   - Pay-per-request pricing model
+   - No idle database costs
+   - Automatic scaling eliminates over-provisioning
+
+4. **Operational Benefits**:
+   - Fully managed service (no maintenance)
+   - Built-in security and encryption
+   - Integration with AWS Lambda and API Gateway
+
+### Architecture Integration
+
+**Data Separation Strategy**:
+
+| Use Case      | Service  | Why?                                                               |
+| ------------- | -------- | ------------------------------------------------------------------ |
+| Book Catalog  | RDS      | Structured data, relationships, complex queries, ACID transactions |
+| Shopping Cart | DynamoDB | High performance, flexible schema, easy to evolve                  |
+
+### Data Model Design
+
+**DynamoDB Table Architecture**:
+
+- **Partition Key**: `userId` (ensures user cart data is co-located)
+- **Attributes**: Flexible JSON structure for cart contents
+- **Capacity Mode**: On-demand for variable traffic patterns
+- **Schema Evolution**: New attributes can be added without migrations
+
+### Consequences
+
+**Positive**:
+
+- ✅ Fast, predictable performance for cart operations
+- ✅ Schema flexibility supports evolving requirements
+- ✅ Cost-effective scaling with usage patterns
+- ✅ No database maintenance overhead
+- ✅ Seamless integration with serverless architecture
+- ✅ Natural separation of concerns (catalog vs. cart)
+
+**Considerations**:
+
+- ⚠️ Eventually consistent reads (strong consistency available when needed)
+- ⚠️ NoSQL query patterns different from SQL
+- ⚠️ Cross-service data consistency requires careful design
+
+**Risk Mitigation**:
+
+- Strong consistency available for critical cart operations
+- Book catalog data remains in RDS for complex queries
+- Cart and catalog integration handled at application layer
+
+---
+
+## Data Storage Architecture Summary
+
+The CloudShelf application uses a **polyglot persistence** approach, selecting the optimal database for each use case:
+
+### RDS PostgreSQL (Book Catalog)
+
+- **Strengths**: Complex relationships, ACID transactions, advanced queries
+- **Use Cases**: Book inventory, user accounts, order history, analytics
+- **Schema**: Normalized relational design with JSON flexibility
+
+### DynamoDB (Shopping Cart)
+
+- **Strengths**: High performance, flexible schema, serverless scaling
+- **Use Cases**: Active shopping carts, user sessions, temporary data
+- **Schema**: Document-based with user-centric partition design
+
+This hybrid approach optimizes for both **data integrity** (RDS) and **performance** (DynamoDB) while maintaining cost efficiency and operational simplicity.
 
 ---
