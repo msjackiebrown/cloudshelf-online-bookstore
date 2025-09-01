@@ -1,18 +1,58 @@
-# RDS Architecture Setup Guide
+# 🗃️ RDS PostgreSQL Setup
 
-This guide defines the architectural configuration for Amazon RDS PostgreSQL instance in the CloudShelf Online Bookstore project.
+> Implementation guide for RDS PostgreSQL database following ADR-002 architecture strategy
 
-## Prerequisites
+This guide provides setup instructions for Amazon RDS PostgreSQL, implementing the relational database decisions documented in [ADR-002: RDS Database Engine Selection](../architecture-decisions.md#adr-002-rds-database-engine-selection).
 
-⚠️ **Important**: VPC infrastructure must be established before RDS deployment.
+---
 
-- ✅ [VPC and Security Group Setup Guide](../vpc/setup-vpc-reference.md) completed
-- ✅ VPC with private subnets available
+## 🏛️ Architecture Overview
+
+Based on **ADR-002**, PostgreSQL RDS provides the book catalog storage layer for CloudShelf with:
+
+- **📚 Book Catalog Operations** - Complex relational queries and transactions
+- **🔍 Advanced Search** - Built-in full-text search capabilities
+- **📊 Analytics Support** - Complex reporting and business intelligence
+- **🔒 Data Integrity** - ACID compliance for transactional operations
+
+**Architecture Decision Reference**: See [ADR-002](../architecture-decisions.md#adr-002) for the complete rationale behind PostgreSQL selection.
+
+---
+
+## 🔐 Prerequisites: VPC and Security Setup
+
+Before creating RDS instances, ensure the network foundation is established per ADR-001.
+
+### **📋 Required Infrastructure**
+
+| Component           | Requirement                         | Purpose                               |
+| ------------------- | ----------------------------------- | ------------------------------------- |
+| **VPC**             | CloudShelf VPC with private subnets | Network isolation for database        |
+| **Security Groups** | `cloudshelf-rds-sg` configured      | Database access control               |
+| **Subnet Group**    | Multi-AZ private subnets            | High availability and fault tolerance |
+| **Route Tables**    | Private subnet routing              | No direct internet access             |
+
+### **🛠️ Infrastructure Validation**
+
+⚠️ **Important**: Complete [VPC Setup Guide](../vpc/setup-vpc-reference.md) before proceeding.
+
+- ✅ VPC and Security Group Setup completed
+- ✅ Private subnets available in multiple AZs
 - ✅ Database security group (`cloudshelf-rds-sg`) configured
+- ✅ Lambda security group configured for database access
 
-## Architecture Overview
+---
 
-**Database Strategy**: Single PostgreSQL RDS instance for book catalog data with high availability design.
+## 📊 Architecture Configuration
+
+### **Database Strategy**
+
+Following ADR-002 polyglot persistence approach:
+
+| Data Pattern      | Storage Solution | Rationale                                                  |
+| ----------------- | ---------------- | ---------------------------------------------------------- |
+| **Book Catalog**  | PostgreSQL RDS   | Complex relationships, ACID transactions, advanced queries |
+| **Shopping Cart** | DynamoDB         | High performance, flexible schema, serverless scaling      |
 
 ### **Configuration Specifications**
 
@@ -187,6 +227,30 @@ GRANT ALL PRIVILEGES ON DATABASE cloudshelf_catalog TO cloudshelf_app;
 
 - Lambda functions deployed in same VPC
 - Security group rules allow Lambda-to-RDS communication
+- Connection pooling for efficient resource usage
+- Environment variables for connection configuration
+
+### **Database Schema Strategy**
+
+- Normalized design with JSON flexibility (PostgreSQL advantage)
+- Book catalog tables with relational integrity
+- User account management with proper constraints
+- Order history and transaction tracking
+
+---
+
+## 📚 Related Architecture Documentation
+
+- 🏛️ [**ADR-002: PostgreSQL Selection**](../architecture-decisions.md#adr-002) - Complete database choice rationale
+- 🏛️ [**All Architecture Decisions**](../architecture-decisions.md) - Context for database architecture
+- 🌐 [**VPC Setup**](../vpc/setup-vpc-reference.md) - Required network foundation
+- 🗂️ [**DynamoDB Setup**](../dynamodb/setup-dynamodb.md) - Complementary NoSQL storage
+- ⚡ [**Lambda Setup**](../lambda/setup-lambda.md) - Database connectivity integration
+
+---
+
+_Part of the CloudShelf Solutions Architecture documentation_
+
 - Connection pooling managed at application layer
 
 ### API Gateway Integration

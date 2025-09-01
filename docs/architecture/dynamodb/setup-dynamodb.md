@@ -1,25 +1,138 @@
-# DynamoDB Tables Setup
+# 🗂️ DynamoDB Tables Setup
 
-This guide provides step-by-step instructions for setting up DynamoDB tables for your shopping cart, both manually and with CloudFormation.
+> Implementation guide for DynamoDB shopping cart storage following ADR-003 architecture strategy
 
-## Manual Steps
+This guide provides setup instructions for DynamoDB tables, implementing the NoSQL storage decisions documented in [ADR-003: DynamoDB for Shopping Cart Storage](../architecture-decisions.md#adr-003-dynamodb-for-shopping-cart-storage).
 
-### Step 1: Create a DynamoDB table
+---
+
+## 🏛️ Architecture Overview
+
+Based on **ADR-003**, DynamoDB provides the shopping cart storage layer for CloudShelf with:
+
+- **🛒 Shopping Cart Storage** - High-performance NoSQL operations for cart data
+- **⚡ Fast Access Patterns** - Single-digit millisecond latency for cart operations
+- **📈 Serverless Scaling** - Automatic scaling based on demand
+- **💰 Cost Efficiency** - Pay-per-request pricing model
+
+**Architecture Decision Reference**: See [ADR-003](../architecture-decisions.md#adr-003) for the complete rationale behind this NoSQL approach.
+
+---
+
+## 📷 Setup Screenshots
+
+### **🔧 DynamoDB Table Creation**
 
 ![DynamoDB Table Creation Screenshot](./DynamoDB-Create-Table-Step1.png)
 
-1. Sign in to the AWS Management Console and open the DynamoDB console.
-2. Choose "Create table".
-3. Enter a table name (e.g., `ShoppingCart`).
-4. Set the primary key (e.g., `userId` for shopping cart).
-5. Configure settings (provisioned or on-demand capacity, encryption, etc.).
-6. Click "Create table".
+---
 
-### Step 2: (Optional) Add items to your table
+## 🔐 Architecture Configuration
 
-1. Select your table in the console.
-2. Choose "Explore table items" and click "Create item" if you want to add test data for development or demos.
+### **📋 Table Design Strategy**
 
-_Note: In production, shopping cart items are created naturally as users interact with the application. You do not need to add sample data manually._
+Following ADR-003 polyglot persistence approach:
+
+| Data Pattern      | Storage Solution | Rationale                                             |
+| ----------------- | ---------------- | ----------------------------------------------------- |
+| **Shopping Cart** | DynamoDB         | High performance, flexible schema, serverless scaling |
+| **Book Catalog**  | PostgreSQL RDS   | Complex relationships, ACID transactions              |
+
+### **🗂️ DynamoDB Table Specifications**
+
+| Configuration     | Value                      | Purpose                              |
+| ----------------- | -------------------------- | ------------------------------------ |
+| **Table Name**    | `cloudshelf-shopping-cart` | Clear naming convention              |
+| **Partition Key** | `userId` (String)          | User-centric data organization       |
+| **Capacity Mode** | On-demand                  | Variable e-commerce traffic patterns |
+| **Encryption**    | AWS Managed                | Security by default                  |
 
 ---
+
+## 🚀 Implementation Steps
+
+### **Step 1: Create DynamoDB Table**
+
+1. **🖥️ Access DynamoDB Console**
+
+   - Sign in to AWS Management Console
+   - Navigate to DynamoDB service
+
+2. **⚙️ Table Configuration**
+
+   ```
+   Table Name: cloudshelf-shopping-cart
+   Partition Key: userId (String)
+   Capacity Mode: On-demand
+   Encryption: AWS managed key
+   ```
+
+3. **📊 Advanced Settings**
+
+   - Enable point-in-time recovery (production)
+   - Configure deletion protection (production)
+   - Set up CloudWatch alarms for monitoring
+
+4. **✅ Create Table**
+   - Review configuration settings
+   - Click "Create table"
+
+### **Step 2: Verify Table Creation**
+
+1. **🔍 Table Status Check**
+
+   - Verify table status shows "Active"
+   - Confirm partition key configuration
+   - Validate capacity mode settings
+
+2. **📊 Test Data Operations**
+   - Use "Explore table items" for initial testing
+   - Verify read/write operations work correctly
+
+---
+
+## 🏗️ Implementation Notes
+
+### **Data Model Pattern**
+
+Following ADR-003 architecture strategy:
+
+```json
+{
+  "userId": "user123",
+  "cartItems": [
+    {
+      "bookId": "book001",
+      "title": "The Great Gatsby",
+      "quantity": 2,
+      "addedAt": "2025-09-01T10:00:00Z"
+    }
+  ],
+  "lastUpdated": "2025-09-01T10:05:00Z"
+}
+```
+
+### **Schema Evolution Strategy**
+
+- New attributes can be added without migrations
+- Flexible JSON-like document structure
+- No downtime for schema changes
+
+### **Performance Optimization**
+
+- User-centric partition key for data locality
+- On-demand scaling for variable traffic
+- Single-table design for optimal performance
+
+---
+
+## 📚 Related Architecture Documentation
+
+- 🏛️ [**ADR-003: DynamoDB Strategy**](../architecture-decisions.md#adr-003) - Complete NoSQL architecture rationale
+- 🏛️ [**All Architecture Decisions**](../architecture-decisions.md) - Context for data storage choices
+- 🗃️ [**RDS Setup**](../setup-rds.md) - Relational database for catalog operations
+- ⚡ [**Lambda Setup**](../lambda/setup-lambda.md) - Compute layer integration
+
+---
+
+_Part of the CloudShelf Solutions Architecture documentation_
