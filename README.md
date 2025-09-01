@@ -26,9 +26,9 @@ CloudShelf is a scalable web application that provides a seamless online book sh
 
 ---
 
-## 🏗️ Architecture
+## 🏗️ Architecture & Design
 
-CloudShelf uses a **serverless-first architecture** with AWS managed services:
+CloudShelf uses a **serverless-first architecture** with AWS managed services, emphasizing **Solutions Architect** principles and best practices.
 
 ### **Technology Stack**
 
@@ -38,12 +38,28 @@ CloudShelf uses a **serverless-first architecture** with AWS managed services:
 - **Authentication**: AWS Cognito for secure user management
 - **Infrastructure**: CloudFormation for Infrastructure as Code
 
-### **Key Design Principles**
+### **Design Philosophy**
 
 - ✅ **Serverless-first** - Pay only for what you use
 - ✅ **Security by design** - Multi-layered security approach
 - ✅ **High availability** - Multi-AZ deployment across regions
 - ✅ **Cost-optimized** - Right-sized resources with auto-scaling
+- ✅ **Infrastructure as Code** - All AWS resources defined programmatically
+- ✅ **Documentation** - Every decision documented with context and rationale
+
+### **📋 Architecture Decision Records (ADRs)**
+
+We maintain comprehensive ADRs to document all major architectural decisions:
+
+- **ADR-001**: VPC Creation Timing - When and why to create VPC infrastructure
+- **ADR-002**: RDS Database Engine Selection - PostgreSQL choice rationale
+
+### **📊 Architecture Documentation**
+
+- 🏛️ [**Architecture Decision Records**](docs/architecture/architecture-decisions.md) - Key technical decisions and rationale
+- 🌐 [**VPC Setup Guide**](docs/architecture/vpc/setup-vpc-reference.md) - Complete networking configuration
+- 🗃️ [**RDS Architecture**](docs/architecture/setup-rds.md) - Database architecture approach
+- 📊 [**Database Model**](docs/architecture/rds-data-model.md) - Database design and relationships
 
 ---
 
@@ -61,12 +77,6 @@ CloudShelf uses a **serverless-first architecture** with AWS managed services:
 - 🎨 [**Book Catalog Page**](docs/requirements/wireframes/book-catalog-page.md) - Main browsing interface
 - 📄 [**Book Details Page**](docs/requirements/wireframes/book-details-page.md) - Individual book view
 - 🛒 [**Shopping Cart Page**](docs/requirements/wireframes/shopping-cart-page.md) - Cart management interface
-
-### **Architecture & Infrastructure**
-
-- 🏛️ [**Architecture Decision Records**](docs/architecture/architecture-decisions.md) - Key technical decisions and rationale
-- 🌐 [**VPC Setup Guide**](docs/architecture/vpc/setup-vpc-reference.md) - Complete networking configuration
-- 📊 VPC Architecture Diagrams and Screenshots
 
 ---
 
@@ -100,8 +110,15 @@ CloudShelf uses a **serverless-first architecture** with AWS managed services:
 3. **🏗️ Infrastructure Setup**
 
    ```bash
-   # Follow the VPC setup guide first
+   # Follow the architectural guides in order
+   # 1. Review architecture decisions first
+   open docs/architecture/architecture-decisions.md
+
+   # 2. Set up VPC infrastructure
    open docs/architecture/vpc/setup-vpc-reference.md
+
+   # 3. Configure RDS database
+   open docs/architecture/setup-rds.md
    ```
 
 4. **🔧 Development Workflow**
@@ -123,6 +140,8 @@ cloudshelf-online-bookstore/
 │   │   └── 📁 issues/             # GitHub issues and import tools
 │   └── 📁 architecture/           # Technical architecture
 │       ├── 📄 architecture-decisions.md  # ADRs and design choices
+│       ├── 📄 setup-rds.md         # RDS database architecture
+│       ├── 📄 rds-data-model.md    # Database design and model
 │       └── 📁 vpc/                # VPC setup guides and diagrams
 ├── 📁 .github/                     # GitHub configuration
 │   └── 📁 ISSUE_TEMPLATE/         # Issue templates for project management
@@ -163,15 +182,16 @@ We welcome contributions! Here's how to get involved:
 ### **Current Phase**: Architecture & Foundation
 
 - ✅ Requirements gathering and documentation complete
-- ✅ Architecture decisions documented
+- ✅ Architecture decisions documented (ADR-001: VPC Creation Timing, ADR-002: RDS Engine Selection)
 - ✅ VPC and networking guides complete
+- ✅ RDS architecture and database model documentation complete
 - ✅ GitHub workflow and issue management setup
 - 🔄 Infrastructure implementation in progress
 
 ### **Next Steps**
 
-1. VPC and security group setup
-2. Database provisioning (RDS + DynamoDB)
+1. VPC and security group setup (following architectural decisions)
+2. Database provisioning (PostgreSQL RDS + DynamoDB per ADR-002)
 3. Lambda function development
 4. API Gateway configuration
 5. Frontend development and S3 hosting
@@ -188,10 +208,12 @@ This project is part of a learning initiative. See individual files for specific
 
 - 🏛️ [**Architecture Decisions**](docs/architecture/architecture-decisions.md) - Why we made key technical choices
 - 🌐 [**VPC Setup**](docs/architecture/vpc/setup-vpc-reference.md) - Complete infrastructure guide
-- 📋 [**Requirements**](docs/requirements/cloudshelf-srs.md) - What we're building and why
+- �️ [**RDS Architecture**](docs/architecture/setup-rds.md) - Database architecture and configuration
+- 📊 [**Database Model**](docs/architecture/rds-data-model.md) - Data design and relationships
+- �📋 [**Requirements**](docs/requirements/cloudshelf-srs.md) - What we're building and why
 - 🎯 [**Issues**](https://github.com/msjackiebrown/cloudshelf-online-bookstore/issues) - Current development tasks
 - 💬 [**Discussions**](https://github.com/msjackiebrown/cloudshelf-online-bookstore/discussions) - Community discussions
 
 ---
 
-_Last updated: September 1, 2025_
+_Last updated: January 28, 2025_

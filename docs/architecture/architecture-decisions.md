@@ -161,3 +161,109 @@ For CloudShelf project, follow this exact sequence:
 This approach ensures proper dependency management and successful resource deployment.
 
 ---
+
+## ADR-002: RDS Database Engine Selection
+
+**Date**: 2025-09-01  
+**Status**: ✅ Accepted  
+**Decision Makers**: Solutions Architect
+
+### Context
+
+Need to select an appropriate relational database engine for the CloudShelf book catalog that balances functionality, performance, cost, and team expertise while supporting future scalability requirements.
+
+### Decision
+
+**PostgreSQL** is selected as the database engine for the CloudShelf RDS instance.
+
+### Options Considered
+
+| Engine                | Pros                                                                          | Cons                                                  | Decision      |
+| --------------------- | ----------------------------------------------------------------------------- | ----------------------------------------------------- | ------------- |
+| **PostgreSQL**        | Advanced features (JSON, indexing, extensions), open source, strong community | Slightly steeper learning curve                       | ✅ **Chosen** |
+| **MySQL**             | Widely used, simple, fast for read-heavy workloads                            | Fewer advanced features, limited JSON support         | ❌            |
+| **Aurora PostgreSQL** | Managed, highly available, auto-scaling, PostgreSQL compatible                | Higher cost, AWS-specific, overkill for initial scale | ❌            |
+| **Aurora MySQL**      | Managed, highly available, auto-scaling, MySQL compatible                     | Higher cost, AWS-specific, limited advanced features  | ❌            |
+| **Oracle/SQL Server** | Enterprise features, legacy support                                           | Expensive licensing, overkill for this use case       | ❌            |
+
+### Rationale
+
+**Why PostgreSQL:**
+
+1. **Advanced Feature Set**:
+
+   - Native JSON/JSONB support for flexible data structures
+   - Advanced indexing capabilities (GIN, GiST, partial indexes)
+   - Full-text search capabilities with tsvector
+   - Extensible with custom functions and data types
+
+2. **Future-Proof Architecture**:
+
+   - JSON fields enable schema evolution without migrations
+   - Advanced search capabilities can replace external search services
+   - Strong ACID compliance for transactional integrity
+   - Supports both relational and semi-structured data patterns
+
+3. **Cost and Performance**:
+
+   - Open source with no licensing costs
+   - Excellent performance for read-heavy workloads
+   - Efficient query planning and optimization
+   - Well-suited for AWS RDS deployment
+
+4. **Ecosystem and Support**:
+   - Strong community and extensive documentation
+   - Rich ecosystem of tools and extensions
+   - Compatible with modern development frameworks
+   - Long-term stability and active development
+
+### Architecture Implications
+
+**Database Design Benefits**:
+
+- **Schema Flexibility**: JSON columns for extensible book metadata
+- **Search Capabilities**: Built-in full-text search without external dependencies
+- **Data Integrity**: Strong referential integrity and constraint enforcement
+- **Performance**: Advanced indexing strategies for complex queries
+
+**Integration Considerations**:
+
+- **Lambda Compatibility**: Excellent Python/Node.js PostgreSQL drivers
+- **API Performance**: Optimized for REST API query patterns
+- **Caching Strategy**: Compatible with Redis/ElastiCache for query caching
+- **Analytics**: Supports complex reporting and business intelligence queries
+
+### Migration Path
+
+**Development → Production Evolution**:
+
+- **Phase 1**: Single RDS instance with PostgreSQL
+- **Phase 2**: Read replicas for scaling read operations
+- **Phase 3**: Consider Aurora PostgreSQL for high-availability requirements
+- **Phase 4**: Implement sharding or multi-region if needed
+
+### Consequences
+
+**Positive**:
+
+- ✅ Advanced features support complex business requirements
+- ✅ JSON support enables schema evolution without downtime
+- ✅ Full-text search capabilities reduce external dependencies
+- ✅ Strong ACID compliance ensures data integrity
+- ✅ Cost-effective open source licensing
+- ✅ Excellent AWS RDS integration and support
+
+**Considerations**:
+
+- ⚠️ Slightly higher learning curve compared to MySQL
+- ⚠️ May be over-engineered for very simple use cases
+- ⚠️ Requires PostgreSQL-specific optimization knowledge
+
+**Architectural Validation**:
+
+- ✅ Schema design compatible with both PostgreSQL and MySQL (future flexibility)
+- ✅ Query patterns optimized for PostgreSQL capabilities
+- ✅ Development team can leverage advanced PostgreSQL features
+- ✅ Migration path established for scaling requirements
+
+---
