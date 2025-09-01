@@ -76,3 +76,26 @@ yarn-error.log*
 
 # Ignore the issues folder in documentation requirements
 /docs/requirements/issues/
+
+# Private content folders (not for public GitHub repository)
+/youtube/
+/linkedin/
+
+# Social media content (videos, scripts, images)
+*.mp4
+*.mov
+*.avi
+*.mkv
+*.webm
+*.flv
+
+# Audio files
+*.mp3
+*.wav
+*.aac
+*.flac
+
+# Large image files for social media
+*.psd
+*.ai
+*.sketch
