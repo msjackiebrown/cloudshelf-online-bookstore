@@ -2,7 +2,16 @@
 
 > A modern, cloud-native online bookstore built with AWS serverless architecture
 
-CloudShelf is a scalable web application that provides a seamless online book shopping experience. Built using AWS managed services, it delivers high performance, security, and cost-effectiveness while maintaining excellent user experience for both customers and administrators.
+CloudShelf is a scalable web application that provides a seamless online book shopping experi## 🔗 Quick Links
+
+- 🏛️ [**Architecture Decisions**](docs/architecture/architecture-decisions.md) - Why we made key technical choices
+- 🌐 [**VPC Setup**](docs/architecture/vpc/setup-vpc-reference.md) - Complete infrastructure guide
+- 🗃️ [**RDS Architecture**](docs/architecture/setup-rds.md) - Database architecture and configuration
+- 📊 [**Database Model**](docs/architecture/rds-data-model.md) - Data design and relationships
+- 🗂️ [**DynamoDB Setup**](docs/architecture/dynamodb/setup-dynamodb.md) - Shopping cart storage guide
+- 📋 [**Requirements**](docs/requirements/cloudshelf-srs.md) - What we're building and why
+- 🎯 [**Issues**](https://github.com/msjackiebrown/cloudshelf-online-bookstore/issues) - Current development tasks
+- 💬 [**Discussions**](https://github.com/msjackiebrown/cloudshelf-online-bookstore/discussions) - Community discussionslt using AWS managed services, it delivers high performance, security, and cost-effectiveness while maintaining excellent user experience for both customers and administrators.
 
 ---
 
@@ -53,6 +62,7 @@ We maintain comprehensive ADRs to document all major architectural decisions:
 
 - **ADR-001**: VPC Creation Timing - When and why to create VPC infrastructure
 - **ADR-002**: RDS Database Engine Selection - PostgreSQL choice rationale
+- **ADR-003**: DynamoDB for Shopping Cart Storage - NoSQL choice for cart data
 
 ### **📊 Architecture Documentation**
 
@@ -60,6 +70,7 @@ We maintain comprehensive ADRs to document all major architectural decisions:
 - 🌐 [**VPC Setup Guide**](docs/architecture/vpc/setup-vpc-reference.md) - Complete networking configuration
 - 🗃️ [**RDS Architecture**](docs/architecture/setup-rds.md) - Database architecture approach
 - 📊 [**Database Model**](docs/architecture/rds-data-model.md) - Database design and relationships
+- 🗂️ [**DynamoDB Setup**](docs/architecture/dynamodb/setup-dynamodb.md) - Shopping cart storage configuration
 
 ---
 
@@ -119,6 +130,9 @@ We maintain comprehensive ADRs to document all major architectural decisions:
 
    # 3. Configure RDS database
    open docs/architecture/setup-rds.md
+   
+   # 4. Set up DynamoDB shopping cart tables
+   open docs/architecture/dynamodb/setup-dynamodb.md
    ```
 
 4. **🔧 Development Workflow**
@@ -142,6 +156,7 @@ cloudshelf-online-bookstore/
 │       ├── 📄 architecture-decisions.md  # ADRs and design choices
 │       ├── 📄 setup-rds.md         # RDS database architecture
 │       ├── 📄 rds-data-model.md    # Database design and model
+│       ├── 📁 dynamodb/           # DynamoDB setup and configuration
 │       └── 📁 vpc/                # VPC setup guides and diagrams
 ├── 📁 .github/                     # GitHub configuration
 │   └── 📁 ISSUE_TEMPLATE/         # Issue templates for project management
@@ -182,16 +197,17 @@ We welcome contributions! Here's how to get involved:
 ### **Current Phase**: Architecture & Foundation
 
 - ✅ Requirements gathering and documentation complete
-- ✅ Architecture decisions documented (ADR-001: VPC Creation Timing, ADR-002: RDS Engine Selection)
+- ✅ Architecture decisions documented (ADR-001: VPC Timing, ADR-002: RDS Engine, ADR-003: DynamoDB Cart)
 - ✅ VPC and networking guides complete
 - ✅ RDS architecture and database model documentation complete
+- ✅ DynamoDB shopping cart architecture and setup complete
 - ✅ GitHub workflow and issue management setup
 - 🔄 Infrastructure implementation in progress
 
 ### **Next Steps**
 
 1. VPC and security group setup (following architectural decisions)
-2. Database provisioning (PostgreSQL RDS + DynamoDB per ADR-002)
+2. Database provisioning (PostgreSQL RDS + DynamoDB per ADR-002 & ADR-003)
 3. Lambda function development
 4. API Gateway configuration
 5. Frontend development and S3 hosting
