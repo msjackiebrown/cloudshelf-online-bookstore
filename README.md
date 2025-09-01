@@ -24,12 +24,12 @@ CloudShelf is a **scalable e-commerce platform** that demonstrates AWS Solutions
 
 ## � Quick Start
 
-| Step | Action                          | Link                                                                |
-| ---- | ------------------------------- | ------------------------------------------------------------------- |
-| 1    | **Understand Business Context** | [Business Requirements](docs/requirements/business-requirements.md) |
-| 2    | **Review Technical Specs**      | [Software Requirements](docs/requirements/cloudshelf-srs.md)        |
-| 3    | **Explore Architecture**        | [System Architecture](docs/architecture/system-architecture.md)     |
-| 4    | **Setup Instructions**          | [Getting Started](#-getting-started)                                |
+| Step | Action                          | Link                                                                     |
+| ---- | ------------------------------- | ------------------------------------------------------------------------ |
+| 1    | **Understand Business Context** | [Business Requirements](docs/requirements/cloudshelf-business-requirements.md) |
+| 2    | **Review Technical Specs**      | [Software Requirements](docs/requirements/cloudshelf-srs.md)            |
+| 3    | **Explore Architecture**        | [System Architecture](docs/architecture/cloudshelf-system-architecture.md) |
+| 4    | **Setup Instructions**          | [Getting Started](#-getting-started)                                    |
 
 ---
 
@@ -38,37 +38,37 @@ CloudShelf is a **scalable e-commerce platform** that demonstrates AWS Solutions
 <details>
 <summary><strong>🏛️ Core Architecture</strong></summary>
 
-| Document                                                            | Purpose                  | Status      |
-| ------------------------------------------------------------------- | ------------------------ | ----------- |
-| [System Architecture](docs/architecture/system-architecture.md)     | High-level system design | ✅ Complete |
-| [Integration Patterns](docs/architecture/integration-patterns.md)   | Service integration      | ✅ Complete |
-| [Data Architecture](docs/architecture/data-architecture.md)         | Database design          | ✅ Complete |
-| [Security Architecture](docs/architecture/security-architecture.md) | Security patterns        | ✅ Complete |
+| Document                                                                        | Purpose                  | Status      |
+| ------------------------------------------------------------------------------- | ------------------------ | ----------- |
+| [System Architecture](docs/architecture/cloudshelf-system-architecture.md)     | High-level system design | ✅ Complete |
+| [Integration Patterns](docs/architecture/cloudshelf-integration-patterns.md)   | Service integration      | ✅ Complete |
+| [Data Architecture](docs/architecture/cloudshelf-data-architecture.md)         | Database design          | ✅ Complete |
+| [Security Architecture](docs/architecture/cloudshelf-security-architecture.md) | Security patterns        | ✅ Complete |
 
 </details>
 
 <details>
 <summary><strong>⚡ Performance & Operations</strong></summary>
 
-| Document                                                                        | Purpose             | Status      |
-| ------------------------------------------------------------------------------- | ------------------- | ----------- |
-| [Performance Strategy](docs/architecture/performance-scaling-strategy.md)       | Scaling approach    | ✅ Complete |
-| [Cost Optimization](docs/architecture/cost-optimization-strategy.md)            | Cost management     | ✅ Complete |
-| [Monitoring](docs/architecture/monitoring-observability.md)                     | Observability       | ✅ Complete |
-| [Disaster Recovery](docs/architecture/disaster-recovery-business-continuity.md) | Business continuity | ✅ Complete |
+| Document                                                                                        | Purpose             | Status      |
+| ----------------------------------------------------------------------------------------------- | ------------------- | ----------- |
+| [Performance Strategy](docs/architecture/cloudshelf-performance-scaling-strategy.md)           | Scaling approach    | ✅ Complete |
+| [Cost Optimization](docs/architecture/cloudshelf-cost-optimization-strategy.md)                | Cost management     | ✅ Complete |
+| [Monitoring](docs/architecture/cloudshelf-monitoring-observability.md)                         | Observability       | ✅ Complete |
+| [Disaster Recovery](docs/architecture/cloudshelf-disaster-recovery-business-continuity.md)     | Business continuity | ✅ Complete |
 
 </details>
 
 <details>
 <summary><strong>🔧 Setup Guides</strong></summary>
 
-| Service     | Guide                                                            | Purpose                |
-| ----------- | ---------------------------------------------------------------- | ---------------------- |
-| VPC         | [Setup Guide](docs/architecture/vpc/setup-vpc-reference.md)      | Network infrastructure |
-| RDS         | [Setup Guide](docs/architecture/rds/setup-rds.md)                | PostgreSQL database    |
-| DynamoDB    | [Setup Guide](docs/architecture/dynamodb/setup-dynamodb.md)      | NoSQL shopping cart    |
-| Lambda      | [Setup Guide](docs/architecture/lambda/setup-lambda.md)          | Serverless compute     |
-| API Gateway | [Setup Guide](docs/architecture/apigateway/setup-api-gateway.md) | API management         |
+| Service     | Guide                                                                    | Purpose                |
+| ----------- | ------------------------------------------------------------------------ | ---------------------- |
+| VPC         | [Setup Guide](docs/architecture/vpc/cloudshelf-vpc-setup.md)            | Network infrastructure |
+| RDS         | [Setup Guide](docs/architecture/rds/cloudshelf-rds-setup.md)            | PostgreSQL database    |
+| DynamoDB    | [Setup Guide](docs/architecture/dynamodb/cloudshelf-dynamodb-setup.md)  | NoSQL shopping cart    |
+| Lambda      | [Setup Guide](docs/architecture/lambda/cloudshelf-lambda-setup.md)      | Serverless compute     |
+| API Gateway | [Setup Guide](docs/architecture/apigateway/cloudshelf-apigateway-setup.md) | API management         |
 
 </details>
 
@@ -77,13 +77,14 @@ CloudShelf is a **scalable e-commerce platform** that demonstrates AWS Solutions
 ## 📚 Requirements & Planning
 
 | Document                                                            | Description                        |
-| ------------------------------------------------------------------- | ---------------------------------- |
-| [Business Requirements](docs/requirements/business-requirements.md) | Business goals and success metrics |
-| [Software Requirements](docs/requirements/cloudshelf-srs.md)        | Technical specifications and NFRs  |
-| [Use Cases](docs/requirements/cloudshelf-use-cases.md)              | User interaction patterns          |
-| [User Stories](docs/requirements/cloudshelf-user-stories.md)        | Feature descriptions               |
-| [Glossary](docs/requirements/cloudshelf-glossary.md)                | Key terms and definitions          |
-| [Role Boundaries](docs/project-roles-deliverables.md)               | Professional responsibilities      |
+| Document                                                                        | Description                        |
+| ------------------------------------------------------------------------------- | ---------------------------------- |
+| [Business Requirements](docs/requirements/cloudshelf-business-requirements.md) | Business goals and success metrics |
+| [Software Requirements](docs/requirements/cloudshelf-srs.md)                   | Technical specifications and NFRs  |
+| [Use Cases](docs/requirements/cloudshelf-use-cases.md)                         | User interaction patterns          |
+| [User Stories](docs/requirements/cloudshelf-user-stories.md)                   | Feature descriptions               |
+| [Glossary](docs/requirements/cloudshelf-glossary.md)                           | Key terms and definitions          |
+| [Role Boundaries](docs/project-roles-deliverables.md)                          | Professional responsibilities      |
 
 ---
 
@@ -270,22 +271,22 @@ cloudshelf-online-bookstore/
 ├── 📄 .gitignore                                   # Version control config
 ├── 📁 docs/                                        # Documentation
 │   ├── 📁 requirements/                            # Business & technical requirements
-│   │   ├── 📄 business-requirements.md             # Business context & goals
+│   │   ├── 📄 cloudshelf-business-requirements.md  # Business context & goals
 │   │   ├── 📄 cloudshelf-srs.md                   # Software requirements spec
 │   │   ├── 📄 cloudshelf-use-cases.md             # User interaction patterns
 │   │   ├── 📄 cloudshelf-user-stories.md          # Feature descriptions
 │   │   └── 📄 cloudshelf-glossary.md              # Key terms & definitions
 │   ├── 📁 architecture/                            # Technical architecture
-│   │   ├── 📄 system-architecture.md               # High-level system design
-│   │   ├── 📄 integration-patterns.md              # Service integration
-│   │   ├── 📄 data-architecture.md                 # Database design
-│   │   ├── 📄 security-architecture.md             # Security patterns
-│   │   ├── 📄 performance-scaling-strategy.md      # Performance optimization
-│   │   ├── 📄 cost-optimization-strategy.md        # Cost management
-│   │   ├── 📄 monitoring-observability.md          # Monitoring strategy
-│   │   ├── 📄 environment-deployment-strategy.md   # Deployment approach
-│   │   ├── 📄 disaster-recovery-business-continuity.md # DR planning
-│   │   ├── 📄 api-documentation.md                 # API specifications
+│   │   ├── 📄 cloudshelf-system-architecture.md               # High-level system design
+│   │   ├── 📄 cloudshelf-integration-patterns.md              # Service integration
+│   │   ├── 📄 cloudshelf-data-architecture.md                 # Database design
+│   │   ├── 📄 cloudshelf-security-architecture.md             # Security patterns
+│   │   ├── 📄 cloudshelf-performance-scaling-strategy.md      # Performance optimization
+│   │   ├── 📄 cloudshelf-cost-optimization-strategy.md        # Cost management
+│   │   ├── 📄 cloudshelf-monitoring-observability.md          # Monitoring strategy
+│   │   ├── 📄 cloudshelf-environment-deployment-strategy.md   # Deployment approach
+│   │   ├── 📄 cloudshelf-disaster-recovery-business-continuity.md # DR planning
+│   │   ├── 📄 cloudshelf-api-documentation.md                 # API specifications
 │   │   ├── 📁 vpc/                                 # Network setup guides
 │   │   ├── 📁 rds/                                 # Database configuration
 │   │   ├── 📁 dynamodb/                            # NoSQL setup
@@ -330,7 +331,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 **🎯 Ready to explore AWS Solutions Architecture?**
 
-Start with [Business Requirements](docs/requirements/business-requirements.md) → [System Architecture](docs/architecture/system-architecture.md) → [Setup Guides](docs/architecture/)
+Start with [Business Requirements](docs/requirements/cloudshelf-business-requirements.md) → [System Architecture](docs/architecture/cloudshelf-system-architecture.md) → [Setup Guides](docs/architecture/)
 
 [![GitHub Stars](https://img.shields.io/github/stars/msjackiebrown/cloudshelf-online-bookstore?style=social)](https://github.com/msjackiebrown/cloudshelf-online-bookstore)
 [![GitHub Forks](https://img.shields.io/github/forks/msjackiebrown/cloudshelf-online-bookstore?style=social)](https://github.com/msjackiebrown/cloudshelf-online-bookstore)

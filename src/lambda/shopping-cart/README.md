@@ -101,6 +101,6 @@ public interface CartRepository {
 
 ## Related Documentation
 
-- [System Architecture](../../../docs/architecture/system-architecture.md)
-- [Integration Patterns](../../../docs/architecture/integration-patterns.md)
-- [Development Guidelines](../../../docs/architecture/development-guidelines.md)
+- [System Architecture](../../../docs/architecture/cloudshelf-system-architecture.md)
+- [Integration Patterns](../../../docs/architecture/cloudshelf-integration-patterns.md)
+- [Development Guidelines](../../../docs/architecture/cloudshelf-development-guidelines.md)
