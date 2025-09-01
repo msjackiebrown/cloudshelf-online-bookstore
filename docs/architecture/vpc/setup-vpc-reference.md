@@ -1,19 +1,65 @@
-# VPC and Security Group Setup Guide
+# 🌐 VPC and Security Groups Setup
 
-This guide provides step-by-step instructions for setting up a VPC and security groups for the CloudShelf Online Bookstore project on AWS.
+> Implementation guide for VPC networking foundation following ADR-001 architecture strategy
 
-## Overview
+This guide provides setup instructions for AWS VPC and security groups, implementing the network-first infrastructure decisions documented in [ADR-001: VPC Creation Timing and Strategy](../architecture-decisions.md#adr-001-vpc-creation-timing-and-strategy).
 
-This setup creates a secure, multi-tier network architecture suitable for a web application with the following components:
+---
 
-- **VPC**: Virtual Private Cloud for network isolation
-- **Public Subnets**: For internet-facing resources (load balancers, etc.)
-- **Private Subnets**: For backend resources (RDS, Lambda functions)
-- **Security Groups**: Firewall rules to control traffic between components
+## 🏛️ Architecture Overview
 
-## Architecture Diagram
+Based on **ADR-001**, VPC provides the network foundation for CloudShelf with:
+
+- **🔒 Network Isolation** - Secure, private network environment
+- **🏗️ Multi-Tier Architecture** - Public and private subnet separation
+- **⚡ Security Foundation** - Security groups for access control
+- **📈 Scalable Design** - Foundation for all application resources
+
+**Architecture Decision Reference**: See [ADR-001](../architecture-decisions.md#adr-001) for the complete rationale behind VPC-first approach.
+
+---
+
+## 📷 Architecture Screenshots
+
+### **🏗️ VPC Architecture Diagram**
 
 ![CloudShelf VPC Architecture](./CloudShelf-VPC-Architecture-Diagram.png)
+
+### **🔧 VPC Creation Process**
+
+![VPC Creation Screenshot](./VPC-Creation-Step1.png)
+
+### **🌐 Internet Gateway Setup**
+
+![Internet Gateway Creation Screenshot](./Internet-Gateway-Creation-Step2.png)
+
+### **📊 Subnet Configuration**
+
+![Public Subnet Creation Screenshot](./Public-Subnet-Creation-Step3.png)
+
+---
+
+## 🔐 Architecture Strategy
+
+### **📋 Network Design Pattern**
+
+Following ADR-001 dependency management approach:
+
+| Layer                  | Component       | Purpose                   | CIDR          |
+| ---------------------- | --------------- | ------------------------- | ------------- |
+| **Network Foundation** | VPC             | Network isolation         | `10.0.0.0/16` |
+| **Public Tier**        | Public Subnets  | Internet-facing resources | `10.0.1.0/24` |
+| **Private Tier**       | Private Subnets | Backend resources         | `10.0.2.0/24` |
+| **Security**           | Security Groups | Access control rules      | N/A           |
+
+### **🏗️ Dependency Order**
+
+Per ADR-001, infrastructure creation follows this sequence:
+
+1. **VPC and Subnets** (Network Foundation)
+2. **Internet Gateway and Routing** (Connectivity)
+3. **Security Groups** (Access Control)
+4. **Application Resources** (RDS, Lambda, etc.)
 
 ---
 
@@ -131,7 +177,7 @@ Security groups act as virtual firewalls to control inbound and outbound traffic
 | Inbound   | PostgreSQL  | TCP      | 5432       | cloudshelf-lambda-sg | Database access from Lambda  |
 | Outbound  | All Traffic | All      | All        | 0.0.0.0/0            | Allow all outbound (default) |
 
-> 🔒 **Security Best Practice**: Notice we're allowing access only from the Lambda security group, not from all IPs. This ensures only your Lambda functions can access the database.
+> 🔒 **Security Best Practice**: This configuration allows access only from the Lambda security group, not from all IPs. This ensures only Lambda functions can access the database.
 
 ### Step 9: Create ALB Security Group (Optional)
 
@@ -201,6 +247,18 @@ curl -I http://your-alb-dns-name.region.elb.amazonaws.com
 ```
 
 ---
+
+## 📚 Related Architecture Documentation
+
+- 🏛️ [**ADR-001: VPC Creation Strategy**](../architecture-decisions.md#adr-001) - Complete VPC-first architecture rationale
+- 🏛️ [**All Architecture Decisions**](../architecture-decisions.md) - Context for network architecture choices
+- 🗃️ [**RDS Setup**](../setup-rds.md) - Database deployment requiring VPC foundation
+- 🗂️ [**DynamoDB Setup**](../dynamodb/setup-dynamodb.md) - NoSQL service integration
+- ⚡ [**Lambda Setup**](../lambda/setup-lambda.md) - Compute layer requiring VPC connectivity
+
+---
+
+_Part of the CloudShelf Solutions Architecture documentation_
 
 ## Quick Reference
 
