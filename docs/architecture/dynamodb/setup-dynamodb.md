@@ -21,9 +21,29 @@ Based on **ADR-003**, DynamoDB provides the shopping cart storage layer for Clou
 
 ## 📷 Setup Screenshots
 
-### **🔧 DynamoDB Table Creation**
+### **�️ DynamoDB Console Overview**
 
-![DynamoDB Table Creation Screenshot](./DynamoDB-Create-Table-Step1.png)
+![DynamoDB Console Overview](screenshots/01-dynamodb-console-overview.png)
+
+### **🛒 Shopping Cart Table Creation**
+
+![Create Shopping Cart Table](screenshots/02-create-shopping-cart-table.png)
+
+### **🔑 Primary Key Configuration**
+
+![Primary Key Configuration](screenshots/03-primary-key-configuration.png)
+
+### **⚙️ Table Settings Configuration**
+
+![Table Settings Configuration](screenshots/04-table-settings-configuration.png)
+
+### **🚀 Table Creation Review**
+
+![Table Creation Review](screenshots/05-table-creation-review.png)
+
+### **✅ Shopping Cart Table Created**
+
+![Shopping Cart Table Created Successfully](screenshots/06-shopping-cart-table-created.png)
 
 ---
 

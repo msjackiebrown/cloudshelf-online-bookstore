@@ -23,19 +23,25 @@ Based on **ADR-001**, VPC provides the network foundation for CloudShelf with:
 
 ### **🏗️ VPC Architecture Diagram**
 
-![CloudShelf VPC Architecture](./CloudShelf-VPC-Architecture-Diagram.png)
+![CloudShelf VPC Architecture](screenshots/01-vpc-architecture-overview.png)
 
 ### **🔧 VPC Creation Process**
 
-![VPC Creation Screenshot](./VPC-Creation-Step1.png)
+![VPC Creation Console](screenshots/02-vpc-creation-console.png)
 
 ### **🌐 Internet Gateway Setup**
 
-![Internet Gateway Creation Screenshot](./Internet-Gateway-Creation-Step2.png)
+![Internet Gateway Creation](screenshots/03-internet-gateway-setup.png)
 
 ### **📊 Subnet Configuration**
 
-![Public Subnet Creation Screenshot](./Public-Subnet-Creation-Step3.png)
+![Public Subnet Creation](screenshots/04-public-subnet-creation.png)
+
+![Private Subnet Creation](screenshots/05-private-subnet-creation.png)
+
+### **🔒 Security Groups Configuration**
+
+![Security Groups Overview](screenshots/06-security-groups-overview.png)
 
 ---
 

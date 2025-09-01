@@ -6,6 +6,38 @@ This guide provides setup instructions for Amazon RDS PostgreSQL, implementing t
 
 ---
 
+## 📷 Setup Screenshots
+
+### **🗃️ RDS Console Overview**
+
+![RDS Console Create Database](screenshots/01-rds-console-overview.png)
+
+### **🐘 PostgreSQL Engine Selection**
+
+![PostgreSQL Engine Selection](screenshots/02-postgresql-engine-selection.png)
+
+### **📋 Database Instance Configuration**
+
+![Database Instance Configuration](screenshots/03-database-instance-configuration.png)
+
+### **🔒 VPC and Security Groups Setup**
+
+![VPC and Security Configuration](screenshots/04-vpc-security-configuration.png)
+
+### **📊 Monitoring and Backup Configuration**
+
+![Monitoring and Backup Settings](screenshots/05-monitoring-backup-configuration.png)
+
+### **🚀 Database Instance Launch**
+
+![Database Instance Launch](screenshots/06-database-instance-launch.png)
+
+### **✅ RDS Instance Created Successfully**
+
+![RDS Instance Successfully Created](screenshots/07-rds-instance-created.png)
+
+---
+
 ## 🏛️ Architecture Overview
 
 Based on **ADR-002**, PostgreSQL RDS provides the book catalog storage layer for CloudShelf with:

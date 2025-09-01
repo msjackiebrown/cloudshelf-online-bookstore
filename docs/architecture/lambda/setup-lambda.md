@@ -19,19 +19,35 @@ Based on **ADR-004**, Lambda functions provide the compute layer for CloudShelf 
 
 ---
 
-## 📷 Architecture Screenshots
+## 📷 Setup Screenshots
 
-### **🖥️ Lambda Console Overview**
+### **⚡ Lambda Console Overview**
 
-![Lambda Console Overview](./Lambda-Console-Overview.png)
+![Lambda Console Overview](screenshots/01-lambda-console-overview.png)
 
-### **🔧 Create Function Process**
+### **🔧 Create Function Configuration**
 
-![Create Lambda Function](./Lambda-Create-Function.png)
+![Create Lambda Function](screenshots/02-create-lambda-function.png)
 
-### **⚙️ Function Configuration**
+### **📦 JAR File Upload Process**
 
-![Lambda Function Configuration](./Lambda-Function-Configuration.png)
+![Upload JAR File](screenshots/03-upload-jar-file.png)
+
+### **⚙️ Function Configuration Settings**
+
+![Function Configuration](screenshots/04-function-configuration.png)
+
+### **🔗 VPC and Security Configuration**
+
+![VPC and Security Settings](screenshots/05-vpc-security-configuration.png)
+
+### **🌐 API Gateway Integration**
+
+![API Gateway Integration](screenshots/06-api-gateway-integration.png)
+
+### **✅ Lambda Function Deployed**
+
+![Lambda Function Successfully Deployed](screenshots/07-lambda-function-deployed.png)
 
 ### **🔌 API Gateway Integration**
 
