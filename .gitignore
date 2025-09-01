@@ -1,2 +1,78 @@
+# Compiled Java classes
+*.class
+
+# Maven build directories
+target/
+*/target/
+
+# Maven wrapper
+.mvn/wrapper/maven-wrapper.jar
+
+# IDE files
+.idea/
+*.iml
+.vscode/
+.eclipse/
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+*.tmp
+*.temp
+*~
+
+# Environment variables (keep .env.example but ignore actual .env files)
+.env
+.env.local
+.env.development
+.env.production
+
+# AWS credentials and config (never commit these!)
+.aws/
+aws-credentials.txt
+*.pem
+*.p12
+
+# Node.js (if we add any frontend tools later)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Screenshots work-in-progress (keep final ones, ignore drafts)
+**/screenshots/draft/
+**/screenshots/temp/
+**/screenshots/*.draft.png
+
+# Documentation drafts
+**/*.draft.md
+**/*.temp.md
+
+# Backup files
+*.backup
+*.bak
+
+# Archive files
+*.zip
+*.tar.gz
+*.rar
+
+# Large binary files that might be accidentally added
+*.iso
+*.dmg
+*.exe
+*.msi
+
 # Ignore the issues folder in documentation requirements
 /docs/requirements/issues/
