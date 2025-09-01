@@ -7,35 +7,49 @@ CloudShelf is a serverless online bookstore built on AWS, following microservice
 ## High-Level Architecture
 
 ```
-┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│   Web Client    │    │  Mobile Client  │    │  Admin Portal   │
-│    (React)      │    │   (React Native)│    │    (React)      │
-└─────────┬───────┘    └─────────┬───────┘    └─────────┬───────┘
-          │                      │                      │
-          └──────────────────────┼──────────────────────┘
-                                 │
-┌─────────────────────────────────┼─────────────────────────────────┐
-│                    AWS Cloud    │                                 │
-│                                 │                                 │
-│  ┌─────────────────────────────────────────────────────────────┐ │
-│  │                 API Gateway                                 │ │
-│  │          (RESTful APIs with CORS, Auth, Rate Limiting)     │ │
-│  └─────────────┬─────────────────────────────┬─────────────────┘ │
-│                │                             │                   │
-│  ┌─────────────▼─────────────┐  ┌─────────────▼─────────────┐   │
-│  │     Book Catalog Service  │  │   Shopping Cart Service   │   │
-│  │      (Lambda + RDS)       │  │    (Lambda + DynamoDB)    │   │
-│  └─────────────┬─────────────┘  └─────────────┬─────────────┘   │
-│                │                             │                   │
-│  ┌─────────────▼─────────────┐  ┌─────────────▼─────────────┐   │
-│  │      PostgreSQL RDS       │  │        DynamoDB           │   │
-│  │     (Book Catalog)        │  │     (Shopping Carts)      │   │
-│  └───────────────────────────┘  └───────────────────────────┘   │
-│                                                                  │
-└──────────────────────────────────────────────────────────────────┘
+                         ┌─────────────────┐
+                         │     Users       │
+                         │  (Web Browsers) │
+                         └─────────┬───────┘
+                                   │
+                   ┌───────────────▼───────────────┐
+                   │         CloudFront CDN        │
+                   │    (Global Edge Locations)    │
+                   └─────────┬─────────────────────┘
+                             │
+    ┌────────────────────────┼────────────────────────┐
+    │                        │                        │
+┌───▼────┐              ┌────▼────────────────────────▼─────┐
+│   S3   │              │           AWS Cloud              │
+│ Static │              │                                  │
+│Website │              │  ┌─────────────────────────────────────────────────────────────┐ │
+│Hosting │              │  │                 API Gateway                                 │ │
+└────────┘              │  │          (RESTful APIs with CORS, Auth, Rate Limiting)     │ │
+                        │  └─────────────┬─────────────────────────────┬─────────────────┘ │
+                        │                │                             │                   │
+                        │  ┌─────────────▼─────────────┐  ┌─────────────▼─────────────┐   │
+                        │  │     Book Catalog Service  │  │   Shopping Cart Service   │   │
+                        │  │      (Lambda + RDS)       │  │    (Lambda + DynamoDB)    │   │
+                        │  └─────────────┬─────────────┘  └─────────────┬─────────────┘   │
+                        │                │                             │                   │
+                        │  ┌─────────────▼─────────────┐  ┌─────────────▼─────────────┐   │
+                        │  │      PostgreSQL RDS       │  │        DynamoDB           │   │
+                        │  │     (Book Catalog)        │  │     (Shopping Carts)      │   │
+                        │  └───────────────────────────┘  └───────────────────────────┘   │
+                        │                                                                  │
+                        └──────────────────────────────────────────────────────────────────┘
 ```
 
 ## Service Breakdown
+
+### Frontend & Content Delivery
+
+- **Purpose**: Serve static website content to users globally
+- **Technology**: AWS S3 Static Website Hosting + CloudFront CDN
+- **Content**: HTML, CSS, JavaScript files (no framework dependencies)
+- **Performance**: Global edge caching with CloudFront for sub-2-second page loads
+- **Security**: HTTPS-only access, origin access control from CloudFront to S3
+- **Architecture Decision**: Static website hosting chosen for simplicity, cost-effectiveness, and performance
 
 ### Book Catalog Service
 
@@ -55,6 +69,13 @@ CloudShelf is a serverless online bookstore built on AWS, following microservice
 
 ## Technology Stack
 
+### Frontend & Content Delivery
+
+- **Frontend**: Static HTML, CSS, JavaScript (Vanilla JS - no framework)
+- **Hosting**: AWS S3 Static Website Hosting
+- **CDN**: CloudFront for global content delivery
+- **Protocol**: HTTPS-only with SSL/TLS certificates
+
 ### Runtime & Languages
 
 - **Backend**: Java 21 (LTS) with AWS Lambda
@@ -63,6 +84,7 @@ CloudShelf is a serverless online bookstore built on AWS, following microservice
 
 ### AWS Services
 
+- **Frontend Hosting**: S3 Static Website + CloudFront CDN
 - **Compute**: AWS Lambda (serverless functions)
 - **API Management**: API Gateway (REST APIs)
 - **Databases**:
@@ -165,7 +187,7 @@ CloudShelf is a serverless online bookstore built on AWS, following microservice
 
 ### Performance Optimizations
 
-- CDN for static content (CloudFront)
+- Caching layer (ElastiCache)
 - Caching layer (ElastiCache)
 - Database read replicas
 - Lambda provisioned concurrency
