@@ -27,8 +27,21 @@ Cloudshelf Online Bookstore is a cloud-native web application that allows users 
 
 ### 1.4 References
 
+- [CloudShelf Business Requirements Document](./business-requirements.md) - Business context and objectives
 - [Cloudshelf Architecture Guide](../cloudshelf-online-bookstore-architecture-guide.md)
 - [User Stories](./cloudshelf-user-stories.md)
+
+### 1.5 Business Requirements Traceability
+
+This SRS translates business requirements from the CloudShelf BRD into technical specifications:
+
+| **Business Requirement** | **Technical Requirements** | **Rationale** |
+|---------------------------|----------------------------|---------------|
+| 2% market share by Year 3 | NFR-5, NFR-6, NFR-7 (scalability) | System must scale with business growth |
+| <2 second page load target | NFR-1, NFR-2, NFR-3 (performance) | Performance directly impacts conversion |
+| Infrastructure cost <0.5% revenue | NFR-17, NFR-18, NFR-19 (cost optimization) | Financial sustainability requirement |
+| 99.9% uptime requirement | NFR-9, NFR-10, NFR-11 (availability) | Business continuity and customer trust |
+| Regulatory compliance | NFR-12, NFR-14, NFR-15 (security) | Legal and compliance obligations |
 
 ### 1.5 Architectural Context
 
@@ -96,11 +109,35 @@ Cloudshelf is a multi-tier, serverless web application built on AWS. It integrat
 
 ### 3.2 Non-Functional Requirements
 
-- NFR-1: The system shall be available 99.9% of the time
-- NFR-2: The system shall support at least 10,000 concurrent users
-- NFR-3: The system shall encrypt sensitive data at rest and in transit
-- NFR-4: The system shall respond to user actions within 2 seconds
-- NFR-5: The system shall log all critical actions for audit purposes
+#### 3.2.1 Performance Requirements
+- NFR-1: Page load time shall be < 2 seconds for 95th percentile (supports BRD objective: match industry leading 2-second target)
+- NFR-2: Search response time shall be < 500ms average (supports BRD objective: superior book discovery experience)
+- NFR-3: Cart operations shall complete < 200ms (supports BRD objective: 85% cart-to-purchase conversion)
+- NFR-4: API response time shall be < 1 second for 95th percentile (supports third-party integrations)
+
+#### 3.2.2 Scalability Requirements  
+- NFR-5: System shall support 1,000 concurrent users at launch (Year 1 BRD target)
+- NFR-6: System shall scale to 10,000 concurrent users by Month 18 (Year 2 BRD target)
+- NFR-7: System shall handle 50,000 concurrent users by Month 36 (Year 3 BRD target)
+- NFR-8: System shall handle 10x traffic spikes during promotional events (Black Friday support per BRD)
+
+#### 3.2.3 Availability & Reliability
+- NFR-9: System shall maintain 99.9% uptime (max 8.7 hours downtime/year per BRD)
+- NFR-10: System shall implement automated failover with <4 hour recovery time (BRD disaster recovery requirement)
+- NFR-11: System shall support scheduled maintenance windows 2-6 AM local time
+
+#### 3.2.4 Security Requirements
+- NFR-12: System shall encrypt all PII data at rest using AES-256 (GDPR compliance per BRD)
+- NFR-13: System shall encrypt all data in transit using TLS 1.3 (security best practices)
+- NFR-14: System shall implement PCI DSS Level 1 compliance for payment processing (BRD requirement)
+- NFR-15: System shall log all financial transactions for audit purposes (regulatory requirement)
+- NFR-16: System shall implement multi-factor authentication for admin accounts
+
+#### 3.2.5 Cost & Operational Requirements
+- NFR-17: Infrastructure costs shall remain <0.5% of revenue (BRD financial constraint)
+- NFR-18: System shall auto-scale to minimize costs during low-traffic periods
+- NFR-19: System shall provide real-time cost monitoring and alerting
+- NFR-20: System shall support management by team of 3 developers + 1 DevOps engineer (BRD staffing constraint)
 
 ### 3.3 External Interface Requirements
 
