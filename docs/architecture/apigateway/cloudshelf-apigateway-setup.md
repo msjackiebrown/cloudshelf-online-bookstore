@@ -1,15 +1,30 @@
-# API Gateway Setup - CloudShelf Architecture
+# 🌐 API Gateway Setup
 
-This guide provides step-by-step instructions for setting up API Gateway for the CloudShelf online bookstore backend services.
+> Implementation guide for API Gateway RESTful services following ADR-005 architecture strategy
 
-## Architecture Overview
+This guide provides setup instructions for AWS API Gateway, implementing the API management decisions documented in [ADR-005: API Gateway Architecture Strategy](../cloudshelf-architecture-decisions.md#adr-005-api-gateway-architecture-strategy).
 
-API Gateway serves as the single entry point for all client requests, routing them to the appropriate Lambda functions:
+---
 
-- **Book Catalog Service**: Handles book inventory and search operations
-- **Shopping Cart Service**: Manages user shopping cart operations
+## 🏛️ Architecture Overview
 
-## Manual Setup Steps
+Based on **ADR-005**, API Gateway provides the unified API layer for CloudShelf with:
+
+- **📚 Book Catalog Service** - RESTful endpoints for book inventory and search operations
+- **🛒 Shopping Cart Service** - API endpoints for cart management operations
+- **🔒 Security Integration** - Authentication and authorization layer
+- **🚀 Performance Management** - Throttling, caching, and monitoring
+
+**Architecture Decision Reference**: See [ADR-005](../cloudshelf-architecture-decisions.md#adr-005) for the complete rationale behind this API strategy.
+
+### **🌐 API Gateway Architecture Design**
+
+![CloudShelf API Gateway Architecture](API-Gateway-Architecture-Diagram.png)
+*RESTful API architecture showing endpoints, Lambda integrations, and security configurations*
+
+---
+
+## 🚀 Implementation Guide
 
 ### Step 1: Create REST API
 

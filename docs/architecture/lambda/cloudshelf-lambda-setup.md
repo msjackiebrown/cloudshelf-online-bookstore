@@ -17,37 +17,10 @@ Based on **ADR-004**, Lambda functions provide the compute layer for CloudShelf 
 
 **Architecture Decision Reference**: See [ADR-004](../cloudshelf-architecture-decisions.md#adr-004) for the complete rationale behind this serverless approach.
 
----
+### **⚡ Lambda Architecture Design**
 
-## 📷 Setup Screenshots
-
-### **⚡ Lambda Console Overview**
-
-![Lambda Console Overview](screenshots/01-lambda-console-overview.png)
-
-### **🔧 Create Function Configuration**
-
-![Create Lambda Function](screenshots/02-create-lambda-function.png)
-
-### **📦 JAR File Upload Process**
-
-![Upload JAR File](screenshots/03-upload-jar-file.png)
-
-### **⚙️ Function Configuration Settings**
-
-![Function Configuration](screenshots/04-function-configuration.png)
-
-### **🔗 VPC and Security Configuration**
-
-![VPC and Security Settings](screenshots/05-vpc-security-configuration.png)
-
-### **🌐 API Gateway Integration**
-
-![API Gateway Integration](screenshots/06-api-gateway-integration.png)
-
-### **✅ Lambda Function Deployed**
-
-![Lambda Function Successfully Deployed](screenshots/07-lambda-function-deployed.png)
+![CloudShelf Lambda Architecture](Lambda-Functions-Architecture-Diagram.png)
+*Serverless compute architecture showing Lambda functions, VPC integration, and service connections*
 
 ### **🔌 API Gateway Integration**
 

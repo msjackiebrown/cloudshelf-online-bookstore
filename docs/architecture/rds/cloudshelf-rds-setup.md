@@ -6,38 +6,6 @@ This guide provides setup instructions for Amazon RDS PostgreSQL, implementing t
 
 ---
 
-## 📷 Setup Screenshots
-
-### **🗃️ RDS Console Overview**
-
-![RDS Console Create Database](screenshots/01-rds-console-overview.png)
-
-### **🐘 PostgreSQL Engine Selection**
-
-![PostgreSQL Engine Selection](screenshots/02-postgresql-engine-selection.png)
-
-### **📋 Database Instance Configuration**
-
-![Database Instance Configuration](screenshots/03-database-instance-configuration.png)
-
-### **🔒 VPC and Security Groups Setup**
-
-![VPC and Security Configuration](screenshots/04-vpc-security-configuration.png)
-
-### **📊 Monitoring and Backup Configuration**
-
-![Monitoring and Backup Settings](screenshots/05-monitoring-backup-configuration.png)
-
-### **🚀 Database Instance Launch**
-
-![Database Instance Launch](screenshots/06-database-instance-launch.png)
-
-### **✅ RDS Instance Created Successfully**
-
-![RDS Instance Successfully Created](screenshots/07-rds-instance-created.png)
-
----
-
 ## 🏛️ Architecture Overview
 
 Based on **ADR-002**, PostgreSQL RDS provides the book catalog storage layer for CloudShelf with:
@@ -48,6 +16,11 @@ Based on **ADR-002**, PostgreSQL RDS provides the book catalog storage layer for
 - **🔒 Data Integrity** - ACID compliance for transactional operations
 
 **Architecture Decision Reference**: See [ADR-002](../cloudshelf-architecture-decisions.md#adr-002) for the complete rationale behind PostgreSQL selection.
+
+### **🗃️ RDS Architecture Design**
+
+![CloudShelf RDS Architecture](RDS-PostgreSQL-Architecture-Diagram.png)
+*PostgreSQL RDS integration with VPC, Lambda functions, and security configurations*
 
 ---
 
@@ -110,68 +83,74 @@ RDS Instance (cloudshelf-book-catalog-db)
 
 ---
 
-## Architectural Configuration Steps
+## 🚀 Implementation Guide
 
-### Step 1: RDS Console Access
+### **Step 1: Access RDS Console**
 
 Access AWS RDS service to begin database provisioning.
 
-![RDS Database Creation Screenshot](./RDS-Database-Creation-Step1.png)
+**Configuration:**
+- Use AWS Management Console for initial setup
+- Ensure proper IAM permissions for RDS operations
 
-**Architectural Decision**: Use AWS Management Console for initial setup to ensure proper configuration visibility.
+![RDS Database Creation](RDS-Database-Creation-Step1.png)
 
-### Step 2: Database Engine Selection
+---
+
+### **Step 2: Select PostgreSQL Engine**
 
 Select PostgreSQL engine based on architectural requirements.
 
-![RDS Engine Selection Screenshot](./RDS-Engine-Selection-Step2.png)
-
-**Configuration Requirements:**
-
+**Configuration:**
 - **Database creation method**: Standard create (full architectural control)
 - **Engine type**: PostgreSQL
 - **Engine version**: Latest stable (15.x)
 - **Template**: Dev/Test or Production based on environment
 
-### Step 3: Instance and Storage Architecture
+![RDS Engine Selection](RDS-Engine-Selection-Step2.png)
+
+---
+
+### **Step 3: Configure Instance and Storage**
 
 Define instance specifications and storage configuration.
 
-![RDS Instance Configuration Screenshot](./RDS-Instance-Configuration-Step3.png)
-
-**Architectural Specifications:**
-
+**Configuration:**
 - **DB instance identifier**: `cloudshelf-book-catalog-db`
 - **Master username**: `cloudshelf_admin`
 - **Instance class**: Environment-appropriate sizing
 - **Storage type**: General Purpose SSD (gp3)
 - **Storage autoscaling**: Enabled (cost management)
 
-### Step 4: Network and Security Architecture
+![RDS Instance Configuration](RDS-Instance-Configuration-Step3.png)
+
+---
+
+### **Step 4: Network and Security Setup**
 
 Configure VPC integration and security group associations.
 
-![RDS Connectivity Settings Screenshot](./RDS-Connectivity-Settings-Step4.png)
-
 **Network Configuration:**
-
 - **VPC**: CloudShelf VPC (private deployment)
 - **DB subnet group**: `cloudshelf-db-subnet-group`
 - **Public access**: Disabled (security requirement)
 - **Security groups**: `cloudshelf-rds-sg` only
 - **Database port**: 5432 (PostgreSQL standard)
 
-**Security Architecture:**
-
+**Security Configuration:**
 - **Encryption at rest**: Enabled
 - **Backup retention**: Environment-appropriate
 - **Delete protection**: Enabled for production
 
-### Step 5: Configuration Review and Deployment
+![RDS Connectivity Settings](RDS-Connectivity-Settings-Step4.png)
+
+---
+
+### **Step 5: Review and Deploy**
 
 Validate architectural configuration before deployment.
 
-![RDS Final Review Screenshot](./RDS-Final-Review-Step5.png)
+![RDS Final Review](RDS-Final-Review-Step5.png)
 
 **Validation Checklist:**
 
@@ -307,12 +286,13 @@ _Part of the CloudShelf Solutions Architecture documentation_
 
 ### **Next Architectural Components**
 
-1. 🔧 [Lambda Function Architecture](../lambda/lambda-architecture.md)
-2. 🌐 [API Gateway Design](../api-gateway/api-architecture.md)
+1. ⚡ [Lambda Function Setup](../lambda/cloudshelf-lambda-setup.md)
+2. 🌐 [API Gateway Configuration](../apigateway/cloudshelf-apigateway-setup.md)
 3. 📊 [Database Schema Design](rds-data-model.md)
 
 ---
 
-**Architectural Review**: This RDS configuration provides secure, scalable, and cost-effective database services for the CloudShelf application while maintaining AWS best practices for network isolation and access control.
+**External Reference**: [AWS RDS Documentation](https://docs.aws.amazon.com/rds/)
 
-_Last updated: 2025-09-01_
+*Part of the CloudShelf Solutions Architecture documentation*  
+*Last updated: September 3, 2025*

@@ -17,37 +17,10 @@ Based on **ADR-003**, DynamoDB provides the shopping cart storage layer for Clou
 
 **Architecture Decision Reference**: See [ADR-003](../cloudshelf-architecture-decisions.md#adr-003) for the complete rationale behind this NoSQL approach.
 
----
+### **🗂️ DynamoDB Architecture Design**
 
-## 📷 Setup Screenshots
-
-### **�️ DynamoDB Console Overview**
-
-![DynamoDB Console Overview](screenshots/01-dynamodb-console-overview.png)
-
-### **🛒 Shopping Cart Table Creation**
-
-![Create Shopping Cart Table](screenshots/02-create-shopping-cart-table.png)
-
-### **🔑 Primary Key Configuration**
-
-![Primary Key Configuration](screenshots/03-primary-key-configuration.png)
-
-### **⚙️ Table Settings Configuration**
-
-![Table Settings Configuration](screenshots/04-table-settings-configuration.png)
-
-### **🚀 Table Creation Review**
-
-![Table Creation Review](screenshots/05-table-creation-review.png)
-
-### **✅ Shopping Cart Table Created**
-
-![Shopping Cart Table Created Successfully](screenshots/06-shopping-cart-table-created.png)
-
----
-
-## 🔐 Architecture Configuration
+![CloudShelf DynamoDB Architecture](DynamoDB-Shopping-Cart-Architecture-Diagram.png)
+*NoSQL storage architecture showing table design, access patterns, and Lambda integration*
 
 ### **📋 Table Design Strategy**
 
