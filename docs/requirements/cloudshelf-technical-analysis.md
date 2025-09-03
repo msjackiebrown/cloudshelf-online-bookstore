@@ -180,8 +180,15 @@ Internet → CloudFront CDN → S3 (Static Assets) + API Gateway (APIs) → Lamb
 
 **Implementation:**
 
+- [VPC Networking](../architecture/vpc/cloudshelf-vpc-setup.md) - Network isolation setup (foundation)
+- [Security Configuration](../architecture/security/cloudshelf-iam-security-setup.md) - IAM and security setup
+- [RDS PostgreSQL](../architecture/rds/cloudshelf-rds-setup.md) - Database configuration
+- [DynamoDB](../architecture/dynamodb/cloudshelf-dynamodb-setup.md) - NoSQL database setup
+- [Lambda Functions](../architecture/lambda/cloudshelf-lambda-setup.md) - Function deployment
 - [API Gateway Setup](../architecture/apigateway/cloudshelf-apigateway-setup.md) - Service configuration
-- [Lambda Functions](../../src/lambda/README.md) - Code implementation
+- [S3 Storage](../architecture/s3/cloudshelf-s3-setup.md) - Static hosting configuration
+- [CloudFront CDN](../architecture/cloudfront/cloudshelf-cloudfront-setup.md) - Content delivery setup
+- [Monitoring](../architecture/monitoring/cloudshelf-cloudwatch-setup.md) - CloudWatch and observability
 
 ---
 
