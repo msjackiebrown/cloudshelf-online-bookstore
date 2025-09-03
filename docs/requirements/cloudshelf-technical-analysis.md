@@ -28,7 +28,7 @@ CloudShelf is a serverless AWS e-commerce platform designed to scale from $2M to
 
 ![CloudShelf Architecture](../architecture/cloudshelf-architecture-diagram.png)
 
-**Note**: [Detailed architecture diagrams](../architecture/cloudshelf-system-architecture.md) available in system documentation.
+**Note**: [Detailed architecture diagrams](../architecture/cloudshelf-detailed-architecture-diagrams.md) with 16 comprehensive technical diagrams available in system documentation.
 
 **Current Implementation Scope:**
 

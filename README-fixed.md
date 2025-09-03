@@ -86,7 +86,6 @@ CloudShelf is a **scalable e-commerce platform** that demonstrates AWS Solutions
 ### 🏛️ Architecture & Design
 
 - [System Architecture](docs/architecture/cloudshelf-system-architecture.md) - Complete technical design
-- [Detailed Architecture Diagrams](docs/architecture/cloudshelf-detailed-architecture-diagrams.md) - 16 comprehensive technical diagrams
 - [Security Architecture](docs/architecture/cloudshelf-security-architecture.md) - Security patterns and IAM
 - [Data Architecture](docs/architecture/cloudshelf-data-architecture.md) - Database design strategy
 - [Technical Analysis](docs/requirements/cloudshelf-technical-analysis.md) - Solutions architect overview
