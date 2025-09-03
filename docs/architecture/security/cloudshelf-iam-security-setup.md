@@ -19,19 +19,7 @@ IAM security provides the foundation for all CloudShelf services with:
 
 ---
 
-## 📷 Security Screenshots
-
-### **🔧 IAM Console Overview**
-
-![IAM Console Dashboard](screenshots/01-iam-console-overview.png)
-
-### **🔐 Role Creation Process**
-
-![IAM Role Creation](screenshots/02-iam-role-creation.png)
-
----
-
-## 🚀 Manual Setup Steps
+## � Implementation Steps
 
 ### Step 1: Lambda Execution Roles
 
