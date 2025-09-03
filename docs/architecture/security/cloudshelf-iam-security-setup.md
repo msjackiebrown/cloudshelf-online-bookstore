@@ -56,6 +56,8 @@ IAM security provides the foundation for all CloudShelf services with:
 }
 ```
 
+![Book Catalog Lambda Role Configuration](screenshots/lambda-book-catalog-role.png)
+
 #### Shopping Cart Lambda Role
 
 **Configuration Requirements:**
@@ -93,6 +95,8 @@ IAM security provides the foundation for all CloudShelf services with:
 }
 ```
 
+![Shopping Cart Lambda Role Configuration](screenshots/lambda-shopping-cart-role.png)
+
 ### Step 2: API Gateway IAM Roles
 
 #### API Gateway Execution Role
@@ -120,6 +124,8 @@ IAM security provides the foundation for all CloudShelf services with:
   ]
 }
 ```
+
+![API Gateway Execution Role Configuration](screenshots/apigateway-execution-role.png)
 
 ### Step 3: RDS Security Configuration
 
