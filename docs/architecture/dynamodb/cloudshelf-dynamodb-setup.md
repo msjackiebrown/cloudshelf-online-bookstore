@@ -20,7 +20,7 @@ Based on **ADR-003**, DynamoDB provides the shopping cart storage layer for Clou
 ### **🗂️ DynamoDB Architecture Design**
 
 ![CloudShelf DynamoDB Architecture](DynamoDB-Shopping-Cart-Architecture-Diagram.png)
-*NoSQL storage architecture showing table design, access patterns, and Lambda integration*
+_NoSQL storage architecture showing table design, access patterns, and Lambda integration_
 
 ### **📋 Table Design Strategy**
 
@@ -48,47 +48,171 @@ Following ADR-003 polyglot persistence approach:
 
 1. **🖥️ Access DynamoDB Console**
 
-   - Sign in to AWS Management Console
-   - Navigate to DynamoDB service
+---
 
-2. **⚙️ Table Configuration**
+## 📊 Architecture Configuration
 
-   ```
-   Table Name: cloudshelf-shopping-cart
-   Partition Key: userId (String)
-   Capacity Mode: On-demand
-   Encryption: AWS managed key
-   ```
+### **Table Design Strategy**
 
-3. **📊 Advanced Settings**
+Following ADR-003 NoSQL optimization approach:
 
-   - Enable point-in-time recovery (production)
-   - Configure deletion protection (production)
-   - Set up CloudWatch alarms for monitoring
+| Design Aspect      | Implementation             | Rationale                             |
+| ------------------ | -------------------------- | ------------------------------------- |
+| **Partition Key**  | `userId` (String)          | Even distribution, user-based access  |
+| **Table Name**     | `cloudshelf-shopping-cart` | Descriptive, project-prefixed         |
+| **Capacity Mode**  | On-demand                  | Cost-effective for variable workloads |
+| **Item Structure** | Nested JSON                | Flexible schema for cart complexity   |
 
-4. **✅ Create Table**
-   - Review configuration settings
-   - Click "Create table"
+### **Access Patterns**
 
-### **Step 2: Verify Table Creation**
-
-1. **🔍 Table Status Check**
-
-   - Verify table status shows "Active"
-   - Confirm partition key configuration
-   - Validate capacity mode settings
-
-2. **📊 Test Data Operations**
-   - Use "Explore table items" for initial testing
-   - Verify read/write operations work correctly
+| Operation         | Key Pattern          | Performance Target      |
+| ----------------- | -------------------- | ----------------------- |
+| **Get User Cart** | `userId`             | < 10ms single-digit     |
+| **Update Cart**   | `userId` + item data | < 20ms write latency    |
+| **Clear Cart**    | `userId`             | < 10ms delete operation |
 
 ---
 
-## 🏗️ Implementation Notes
+## 🚀 Implementation Guide
 
-### **Data Model Pattern**
+### **Step 1: Create Shopping Cart Table**
 
-Following ADR-003 architecture strategy:
+Create the DynamoDB table for cart storage.
+
+**Configuration:**
+
+- **Table Name**: `cloudshelf-shopping-cart`
+- **Partition Key**: `userId` (String)
+- **Capacity Mode**: On-demand
+- **Encryption**: AWS managed key
+
+![DynamoDB Table Creation](DynamoDB-Create-Table-Step1.png)
+
+---
+
+### **Step 2: Configure Table Settings**
+
+Set up table-level configurations for production readiness.
+
+**Configuration:**
+
+- **Point-in-time Recovery**: Enabled (production)
+- **Deletion Protection**: Enabled (production)
+- **CloudWatch Alarms**: Enabled for monitoring
+- **Tags**: Environment, Project, Owner
+
+![DynamoDB Table Configuration](DynamoDB-Table-Configuration-Step2.png)
+
+---
+
+### **Step 3: Verify Table Creation**
+
+Confirm table is active and properly configured.
+
+**Verification:**
+
+- **Table Status**: Active
+- **Partition Key**: Correctly configured
+- **Capacity Settings**: On-demand enabled
+- **Security Settings**: Encryption at rest enabled
+
+![DynamoDB Table Verification](DynamoDB-Table-Verification-Step3.png)
+
+---
+
+### **Step 4: Test Data Operations**
+
+Validate table functionality with sample operations.
+
+**Test Operations:**
+
+- **Put Item**: Add sample cart data
+- **Get Item**: Retrieve cart by userId
+- **Update Item**: Modify cart contents
+- **Delete Item**: Clear user cart
+
+![DynamoDB Data Operations](DynamoDB-Data-Operations-Step4.png)
+
+---
+
+## 📚 Best Practices & Troubleshooting
+
+<details>
+<summary><strong>🗂️ DynamoDB Best Practices</strong></summary>
+
+### **Table Design**
+
+- ✅ **Use meaningful partition keys** - Ensure even data distribution
+- ✅ **On-demand billing** - Cost-effective for variable workloads
+- ✅ **Enable encryption** - Use AWS managed keys for data at rest
+- ✅ **Point-in-time recovery** - Enable for production environments
+
+### **Performance Optimization**
+
+- ✅ **Hot partition avoidance** - Distribute writes evenly across partitions
+- ✅ **Item size limits** - Keep items under 400KB for optimal performance
+- ✅ **Batch operations** - Use batch get/put for multiple items
+- ✅ **Connection pooling** - Reuse connections in Lambda functions
+
+</details>
+
+<details>
+<summary><strong>🔧 Troubleshooting Common Issues</strong></summary>
+
+### **1. Throttling errors**
+
+- ✅ Check: Use on-demand billing mode
+- ✅ Check: Implement exponential backoff in application code
+- ✅ Check: Review access patterns for hot partitions
+
+### **2. Item not found errors**
+
+- ✅ Check: Verify partition key format and casing
+- ✅ Check: Ensure consistent read operations when needed
+- ✅ Check: Review item TTL settings if configured
+
+### **3. Access denied errors**
+
+- ✅ Check: Lambda execution role has DynamoDB permissions
+- ✅ Check: Table resource ARN in IAM policies
+- ✅ Check: VPC endpoints if Lambda is in VPC
+
+### **Testing DynamoDB Operations**
+
+```bash
+# AWS CLI commands for testing
+aws dynamodb put-item --table-name cloudshelf-shopping-cart --item '{"userId":{"S":"test123"},"cartItems":{"L":[]}}'
+
+aws dynamodb get-item --table-name cloudshelf-shopping-cart --key '{"userId":{"S":"test123"}}'
+```
+
+</details>
+
+---
+
+## 📚 Related Documentation
+
+- 🏛️ [**ADR-003: DynamoDB Strategy**](../cloudshelf-architecture-decisions.md#adr-003) - Complete NoSQL architecture rationale
+- 🏛️ [**All Architecture Decisions**](../cloudshelf-architecture-decisions.md) - Context for data storage choices
+- ⚡ [**Lambda Setup**](../lambda/cloudshelf-lambda-setup.md) - Function integration with DynamoDB
+- 🗃️ [**RDS Setup**](../rds/cloudshelf-rds-setup.md) - Complementary relational storage
+- 🌐 [**API Gateway Setup**](../apigateway/cloudshelf-apigateway-setup.md) - API endpoints for cart operations
+
+---
+
+## 📋 Quick Reference
+
+<details>
+<summary><strong>📊 Configuration Values</strong></summary>
+
+### **Table Configuration**
+
+- **Table Name**: `cloudshelf-shopping-cart`
+- **Partition Key**: `userId` (String)
+- **Capacity Mode**: On-demand
+- **Encryption**: AWS managed key
+
+### **Data Model Example**
 
 ```json
 {
@@ -98,11 +222,51 @@ Following ADR-003 architecture strategy:
       "bookId": "book001",
       "title": "The Great Gatsby",
       "quantity": 2,
-      "addedAt": "2025-09-01T10:00:00Z"
+      "price": 15.99,
+      "addedAt": "2025-09-03T10:30:00Z"
     }
   ],
-  "lastUpdated": "2025-09-01T10:05:00Z"
+  "totalItems": 2,
+  "totalPrice": 31.98,
+  "lastUpdated": "2025-09-03T10:30:00Z",
+  "ttl": 1725552600
 }
+```
+
+### **Required IAM Permissions**
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "dynamodb:GetItem",
+        "dynamodb:PutItem",
+        "dynamodb:UpdateItem",
+        "dynamodb:DeleteItem"
+      ],
+      "Resource": "arn:aws:dynamodb:region:account:table/cloudshelf-shopping-cart"
+    }
+  ]
+}
+```
+
+</details>
+
+---
+
+**External Reference**: [AWS DynamoDB Documentation](https://docs.aws.amazon.com/dynamodb/)
+
+_Part of the CloudShelf Solutions Architecture documentation_  
+_Last updated: September 3, 2025_
+"addedAt": "2025-09-01T10:00:00Z"
+}
+],
+"lastUpdated": "2025-09-01T10:05:00Z"
+}
+
 ```
 
 ### **Schema Evolution Strategy**
@@ -129,3 +293,4 @@ Following ADR-003 architecture strategy:
 ---
 
 _Part of the CloudShelf Solutions Architecture documentation_
+```

@@ -1,38 +1,50 @@
-# CloudWatch Monitoring Setup - CloudShelf Architecture
+# 📊 CloudShelf CloudWatch Monitoring Setup
 
-This guide provides step-by-step instructions for setting up CloudWatch monitoring and observability for the CloudShelf online bookstore serverless architecture.
+Complete guide for implementing comprehensive observability and monitoring across all CloudShelf AWS services.
 
-## Architecture Overview
+---
 
-CloudWatch provides comprehensive monitoring for all CloudShelf services:
+## 🏗️ Architecture Overview
 
-- **Lambda Functions**: Performance metrics, error rates, duration tracking
-- **API Gateway**: Request volume, latency, error rates
-- **RDS PostgreSQL**: Database performance and connection metrics
-- **DynamoDB**: Read/write capacity, throttling, item-level metrics
-- **CloudFront**: Cache hit ratios, origin request metrics
-- **Application Logs**: Centralized logging with structured log analysis
+CloudWatch provides unified monitoring and observability for the entire CloudShelf serverless architecture:
 
-## Manual Setup Steps
+- **Application Performance**: Lambda function metrics, API Gateway latency, error tracking
+- **Infrastructure Health**: RDS database performance, DynamoDB capacity utilization
+- **User Experience**: CloudFront cache performance, application response times
+- **Operational Intelligence**: Custom dashboards, automated alerting, cost monitoring
 
-### Step 1: Create CloudWatch Dashboard
+| Component            | Metrics Tracked                          | Alert Thresholds                   |
+| -------------------- | ---------------------------------------- | ---------------------------------- |
+| **Lambda Functions** | Invocations, Duration, Errors, Throttles | >5% error rate, >10s duration      |
+| **API Gateway**      | Request count, Latency, 4XX/5XX errors   | >100ms p95 latency, >2% error rate |
+| **RDS PostgreSQL**   | CPU, Connections, Query performance      | >80% CPU, >75% connections         |
+| **DynamoDB**         | Read/Write capacity, Throttling          | >80% capacity, any throttling      |
+| **CloudFront**       | Cache hit ratio, Origin requests         | <85% cache hit, >1000 origin/min   |
 
-1. **Open CloudWatch Console**
+![CloudShelf Monitoring Architecture](../cloudshelf-detailed-architecture-diagrams.md#14-cloudwatch-monitoring-dashboard)
 
-   - Sign in to AWS Management Console
-   - Navigate to CloudWatch service
-   - Choose "Dashboards" from left navigation
-   - Click "Create dashboard"
+---
 
-   ![CloudWatch Console - Create Dashboard](screenshots/01-cloudwatch-dashboard-create.png)
+## 🚀 Implementation Steps
 
-2. **Configure Dashboard**
+### 1. Create Production Dashboard
 
-   - Dashboard name: `CloudShelf-Production-Dashboard`
-   - Choose "Blank dashboard"
-   - Click "Create dashboard"
+Navigate to **CloudWatch Console → Dashboards → Create Dashboard**
 
-   ![CloudWatch Dashboard Configuration](screenshots/02-cloudwatch-dashboard-config.png)
+```json
+{
+  "dashboardName": "CloudShelf-Production-Monitoring",
+  "widgets": [
+    {
+      "type": "metric",
+      "region": "us-east-1",
+      "title": "Lambda Performance Overview"
+    }
+  ]
+}
+```
+
+![CloudWatch Dashboard Creation](screenshots/01-cloudwatch-dashboard-create.png)
 
 ### Step 2: Lambda Function Monitoring
 

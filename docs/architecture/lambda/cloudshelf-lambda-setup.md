@@ -20,7 +20,7 @@ Based on **ADR-004**, Lambda functions provide the compute layer for CloudShelf 
 ### **⚡ Lambda Architecture Design**
 
 ![CloudShelf Lambda Architecture](Lambda-Functions-Architecture-Diagram.png)
-*Serverless compute architecture showing Lambda functions, VPC integration, and service connections*
+_Serverless compute architecture showing Lambda functions, VPC integration, and service connections_
 
 ### **🔌 API Gateway Integration**
 
@@ -47,77 +47,210 @@ Before creating Lambda functions, establish proper IAM roles that grant necessar
 
 ### **🛠️ IAM Role Setup Steps**
 
-![IAM Role Setup](./Lambda-IAM-Role-Setup-Step1.png)
+---
 
-1. **🏛️ Navigate to IAM Console**
+## 📊 Architecture Configuration
 
-   - Go to the IAM console in AWS
-   - Choose "Roles" → "Create role"
+### **Function Strategy**
 
-2. **🎯 Configure Trust Relationship**
+Following ADR-004 serverless-first approach:
 
-   - Select "AWS service" as trusted entity
-   - Choose "Lambda" as the service
+| Function Purpose        | Runtime | Memory | Timeout | VPC Required  |
+| ----------------------- | ------- | ------ | ------- | ------------- |
+| **Book Catalog API**    | Java 21 | 512 MB | 30s     | Yes (RDS)     |
+| **Shopping Cart API**   | Java 21 | 256 MB | 15s     | No (DynamoDB) |
+| **User Authentication** | Java 21 | 256 MB | 10s     | No (Cognito)  |
 
-3. **📜 Attach Policies**
-   ```
-   Required Policies:
-   ✅ AWSLambdaBasicExecutionRole
-   ✅ AWSLambdaVPCAccessExecutionRole (if VPC-enabled)
-   ✅ Custom policy for RDS/DynamoDB access
-   ```
+### **Configuration Specifications**
 
-![IAM Role Configuration](./Lambda-IAM-Role-Configuration-Step2.png)
-
-4. **🏷️ Name and Create**
-   - Name: `cloudshelf-lambda-execution-role`
-   - Description: "Execution role for CloudShelf Lambda functions"
-   - Click "Create role"
+| Component           | Development | Production  | Rationale                           |
+| ------------------- | ----------- | ----------- | ----------------------------------- |
+| **Runtime**         | Java 21     | Java 21     | LTS version, enterprise readiness   |
+| **Memory**          | 256-512 MB  | 512-1024 MB | Cost-effective, performance scaling |
+| **Timeout**         | 15-30s      | 30-60s      | API Gateway limits consideration    |
+| **VPC Integration** | Optional    | Required    | Security isolation for production   |
 
 ---
 
-## 🚀 Lambda Function Creation
+## 🚀 Implementation Guide
 
-### **Step 1: Create Function**
+### **Step 1: Create IAM Execution Role**
 
-1. **🖥️ Access Lambda Console**
+Create the execution role that Lambda functions will assume.
 
-   - Sign in to AWS Management Console
-   - Navigate to Lambda service
+**Configuration:**
 
-2. **📝 Function Configuration**
+- **Role Name**: `cloudshelf-lambda-execution-role`
+- **Trusted Entity**: AWS Lambda service
+- **Policies**: Basic execution + VPC access + custom permissions
 
-   ```
-   Function Name: cloudshelf-[function-purpose]
-   Runtime: Java 21 (corretto)
-   Architecture: x86_64
-   Handler: com.cloudshelf.[module].Handler
-   ```
-
-3. **🔒 Permissions Setup**
-
-   - Select existing role: `cloudshelf-lambda-execution-role`
-   - Configure VPC settings if database access required
-
-4. **⚙️ Advanced Configuration**
-   - Memory: 256 MB (adjust based on requirements)
-   - Timeout: 30 seconds (API Gateway limit)
-   - Environment variables as needed
-
-### **Step 2: Function Testing**
-
-1. **🧪 Test Configuration**
-
-   - Use "Test" feature in Lambda console
-   - Create test events matching expected input format
-   - Verify function execution and output
-
-2. **📊 Monitor Performance**
-   - Check CloudWatch logs for execution details
-   - Monitor duration, memory usage, and error rates
-   - Validate database connectivity if applicable
+![Lambda IAM Role Setup](Lambda-IAM-Role-Setup-Step1.png)
 
 ---
+
+### **Step 2: Configure Function Settings**
+
+Create Lambda function with proper configuration.
+
+**Configuration:**
+
+- **Function Name**: `cloudshelf-[function-purpose]`
+- **Runtime**: Java 21 (corretto)
+- **Architecture**: x86_64
+- **Handler**: `com.cloudshelf.[module].Handler`
+
+![Lambda Function Creation](Lambda-Function-Creation-Step2.png)
+
+---
+
+### **Step 3: Upload Function Code**
+
+Deploy the compiled JAR file with all dependencies.
+
+**Configuration:**
+
+- **Deployment Package**: JAR file with dependencies
+- **Handler Configuration**: Specify entry point class and method
+- **Environment Variables**: Database connections, API keys
+
+![Lambda Code Upload](Lambda-Code-Upload-Step3.png)
+
+---
+
+### **Step 4: Configure VPC Integration**
+
+Set up VPC networking for database access (if required).
+
+**Network Configuration:**
+
+- **VPC**: CloudShelf VPC
+- **Subnets**: Private subnets only
+- **Security Groups**: `cloudshelf-lambda-sg`
+
+![Lambda VPC Configuration](Lambda-VPC-Configuration-Step4.png)
+
+---
+
+### **Step 5: Set Environment Variables**
+
+Configure function-specific environment variables.
+
+**Configuration:**
+
+- **Database Connection**: RDS endpoint, credentials
+- **DynamoDB Tables**: Table names and region
+- **Security Settings**: API keys, authentication settings
+
+![Lambda Environment Variables](Lambda-Environment-Variables-Step5.png)
+
+---
+
+## 📚 Best Practices & Troubleshooting
+
+<details>
+<summary><strong>⚡ Lambda Best Practices</strong></summary>
+
+### **Performance Optimization**
+
+- ✅ **Right-size memory allocation** - Start with 256MB, scale based on monitoring
+- ✅ **Optimize cold starts** - Keep deployment packages small, minimize initialization code
+- ✅ **Connection pooling** - Reuse database connections across invocations
+- ✅ **Environment variables** - Use for configuration, avoid hardcoded values
+
+### **Security Best Practices**
+
+- ✅ **Least privilege IAM** - Grant only necessary permissions
+- ✅ **VPC deployment** - Use private subnets for database access
+- ✅ **Secrets management** - Use AWS Secrets Manager for sensitive data
+- ✅ **Environment isolation** - Separate dev/staging/prod functions
+
+</details>
+
+<details>
+<summary><strong>🔧 Troubleshooting Common Issues</strong></summary>
+
+### **1. Function timeout errors**
+
+- ✅ Check: Increase timeout setting (max 15 minutes)
+- ✅ Check: Optimize code performance and database queries
+- ✅ Check: VPC configuration causing connection delays
+
+### **2. Memory limit exceeded**
+
+- ✅ Check: Increase memory allocation
+- ✅ Check: Code for memory leaks or excessive object creation
+- ✅ Check: CloudWatch metrics for actual memory usage
+
+### **3. VPC connectivity issues**
+
+- ✅ Check: Lambda security group allows outbound traffic
+- ✅ Check: NAT Gateway or VPC endpoints for internet access
+- ✅ Check: Database security group allows Lambda access
+
+### **Testing Lambda Functions**
+
+```bash
+# Test function locally with SAM CLI
+sam local invoke "FunctionName" -e test-event.json
+
+# Test API Gateway integration
+curl -X POST https://api-id.execute-api.region.amazonaws.com/stage/endpoint
+```
+
+</details>
+
+---
+
+## 📚 Related Documentation
+
+- 🏛️ [**ADR-004: Lambda Architecture Strategy**](../cloudshelf-architecture-decisions.md#adr-004) - Complete serverless architecture rationale
+- 🏛️ [**All Architecture Decisions**](../cloudshelf-architecture-decisions.md) - Context for Lambda integration choices
+- 🌐 [**VPC Setup**](../vpc/cloudshelf-vpc-setup.md) - Network foundation for VPC-enabled functions
+- 🗃️ [**RDS Setup**](../rds/cloudshelf-rds-setup.md) - Database integration patterns
+- 🗂️ [**DynamoDB Setup**](../dynamodb/cloudshelf-dynamodb-setup.md) - NoSQL integration
+- 🌐 [**API Gateway Setup**](../apigateway/cloudshelf-apigateway-setup.md) - Function triggers and integration
+
+---
+
+## 📋 Quick Reference
+
+<details>
+<summary><strong>📊 Configuration Values</strong></summary>
+
+### **Function Configuration**
+
+- **Runtime**: Java 21 (corretto)
+- **Architecture**: x86_64
+- **Execution Role**: `cloudshelf-lambda-execution-role`
+- **VPC**: CloudShelf VPC (private subnets)
+- **Security Group**: `cloudshelf-lambda-sg`
+
+### **Memory and Timeout Settings**
+
+| Function Type      | Memory | Timeout | VPC Required |
+| ------------------ | ------ | ------- | ------------ |
+| **Book Catalog**   | 512 MB | 30s     | Yes          |
+| **Shopping Cart**  | 256 MB | 15s     | No           |
+| **Authentication** | 256 MB | 10s     | No           |
+
+### **Environment Variables Template**
+
+```
+DB_HOST=cloudshelf-book-catalog-db.cluster-xyz.region.rds.amazonaws.com
+DB_PORT=5432
+DB_NAME=cloudshelf
+DYNAMODB_TABLE_CART=cloudshelf-shopping-cart
+AWS_REGION=us-east-1
+```
+
+</details>
+
+---
+
+**External Reference**: [AWS Lambda Documentation](https://docs.aws.amazon.com/lambda/)
+
+_Part of the CloudShelf Solutions Architecture documentation_  
+_Last updated: September 3, 2025_
 
 ## 🏗️ Implementation Notes
 

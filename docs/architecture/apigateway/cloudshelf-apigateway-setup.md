@@ -20,7 +20,7 @@ Based on **ADR-005**, API Gateway provides the unified API layer for CloudShelf 
 ### **🌐 API Gateway Architecture Design**
 
 ![CloudShelf API Gateway Architecture](API-Gateway-Architecture-Diagram.png)
-*RESTful API architecture showing endpoints, Lambda integrations, and security configurations*
+_RESTful API architecture showing endpoints, Lambda integrations, and security configurations_
 
 ---
 
@@ -48,56 +48,106 @@ Based on **ADR-005**, API Gateway provides the unified API layer for CloudShelf 
 
 ### Step 2: Create Resources and Methods
 
-#### Book Catalog Resource (`/books`)
+---
 
-1. **Create Resource**
+## 📊 Architecture Configuration
 
-   - Select root resource `/`
-   - Actions → Create Resource
-   - Resource Name: `books`
-   - Resource Path: `/books`
-   - Enable CORS: ✓
+### **API Design Strategy**
 
-   ![Create Books Resource](screenshots/03-create-books-resource.png)
+Following ADR-005 RESTful architecture approach:
 
-2. **Create Methods**
+| API Resource      | HTTP Methods      | Lambda Integration         | Purpose                    |
+| ----------------- | ----------------- | -------------------------- | -------------------------- |
+| **`/books`**      | GET, POST         | `cloudshelf-book-catalog`  | Book inventory operations  |
+| **`/books/{id}`** | GET, PUT, DELETE  | `cloudshelf-book-catalog`  | Individual book operations |
+| **`/cart`**       | GET, POST, DELETE | `cloudshelf-shopping-cart` | Shopping cart operations   |
+| **`/cart/items`** | POST, PUT, DELETE | `cloudshelf-shopping-cart` | Cart item management       |
 
-   - Select `/books` resource
-   - Actions → Create Method → GET
-   - Integration Type: **Lambda Function**
-   - Lambda Region: `us-east-1` (your region)
-   - Lambda Function: `cloudshelf-book-catalog`
-   - Use Lambda Proxy integration: ✓
+### **Integration Patterns**
 
-   ![Create GET Method for Books](screenshots/04-create-books-get-method.png)
+| Pattern                     | Configuration           | Rationale                            |
+| --------------------------- | ----------------------- | ------------------------------------ |
+| **Lambda Proxy**            | Enabled for all methods | Simplified integration, full control |
+| **CORS**                    | Enabled for web clients | Browser-based frontend support       |
+| **Request Validation**      | JSON schema validation  | Input validation at API layer        |
+| **Response Transformation** | Standard error format   | Consistent error handling            |
 
-3. **Repeat for Additional Methods**
+---
 
-   - POST, PUT, DELETE methods
-   - All pointing to same Lambda function
+## 🚀 Implementation Guide
 
-   ![Books Resource with All Methods](screenshots/05-books-all-methods.png)
+### **Step 1: Create REST API**
 
-4. **Create Path Parameter Resource**
+Create the main API Gateway instance.
 
-   - Select `/books` resource
-   - Actions → Create Resource
-   - Resource Name: `book`
-   - Resource Path: `{id}`
-   - Create GET, PUT, DELETE methods
+**Configuration:**
 
-   ![Books ID Resource](screenshots/06-books-id-resource.png)
+- **API Type**: REST API (full feature support)
+- **API Name**: `cloudshelf-api`
+- **Description**: `CloudShelf Online Bookstore API`
+- **Endpoint Type**: Regional
 
-#### Shopping Cart Resource (`/cart`)
+![API Gateway Create API](API-Gateway-Create-API-Step1.png)
 
-1. **Create Resource**
+---
 
-   - Select root resource `/`
-   - Actions → Create Resource
-   - Resource Name: `cart`
-   - Resource Path: `/cart`
+### **Step 2: Create Book Catalog Resources**
 
-   ![Create Cart Resource](screenshots/07-create-cart-resource.png)
+Set up the books API endpoints and methods.
+
+**Resource Configuration:**
+
+- **Resource Name**: `books`
+- **Resource Path**: `/books`
+- **Enable CORS**: Yes
+- **Methods**: GET, POST
+
+![Create Books Resource](API-Gateway-Books-Resource-Step2.png)
+
+---
+
+### **Step 3: Configure Lambda Integration**
+
+Connect API methods to Lambda functions.
+
+**Integration Configuration:**
+
+- **Integration Type**: Lambda Function
+- **Lambda Region**: Your AWS region
+- **Lambda Function**: `cloudshelf-book-catalog`
+- **Use Lambda Proxy**: Enabled
+
+![Lambda Integration Setup](API-Gateway-Lambda-Integration-Step3.png)
+
+---
+
+### **Step 4: Create Shopping Cart Resources**
+
+Set up the cart API endpoints and methods.
+
+**Resource Configuration:**
+
+- **Resource Name**: `cart`
+- **Resource Path**: `/cart`
+- **Enable CORS**: Yes
+- **Methods**: GET, POST, DELETE
+
+![Create Cart Resource](API-Gateway-Cart-Resource-Step4.png)
+
+---
+
+### **Step 5: Deploy API**
+
+Create a deployment stage for the API.
+
+**Deployment Configuration:**
+
+- **Stage Name**: `dev`, `staging`, or `prod`
+- **Description**: Environment-specific deployment
+- **Enable CloudWatch Logs**: Yes
+- **Enable X-Ray Tracing**: Yes (optional)
+
+![API Gateway Deployment](API-Gateway-Deploy-Step5.png)
 
 2. **Create User Path Parameter**
 
@@ -230,17 +280,85 @@ graph TD
 - `DELETE /cart/{userId}/items/{itemId}` - Remove item
 - `DELETE /cart/{userId}` - Clear cart
 
-## DevOps Implementation Notes
+---
 
-The **DevOps Engineer** will handle:
+## 🔧 Best Practices & Optimization
 
-- Infrastructure as Code (CloudFormation/CDK) templates
-- Automated deployment pipelines
-- Environment-specific configurations
-- Monitoring and alerting setup
+<details>
+<summary><strong>📋 API Gateway Configuration Best Practices</strong></summary>
 
-## Related Documentation
+### Performance Optimization
 
-- [Lambda Deployment JARs](../../../src/lambda/README.md) - Ready-to-deploy Lambda functions
-- [Integration Patterns](../integration-patterns.md) - API design patterns and standards
-- [Development Guidelines](../development-guidelines.md) - Team responsibilities and workflows
+- **Enable Caching**: Configure response caching for read-heavy endpoints
+- **Request Validation**: Implement model-based request validation to reduce Lambda invocations
+- **Throttling**: Set appropriate throttling limits per endpoint to prevent abuse
+- **Binary Media Types**: Configure binary media types for file uploads/downloads
+
+### Security Best Practices
+
+- **CORS Configuration**: Properly configure CORS for web applications
+- **API Keys**: Implement API key authentication for partner integrations
+- **Usage Plans**: Create usage plans with quotas and throttling
+- **Request Signing**: Consider AWS SigV4 for server-to-server communication
+
+### Monitoring & Observability
+
+- **CloudWatch Metrics**: Monitor request count, latency, and error rates
+- **X-Ray Tracing**: Enable distributed tracing for request flow analysis
+- **Custom Metrics**: Implement business-specific metrics tracking
+- **Alarm Configuration**: Set up CloudWatch alarms for critical thresholds
+
+</details>
+
+<details>
+<summary><strong>🚀 Deployment & Environment Management</strong></summary>
+
+### Deployment Strategies
+
+- **Stage-based Deployment**: Use dev, staging, and production stages
+- **Canary Deployments**: Implement gradual traffic shifting for updates
+- **Blue-Green Deployment**: Use stage variables for zero-downtime deployments
+- **API Versioning**: Implement versioning strategy for backward compatibility
+
+### Environment Configuration
+
+- **Stage Variables**: Use stage variables for environment-specific configurations
+- **Lambda Aliases**: Connect to specific Lambda function versions/aliases
+- **Parameter Store**: Store environment-specific configurations in Systems Manager
+- **Secrets Manager**: Secure storage for API keys and database credentials
+
+</details>
+
+<details>
+<summary><strong>💡 Troubleshooting & Maintenance</strong></summary>
+
+### Common Issues & Solutions
+
+- **Cold Start Latency**: Implement connection pooling and provisioned concurrency
+- **Timeout Issues**: Optimize Lambda execution time and API Gateway timeout settings
+- **CORS Errors**: Verify CORS configuration for cross-origin requests
+- **Authorization Failures**: Check IAM roles and resource-based policies
+
+### Maintenance Tasks
+
+- **Log Monitoring**: Regularly review CloudWatch logs for error patterns
+- **Performance Review**: Analyze latency and throughput metrics monthly
+- **Security Audits**: Review access patterns and update security configurations
+- **Cost Optimization**: Monitor usage patterns and optimize pricing tiers
+
+</details>
+
+---
+
+## 📚 Additional Resources
+
+- [📖 CloudShelf Architecture Decisions](../cloudshelf-architecture-decisions.md) - Complete ADR documentation
+- [🔧 Lambda Setup Guide](../lambda/cloudshelf-lambda-setup.md) - Lambda function configuration
+- [🗄️ DynamoDB Setup Guide](../dynamodb/cloudshelf-dynamodb-setup.md) - Cart data store setup
+- [🔒 Security Architecture](../security/cloudshelf-security-architecture.md) - Security best practices
+- [📊 Monitoring Setup](../monitoring/cloudshelf-monitoring-observability.md) - Observability configuration
+
+---
+
+_📋 **Documentation Status**: Complete | ✅ **Client Ready**: Yes | 🔄 **Last Updated**: Implementation Phase_  
+_🏗️ **Architecture Phase**: Core Services | 👥 **Team**: Solutions Architecture | 📋 **Next**: CloudFront Distribution_

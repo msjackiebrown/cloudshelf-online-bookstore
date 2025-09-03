@@ -20,7 +20,7 @@ Based on **ADR-002**, PostgreSQL RDS provides the book catalog storage layer for
 ### **🗃️ RDS Architecture Design**
 
 ![CloudShelf RDS Architecture](RDS-PostgreSQL-Architecture-Diagram.png)
-*PostgreSQL RDS integration with VPC, Lambda functions, and security configurations*
+_PostgreSQL RDS integration with VPC, Lambda functions, and security configurations_
 
 ---
 
@@ -90,6 +90,7 @@ RDS Instance (cloudshelf-book-catalog-db)
 Access AWS RDS service to begin database provisioning.
 
 **Configuration:**
+
 - Use AWS Management Console for initial setup
 - Ensure proper IAM permissions for RDS operations
 
@@ -102,6 +103,7 @@ Access AWS RDS service to begin database provisioning.
 Select PostgreSQL engine based on architectural requirements.
 
 **Configuration:**
+
 - **Database creation method**: Standard create (full architectural control)
 - **Engine type**: PostgreSQL
 - **Engine version**: Latest stable (15.x)
@@ -116,6 +118,7 @@ Select PostgreSQL engine based on architectural requirements.
 Define instance specifications and storage configuration.
 
 **Configuration:**
+
 - **DB instance identifier**: `cloudshelf-book-catalog-db`
 - **Master username**: `cloudshelf_admin`
 - **Instance class**: Environment-appropriate sizing
@@ -131,6 +134,7 @@ Define instance specifications and storage configuration.
 Configure VPC integration and security group associations.
 
 **Network Configuration:**
+
 - **VPC**: CloudShelf VPC (private deployment)
 - **DB subnet group**: `cloudshelf-db-subnet-group`
 - **Public access**: Disabled (security requirement)
@@ -138,6 +142,7 @@ Configure VPC integration and security group associations.
 - **Database port**: 5432 (PostgreSQL standard)
 
 **Security Configuration:**
+
 - **Encryption at rest**: Enabled
 - **Backup retention**: Environment-appropriate
 - **Delete protection**: Enabled for production
@@ -294,5 +299,5 @@ _Part of the CloudShelf Solutions Architecture documentation_
 
 **External Reference**: [AWS RDS Documentation](https://docs.aws.amazon.com/rds/)
 
-*Part of the CloudShelf Solutions Architecture documentation*  
-*Last updated: September 3, 2025*
+_Part of the CloudShelf Solutions Architecture documentation_  
+_Last updated: September 3, 2025_

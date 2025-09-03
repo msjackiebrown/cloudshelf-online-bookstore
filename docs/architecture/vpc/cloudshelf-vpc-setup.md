@@ -1,8 +1,8 @@
-# 🌐 VPC and Security Groups Setup
+# 🌐 CloudShelf VPC Network Setup
 
 > Implementation guide for VPC networking foundation following ADR-001 architecture strategy
 
-This guide provides setup instructions for AWS VPC and security groups, implementing the network-first infrastructure decisions documented in [ADR-001: VPC Creation Timing and Strategy](../cloudshelf-architecture-decisions.md#adr-001-vpc-creation-timing-and-strategy).
+This guide provides setup instructions for AWS VPC networking infrastructure, implementing the network-first infrastructure decisions documented in [ADR-001: VPC Creation Timing and Strategy](../cloudshelf-architecture-decisions.md#adr-001-vpc-creation-timing-and-strategy).
 
 ---
 
@@ -12,7 +12,7 @@ Based on **ADR-001**, VPC provides the network foundation for CloudShelf with:
 
 - **🔒 Network Isolation** - Secure, private network environment
 - **🏗️ Multi-Tier Architecture** - Public and private subnet separation
-- **⚡ Security Foundation** - Security groups for access control
+- **⚡ Connectivity Foundation** - Internet gateway and routing infrastructure
 - **📈 Scalable Design** - Foundation for all application resources
 
 **Architecture Decision Reference**: See [ADR-001](../cloudshelf-architecture-decisions.md#adr-001) for the complete rationale behind VPC-first approach.
@@ -20,22 +20,22 @@ Based on **ADR-001**, VPC provides the network foundation for CloudShelf with:
 ### **🏗️ VPC Architecture Design**
 
 ![CloudShelf VPC Architecture](CloudShelf-VPC-Architecture-Diagram.png)
-_Complete VPC architecture showing subnets, gateways, and security group relationships_
+_Complete VPC architecture showing subnets, gateways, and routing relationships_
 
 ---
 
-## 🔐 Architecture Strategy
+## 🏗️ Architecture Strategy
 
 ### **📋 Network Design Pattern**
 
 Following ADR-001 dependency management approach:
 
-| Layer                  | Component       | Purpose                   | CIDR          |
-| ---------------------- | --------------- | ------------------------- | ------------- |
-| **Network Foundation** | VPC             | Network isolation         | `10.0.0.0/16` |
-| **Public Tier**        | Public Subnets  | Internet-facing resources | `10.0.1.0/24` |
-| **Private Tier**       | Private Subnets | Backend resources         | `10.0.2.0/24` |
-| **Security**           | Security Groups | Access control rules      | N/A           |
+| Layer                  | Component        | Purpose                   | CIDR          |
+| ---------------------- | ---------------- | ------------------------- | ------------- |
+| **Network Foundation** | VPC              | Network isolation         | `10.0.0.0/16` |
+| **Public Tier**        | Public Subnets   | Internet-facing resources | `10.0.1.0/24` |
+| **Private Tier**       | Private Subnets  | Backend resources         | `10.0.2.0/24` |
+| **Connectivity**       | Internet Gateway | External network access   | N/A           |
 
 ### **🏗️ Dependency Order**
 
@@ -43,7 +43,7 @@ Per ADR-001, infrastructure creation follows this sequence:
 
 1. **VPC and Subnets** (Network Foundation)
 2. **Internet Gateway and Routing** (Connectivity)
-3. **Security Groups** (Access Control)
+3. **Security Configuration** (Access Control - see [IAM Security Setup](../security/cloudshelf-iam-security-setup.md))
 4. **Application Resources** (RDS, Lambda, etc.)
 
 ---
@@ -101,17 +101,19 @@ Create a private subnet for backend resources.
 
 Set up routing to direct traffic properly between subnets and the internet.
 
-**Public Route Table:**
+**Public Route Table Configuration:**
 
 - Route `0.0.0.0/0` → Internet Gateway
 - Associate with public subnet
 
-**Private Route Table:**
+![Public Route Table Configuration](Public-Route-Table-Configuration-Step5.png)
+
+**Private Route Table Configuration:**
 
 - Keep default routes (no internet access)
 - Associate with private subnet
 
-![Route Tables Configuration](Route-Tables-Configuration-Step5.png)
+![Private Route Table Configuration](Private-Route-Table-Configuration-Step5.png)
 
 ---
 
@@ -129,127 +131,81 @@ Set up routing to direct traffic properly between subnets and the internet.
 
 ## 🔒 Security Groups Configuration
 
-Security groups act as virtual firewalls to control inbound and outbound traffic for your AWS resources. Think of them as instance-level firewalls that control traffic at the network interface level.
+> **⚠️ Important**: Security groups are covered in detail in the [IAM Security Setup Guide](../security/cloudshelf-iam-security-setup.md#step-6-cross-service-security).
 
-![Security Groups Configuration](Security-Groups-Configuration.png)
+Security groups provide virtual firewall rules for your VPC resources. After completing the VPC setup above, proceed to the **IAM Security Setup Guide** for:
 
----
+- **Lambda Security Group** configuration
+- **RDS Security Group** access rules
+- **Cross-service security** policies
+- **Least privilege** access implementation
 
-### **Step 7: Lambda Security Group**
+This separation ensures security configurations are centralized and properly managed as part of the overall security architecture.
 
-**Purpose**: Controls network access for Lambda functions
-
-**Configuration:**
-
-1. Navigate to **EC2 Console** → **Security Groups**
-2. Click **Create Security Group**
-3. **Name**: `cloudshelf-lambda-sg`
-4. **Description**: `Security group for CloudShelf Lambda functions`
-5. **VPC**: Select your CloudShelf VPC
-
-**Rules:**
-
-| Direction | Type        | Protocol | Port Range | Source/Destination | Description                  |
-| --------- | ----------- | -------- | ---------- | ------------------ | ---------------------------- |
-| Outbound  | All Traffic | All      | All        | 0.0.0.0/0          | Allow all outbound (default) |
-| Inbound   | -           | -        | -          | -                  | No inbound rules needed      |
-
-> 💡 **Why no inbound rules?** Lambda functions are invoked by AWS services (API Gateway, S3, etc.) through AWS's internal network, not through your VPC.
+**Next Step**: Complete the [🔐 IAM Security Setup Guide](../security/cloudshelf-iam-security-setup.md) for comprehensive security group configuration.
 
 ---
 
-### **Step 8: RDS Security Group**
-
-**Purpose**: Controls database access for PostgreSQL RDS instance
-
-**Configuration:**
-
-1. Click **Create Security Group**
-2. **Name**: `cloudshelf-rds-sg`
-3. **Description**: `Security group for CloudShelf PostgreSQL database`
-4. **VPC**: Select your CloudShelf VPC
-
-**Rules:**
-
-| Direction | Type        | Protocol | Port Range | Source/Destination   | Description                  |
-| --------- | ----------- | -------- | ---------- | -------------------- | ---------------------------- |
-| Inbound   | PostgreSQL  | TCP      | 5432       | cloudshelf-lambda-sg | Database access from Lambda  |
-| Outbound  | All Traffic | All      | All        | 0.0.0.0/0            | Allow all outbound (default) |
-
-> 🔒 **Security Best Practice**: This configuration allows access only from the Lambda security group, not from all IPs. This ensures only Lambda functions can access the database.
-
----
-
-### **Step 9: ALB Security Group (Optional)**
-
-**Purpose**: Controls traffic for Application Load Balancer (if using one later)
-
-**Configuration:**
-
-1. Click **Create Security Group**
-2. **Name**: `cloudshelf-alb-sg`
-3. **Description**: `Security group for CloudShelf Application Load Balancer`
-4. **VPC**: Select your CloudShelf VPC
-
-**Rules:**
-
-| Direction | Type        | Protocol | Port Range | Source/Destination | Description               |
-| --------- | ----------- | -------- | ---------- | ------------------ | ------------------------- |
-| Inbound   | HTTP        | TCP      | 80         | 0.0.0.0/0          | Allow HTTP from internet  |
-| Inbound   | HTTPS       | TCP      | 443        | 0.0.0.0/0          | Allow HTTPS from internet |
-| Outbound  | All Traffic | All      | All        | 0.0.0.0/0          | Allow all outbound        |
-
----
-
-## 📚 Best Practices & Troubleshooting
+## � Best Practices & Troubleshooting
 
 <details>
-<summary><strong>🔒 Security Group Best Practices</strong></summary>
+<summary><strong>🌐 VPC Networking Best Practices</strong></summary>
 
-### ✅ **Do's**
+### Network Design
 
-- **Use descriptive names** - Include project name and resource type
-- **Reference other security groups** - Use security group IDs as sources instead of IP ranges
-- **Apply least privilege** - Only open ports that are absolutely necessary
-- **Document rules** - Add meaningful descriptions to each rule
-- **Use separate groups** - Create different security groups for different tiers/services
+- **Use consistent CIDR blocks** - Plan IP address ranges to avoid conflicts
+- **Multi-AZ deployment** - Distribute subnets across availability zones for high availability
+- **Separate public/private tiers** - Keep backend resources in private subnets
+- **Logical naming conventions** - Use descriptive names with project prefix
 
-### ❌ **Don'ts**
+### Cost Optimization
 
-- **Don't use 0.0.0.0/0 for SSH** - Use your specific IP address instead
-- **Don't open unnecessary ports** - Each open port is a potential security risk
-- **Don't mix environments** - Keep dev, staging, and prod security groups separate
-- **Don't hardcode IPs** - Use security group references for internal communication
+- **Skip NAT Gateway for development** - Use public subnets or NAT instances instead
+- **Right-size subnets** - Don't over-provision IP addresses you won't use
+- **Monitor data transfer** - Track inter-AZ and internet gateway costs
+
+### Scalability Planning
+
+- **Reserve IP space** - Use larger CIDR blocks than immediately needed
+- **Plan for growth** - Consider future subnet requirements
+- **Document network topology** - Maintain clear architecture diagrams
 
 </details>
 
 <details>
-<summary><strong>🔧 Troubleshooting Common Issues</strong></summary>
+<summary><strong>🔧 VPC Troubleshooting</strong></summary>
 
-### **1. Lambda can't reach RDS**
+### Common Networking Issues
 
-- ✅ Check: Lambda security group is allowed in RDS security group
-- ✅ Check: Both resources are in the same VPC
-- ✅ Check: Lambda is deployed in private subnets
+**1. Resources can't communicate within VPC**
 
-### **2. Application Load Balancer not accessible**
+- ✅ Check: Resources are in the same VPC
+- ✅ Check: Route tables are properly configured
+- ✅ Check: NACLs allow traffic (default allows all)
 
-- ✅ Check: Ports 80/443 are open to 0.0.0.0/0
-- ✅ Check: ALB is in public subnets
-- ✅ Check: Internet Gateway is attached
+**2. No internet access from public subnet**
 
-### **3. Can't SSH to EC2** (if using)
+- ✅ Check: Internet Gateway is attached to VPC
+- ✅ Check: Route table has 0.0.0.0/0 → Internet Gateway route
+- ✅ Check: Public IP or Elastic IP is assigned
 
-- ✅ Check: Port 22 is open to your IP address
-- ✅ Check: Correct key pair is assigned
-- ✅ Check: Instance is in public subnet (or accessible via bastion)
+**3. Private subnet can't reach internet (if needed)**
 
-### **Testing Connectivity**
+- ✅ Check: NAT Gateway is deployed in public subnet
+- ✅ Check: Private route table routes 0.0.0.0/0 → NAT Gateway
+- ✅ Check: NAT Gateway has Elastic IP assigned
+
+### Testing VPC Connectivity
 
 ```bash
-# Test database connectivity from Lambda (use Lambda console test)
-# Test HTTP/HTTPS access to ALB
-curl -I http://your-alb-dns-name.region.elb.amazonaws.com
+# Test internet connectivity from public subnet
+curl -I http://aws.amazon.com
+
+# Test VPC DNS resolution
+nslookup amazon.com
+
+# Check route tables
+aws ec2 describe-route-tables --filters "Name=vpc-id,Values=vpc-xxxxxx"
 ```
 
 </details>
@@ -260,7 +216,8 @@ curl -I http://your-alb-dns-name.region.elb.amazonaws.com
 
 - 🏛️ [**ADR-001: VPC Creation Strategy**](../cloudshelf-architecture-decisions.md#adr-001) - Complete VPC-first architecture rationale
 - 🏛️ [**All Architecture Decisions**](../cloudshelf-architecture-decisions.md) - Context for network architecture choices
-- 🗃️ [**RDS Setup**](../rds/cloudshelf-rds-setup.md) - Database deployment requiring VPC foundation
+- � [**IAM Security Setup**](../security/cloudshelf-iam-security-setup.md) - Security groups and access control configuration
+- �🗃️ [**RDS Setup**](../rds/cloudshelf-rds-setup.md) - Database deployment requiring VPC foundation
 - 🗂️ [**DynamoDB Setup**](../dynamodb/cloudshelf-dynamodb-setup.md) - NoSQL service integration
 - ⚡ [**Lambda Setup**](../lambda/cloudshelf-lambda-setup.md) - Compute layer requiring VPC connectivity
 
@@ -269,46 +226,43 @@ curl -I http://your-alb-dns-name.region.elb.amazonaws.com
 ## 📋 Quick Reference
 
 <details>
-<summary><strong>📊 Configuration Values</strong></summary>
+<summary><strong>📊 VPC Configuration Values</strong></summary>
 
 ### **Network Configuration**
 
-- **VPC CIDR**: `10.0.0.0/16`
-- **Public Subnet CIDR**: `10.0.1.0/24`
-- **Private Subnet CIDR**: `10.0.2.0/24`
-- **Database Port**: `5432` (PostgreSQL)
+- **VPC CIDR**: `10.0.0.0/16` (65,536 IP addresses)
+- **Public Subnet CIDR**: `10.0.1.0/24` (256 IP addresses)
+- **Private Subnet CIDR**: `10.0.2.0/24` (256 IP addresses)
+- **Availability Zones**: Use different AZs for high availability
 
-### **Security Group Names**
+### **Resource Naming Convention**
 
-- **Lambda SG**: `cloudshelf-lambda-sg`
-- **RDS SG**: `cloudshelf-rds-sg`
-- **ALB SG**: `cloudshelf-alb-sg` (optional)
+- **VPC**: `cloudshelf-vpc`
+- **Public Subnet**: `cloudshelf-public-subnet-1a`
+- **Private Subnet**: `cloudshelf-private-subnet-1b`
+- **Internet Gateway**: `cloudshelf-igw`
+- **Route Tables**: `cloudshelf-public-rt`, `cloudshelf-private-rt`
 
-### **Port Reference**
-
-| Service    | Port | Protocol | Purpose                   |
-| ---------- | ---- | -------- | ------------------------- |
-| PostgreSQL | 5432 | TCP      | Database access           |
-| HTTP       | 80   | TCP      | Web traffic               |
-| HTTPS      | 443  | TCP      | Secure web traffic        |
-| SSH        | 22   | TCP      | Remote access (if needed) |
-
-### **Best Practices Checklist**
+### **VPC Best Practices Checklist**
 
 - ✅ Use different Availability Zones for high availability
-- ✅ Keep databases in private subnets
-- ✅ Use security groups instead of NACLs for simplicity
-- ✅ Follow principle of least privilege for security group rules
-- ✅ Reference security groups by ID/name, not IP addresses
+- ✅ Keep databases and backend resources in private subnets
+- ✅ Enable DNS hostnames and DNS resolution
 - ✅ Use descriptive names with project prefix
-- ⚠️ Avoid NAT Gateway for cost savings in development
-- 🔒 Never open SSH (port 22) to 0.0.0.0/0 in production
+- ✅ Plan CIDR blocks to avoid future conflicts
+- ✅ Document network architecture and dependencies
+- ⚠️ Avoid NAT Gateway for cost savings in development environments
+
+### **Next Steps After VPC Setup**
+
+1. **Security Configuration**: Complete [IAM Security Setup](../security/cloudshelf-iam-security-setup.md) for security groups
+2. **Database Setup**: Deploy [RDS PostgreSQL](../rds/cloudshelf-rds-setup.md) in private subnet
+3. **Application Layer**: Configure [Lambda functions](../lambda/cloudshelf-lambda-setup.md) with VPC access
+4. **Storage Layer**: Set up [DynamoDB](../dynamodb/cloudshelf-dynamodb-setup.md) integration
 
 </details>
 
 ---
 
-**External Reference**: [AWS VPC Documentation](https://docs.aws.amazon.com/vpc/latest/userguide/what-is-amazon-vpc.html)
-
-_Part of the CloudShelf Solutions Architecture documentation_  
-_Last updated: September 3, 2025_
+_📋 **Documentation Status**: Complete | ✅ **Client Ready**: Yes | 🔄 **Last Updated**: Implementation Phase_  
+_🏗️ **Architecture Phase**: Network Foundation | 👥 **Team**: Solutions Architecture | 📋 **Next**: IAM Security Setup_
