@@ -162,14 +162,13 @@ CloudShelf is a **scalable e-commerce platform** that demonstrates AWS Solutions
 
 ### Prerequisites
 
-```bash
-# Required tools
+**Required tools:**
+
 - AWS Account with appropriate permissions
 - AWS CLI configured
 - Git for version control
 - Java 21 JDK (for Lambda development)
 - Maven 3.8+ (for build management)
-```
 
 ### Quick Setup
 
@@ -182,6 +181,8 @@ CloudShelf is a **scalable e-commerce platform** that demonstrates AWS Solutions
 
 2. **📖 Review Documentation**
 
+   **macOS/Linux:**
+
    ```bash
    # Start with business context
    open docs/requirements/cloudshelf-business-requirements.md
@@ -190,7 +191,29 @@ CloudShelf is a **scalable e-commerce platform** that demonstrates AWS Solutions
    open docs/architecture/cloudshelf-system-architecture.md
    ```
 
+   **Windows PowerShell:**
+
+   ```powershell
+   # Start with business context
+   Start-Process docs/requirements/cloudshelf-business-requirements.md
+
+   # Then review technical architecture
+   Start-Process docs/architecture/cloudshelf-system-architecture.md
+   ```
+
+   **Windows Command Prompt:**
+
+   ```cmd
+   # Start with business context
+   start docs/requirements/cloudshelf-business-requirements.md
+
+   # Then review technical architecture
+   start docs/architecture/cloudshelf-system-architecture.md
+   ```
+
 3. **🏗️ Deploy Infrastructure (Current Phase 1)**
+
+   **macOS/Linux:**
 
    ```bash
    # Follow setup guides in order:
@@ -207,6 +230,44 @@ CloudShelf is a **scalable e-commerce platform** that demonstrates AWS Solutions
 
    # 4. Lambda Functions
    open docs/architecture/lambda/cloudshelf-lambda-setup.md
+   ```
+
+   **Windows PowerShell:**
+
+   ```powershell
+   # Follow setup guides in order:
+   # 1. Frontend Hosting
+   Start-Process docs/architecture/s3/cloudshelf-s3-setup.md
+   Start-Process docs/architecture/cloudfront/cloudshelf-cloudfront-setup.md
+
+   # 2. API Gateway Setup
+   Start-Process docs/architecture/apigateway/cloudshelf-apigateway-setup.md
+
+   # 3. Database Setup (RDS + DynamoDB)
+   Start-Process docs/architecture/rds/cloudshelf-rds-setup.md
+   Start-Process docs/architecture/dynamodb/cloudshelf-dynamodb-setup.md
+
+   # 4. Lambda Functions
+   Start-Process docs/architecture/lambda/cloudshelf-lambda-setup.md
+   ```
+
+   **Windows Command Prompt:**
+
+   ```cmd
+   REM Follow setup guides in order:
+   REM 1. Frontend Hosting
+   start docs/architecture/s3/cloudshelf-s3-setup.md
+   start docs/architecture/cloudfront/cloudshelf-cloudfront-setup.md
+
+   REM 2. API Gateway Setup
+   start docs/architecture/apigateway/cloudshelf-apigateway-setup.md
+
+   REM 3. Database Setup (RDS + DynamoDB)
+   start docs/architecture/rds/cloudshelf-rds-setup.md
+   start docs/architecture/dynamodb/cloudshelf-dynamodb-setup.md
+
+   REM 4. Lambda Functions
+   start docs/architecture/lambda/cloudshelf-lambda-setup.md
    ```
 
 ---
