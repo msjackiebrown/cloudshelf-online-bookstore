@@ -31,6 +31,16 @@ CloudShelf aims to capture 2% of the $2.3B online book market within 3 years by 
 
 ## 🎯 Business Objectives
 
+### **Critical Business Drivers → Technical Implications**
+
+| **Business Driver**  | **Target**                | **Technical Requirement**                               | **Architecture Impact**                    |
+| -------------------- | ------------------------- | ------------------------------------------------------- | ------------------------------------------ |
+| **Revenue Growth**   | $2M → $46M (23x growth)   | **Auto-scaling architecture, zero manual intervention** | Serverless compute, elastic infrastructure |
+| **User Scaling**     | 10,000 → 85,000 users     | **Handle 50,000 concurrent users**                      | Load balancing, horizontal scaling         |
+| **Global Expansion** | 4 countries, <2s globally | **CDN required for global performance**                 | CloudFront distribution, edge locations    |
+| **Cost Control**     | <0.5% of revenue          | **Pay-per-use pricing, serverless architecture**        | Lambda, API Gateway, managed services      |
+| **Enterprise Sales** | B2B compliance needs      | **PCI DSS, GDPR, SOC 2 compliance**                     | Security by design, audit trails           |
+
 ### **Revenue Objectives**
 
 | **Year** | **Revenue Target** | **Active Customers** | **Avg Order Value** | **Conversion Rate** |
