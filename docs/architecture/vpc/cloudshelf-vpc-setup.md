@@ -129,19 +129,6 @@ Set up routing to direct traffic properly between subnets and the internet.
 
 ---
 
-## 🔒 Security Groups Configuration
-
-> **⚠️ Important**: Security groups are covered in detail in the [IAM Security Setup Guide](../security/cloudshelf-iam-security-setup.md#step-6-cross-service-security).
-
-Security groups provide virtual firewall rules for your VPC resources. After completing the VPC setup above, proceed to the **IAM Security Setup Guide** for:
-
-- **Lambda Security Group** configuration
-- **RDS Security Group** access rules
-- **Cross-service security** policies
-- **Least privilege** access implementation
-
-This separation ensures security configurations are centralized and properly managed as part of the overall security architecture.
-
 **Next Step**: Complete the [🔐 IAM Security Setup Guide](../security/cloudshelf-iam-security-setup.md) for comprehensive security group configuration.
 
 ---
