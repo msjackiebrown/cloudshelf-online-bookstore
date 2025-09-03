@@ -2,7 +2,7 @@
 
 ## Overview
 
-This template provides the foundational structure for the Book Catalog microservice. The **Developer** team will implement the business logic based on these architectural specifications.
+This template provides the foundational structure for the Book Catalog microservice. This demonstrates the **Solutions Architect** approach to creating deployable templates that can be extended with full business logic.
 
 ## Service Specifications
 
@@ -91,9 +91,9 @@ public interface BookRepository {
 }
 ```
 
-## Next Steps for Development Team
+## Implementation Roadmap
 
-1. **Developer Tasks**:
+1. **Business Logic Implementation** (Developer Role):
 
    - Implement all handler, service, and repository classes
    - Add comprehensive unit and integration tests

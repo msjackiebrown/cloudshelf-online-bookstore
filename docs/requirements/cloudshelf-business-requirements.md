@@ -18,8 +18,8 @@ CloudShelf aims to capture 2% of the $2.3B online book market within 3 years by 
 
 - **Industry**: Online retail (books and e-books)
 - **Market**: English-speaking markets (US, UK, Canada, Australia)
-- **Stage**: Startup with Series A funding ($5M raised)
-- **Team**: 12 employees (3 developers, 2 designers, 4 business, 2 operations, 1 executive)
+- **Stage**: Solo founder project / Personal portfolio demonstration
+- **Team**: 1 person with multiple roles (Solutions Architect + Developer + DevOps Engineer)
 
 ### **Market Opportunity**
 
@@ -168,9 +168,12 @@ CloudShelf aims to capture 2% of the $2.3B online book market within 3 years by 
 
 ### **Staffing Constraints**
 
-- **Development Team**: 3 developers (1 senior, 2 mid-level)
-- **Operations**: 1 DevOps engineer (part-time initially)
-- **AWS Experience**: Limited (team will need training/support)
+- **Architecture & Development**: 1 person fulfilling multiple roles:
+  - **Solutions Architect**: System design, technology selection, documentation
+  - **Developer**: Implementation of Lambda functions, API development
+  - **DevOps Engineer**: Infrastructure deployment, monitoring, CI/CD
+- **AWS Experience**: Strong - demonstrating end-to-end architecture competency
+- **Approach**: Lean architecture with comprehensive documentation for knowledge transfer
 
 ---
 
