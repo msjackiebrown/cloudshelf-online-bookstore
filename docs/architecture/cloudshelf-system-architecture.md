@@ -6,39 +6,7 @@ CloudShelf is a serverless online bookstore built on AWS, following microservice
 
 ## High-Level Architecture
 
-```
-                         ┌─────────────────┐
-                         │     Users       │
-                         │  (Web Browsers) │
-                         └─────────┬───────┘
-                                   │
-                   ┌───────────────▼───────────────┐
-                   │         CloudFront CDN        │
-                   │    (Global Edge Locations)    │
-                   └─────────┬─────────────────────┘
-                             │
-    ┌────────────────────────┼────────────────────────┐
-    │                        │                        │
-┌───▼────┐              ┌────▼────────────────────────▼─────┐
-│   S3   │              │           AWS Cloud              │
-│ Static │              │                                  │
-│Website │              │  ┌─────────────────────────────────────────────────────────────┐ │
-│Hosting │              │  │                 API Gateway                                 │ │
-└────────┘              │  │          (RESTful APIs with CORS, Auth, Rate Limiting)     │ │
-                        │  └─────────────┬─────────────────────────────┬─────────────────┘ │
-                        │                │                             │                   │
-                        │  ┌─────────────▼─────────────┐  ┌─────────────▼─────────────┐   │
-                        │  │     Book Catalog Service  │  │   Shopping Cart Service   │   │
-                        │  │      (Lambda + RDS)       │  │    (Lambda + DynamoDB)    │   │
-                        │  └─────────────┬─────────────┘  └─────────────┬─────────────┘   │
-                        │                │                             │                   │
-                        │  ┌─────────────▼─────────────┐  ┌─────────────▼─────────────┐   │
-                        │  │      PostgreSQL RDS       │  │        DynamoDB           │   │
-                        │  │     (Book Catalog)        │  │     (Shopping Carts)      │   │
-                        │  └───────────────────────────┘  └───────────────────────────┘   │
-                        │                                                                  │
-                        └──────────────────────────────────────────────────────────────────┘
-```
+![CloudShelf Architecture](cloudshelf-architecture-diagram.drawio)
 
 ## Service Breakdown
 
