@@ -25,123 +25,101 @@ IAM security provides the foundation for all CloudShelf services with:
 
 #### Book Catalog Lambda Role
 
-1. **Open IAM Console**
+**Configuration Requirements:**
 
-   - Sign in to AWS Management Console
-   - Navigate to IAM service
-   - Choose "Roles" from left navigation
-   - Click "Create role"
+- **Trusted entity**: AWS service (Lambda)
+- **Role name**: `cloudshelf-book-catalog-lambda-role`
+- **Description**: "Execution role for CloudShelf book catalog Lambda function"
 
-   ![IAM Create Role](screenshots/03-create-lambda-role.png)
+**Required Policies:**
 
-2. **Configure Lambda Role**
+- **AWSLambdaVPCAccessExecutionRole** - VPC access for Lambda
+- **CloudWatchLogsFullAccess** - Logging permissions
 
-   - **Trusted entity**: AWS service
-   - **Use case**: Lambda
-   - **Role name**: `cloudshelf-book-catalog-lambda-role`
-   - **Description**: "Execution role for CloudShelf book catalog Lambda function"
+**Custom RDS Policy:**
 
-   ![Lambda Role Configuration](screenshots/04-lambda-role-config.png)
-
-3. **Attach Base Policies**
-
-   - **AWSLambdaVPCAccessExecutionRole** - VPC access for Lambda
-   - **CloudWatchLogsFullAccess** - Logging permissions
-
-   ![Lambda Base Policies](screenshots/05-lambda-base-policies.png)
-
-4. **Create Custom RDS Policy**
-
-   ```json
-   {
-     "Version": "2012-10-17",
-     "Statement": [
-       {
-         "Effect": "Allow",
-         "Action": ["rds:DescribeDBInstances", "rds:DescribeDBClusters"],
-         "Resource": "*"
-       },
-       {
-         "Effect": "Allow",
-         "Action": ["rds-db:connect"],
-         "Resource": "arn:aws:rds-db:*:*:dbuser:cloudshelf-db/book_catalog_user"
-       }
-     ]
-   }
-   ```
-
-   ![RDS Access Policy](screenshots/06-rds-access-policy.png)
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": ["rds:DescribeDBInstances", "rds:DescribeDBClusters"],
+      "Resource": "*"
+    },
+    {
+      "Effect": "Allow",
+      "Action": ["rds-db:connect"],
+      "Resource": "arn:aws:rds-db:*:*:dbuser:cloudshelf-db/book_catalog_user"
+    }
+  ]
+}
+```
 
 #### Shopping Cart Lambda Role
 
-1. **Create Cart Lambda Role**
+**Configuration Requirements:**
 
-   - **Role name**: `cloudshelf-shopping-cart-lambda-role`
-   - **Description**: "Execution role for CloudShelf shopping cart Lambda function"
+- **Role name**: `cloudshelf-shopping-cart-lambda-role`
+- **Description**: "Execution role for CloudShelf shopping cart Lambda function"
 
-2. **Attach Policies**
+**Required Policies:**
 
-   - **AWSLambdaVPCAccessExecutionRole** - VPC access
-   - **CloudWatchLogsFullAccess** - Logging permissions
+- **AWSLambdaVPCAccessExecutionRole** - VPC access
+- **CloudWatchLogsFullAccess** - Logging permissions
 
-3. **Create Custom DynamoDB Policy**
+**Custom DynamoDB Policy:**
 
-   ```json
-   {
-     "Version": "2012-10-17",
-     "Statement": [
-       {
-         "Effect": "Allow",
-         "Action": [
-           "dynamodb:GetItem",
-           "dynamodb:PutItem",
-           "dynamodb:UpdateItem",
-           "dynamodb:DeleteItem",
-           "dynamodb:Query",
-           "dynamodb:Scan"
-         ],
-         "Resource": [
-           "arn:aws:dynamodb:*:*:table/cloudshelf-shopping-cart",
-           "arn:aws:dynamodb:*:*:table/cloudshelf-shopping-cart/index/*"
-         ]
-       }
-     ]
-   }
-   ```
-
-   ![DynamoDB Access Policy](screenshots/07-dynamodb-access-policy.png)
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "dynamodb:GetItem",
+        "dynamodb:PutItem",
+        "dynamodb:UpdateItem",
+        "dynamodb:DeleteItem",
+        "dynamodb:Query",
+        "dynamodb:Scan"
+      ],
+      "Resource": [
+        "arn:aws:dynamodb:*:*:table/cloudshelf-shopping-cart",
+        "arn:aws:dynamodb:*:*:table/cloudshelf-shopping-cart/index/*"
+      ]
+    }
+  ]
+}
+```
 
 ### Step 2: API Gateway IAM Roles
 
 #### API Gateway Execution Role
 
-1. **Create API Gateway Role**
+**Configuration Requirements:**
 
-   - **Trusted entity**: API Gateway
-   - **Role name**: `cloudshelf-apigateway-execution-role`
-   - **Description**: "Execution role for CloudShelf API Gateway"
+- **Trusted entity**: API Gateway
+- **Role name**: `cloudshelf-apigateway-execution-role`
+- **Description**: "Execution role for CloudShelf API Gateway"
 
-   ![API Gateway Role](screenshots/08-apigateway-role.png)
+**Lambda Invoke Policy:**
 
-2. **Attach Lambda Invoke Policy**
-
-   ```json
-   {
-     "Version": "2012-10-17",
-     "Statement": [
-       {
-         "Effect": "Allow",
-         "Action": ["lambda:InvokeFunction"],
-         "Resource": [
-           "arn:aws:lambda:*:*:function:cloudshelf-book-catalog",
-           "arn:aws:lambda:*:*:function:cloudshelf-shopping-cart"
-         ]
-       }
-     ]
-   }
-   ```
-
-   ![Lambda Invoke Policy](screenshots/09-lambda-invoke-policy.png)
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": ["lambda:InvokeFunction"],
+      "Resource": [
+        "arn:aws:lambda:*:*:function:cloudshelf-book-catalog",
+        "arn:aws:lambda:*:*:function:cloudshelf-shopping-cart"
+      ]
+    }
+  ]
+}
+```
 
 ### Step 3: RDS Security Configuration
 
