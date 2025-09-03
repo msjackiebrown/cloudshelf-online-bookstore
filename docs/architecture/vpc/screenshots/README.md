@@ -4,20 +4,45 @@ This directory contains screenshots for the CloudShelf VPC setup guide.
 
 ## Screenshot Requirements
 
-### 01-vpc-architecture-overview.png
+### CloudShelf-VPC-Architecture-Diagram.png
 
-- High-level diagram showing complete VPC architecture
-- Public and private subnets clearly labeled
-- Internet gateway, NAT gateway, route tables shown
-- Security groups and their relationships
-- Database and Lambda placement indicators
+- **Purpose**: Complete VPC architecture overview diagram
+- **Content**: High-level diagram showing complete VPC architecture
+- **Elements**: Public and private subnets clearly labeled, Internet gateway, NAT gateway, route tables shown, Security groups and their relationships, Database and Lambda placement indicators
 
-### 02-vpc-creation-console.png
+### Console Screenshots (In Parent Directory)
 
-- AWS VPC console "Create VPC" screen
-- VPC settings with CIDR block 10.0.0.0/16
-- Name tag: "cloudshelf-vpc"
-- Tenancy: Default
+The following console screenshots are located in the parent directory for inline use:
+
+- `VPC-Creation-Step1.png` - VPC creation console
+- `Internet-Gateway-Creation-Step2.png` - Internet Gateway setup
+- `Public-Subnet-Creation-Step3.png` - Public subnet configuration
+- `Private-Subnet-Creation-Step4.png` - Private subnet configuration
+- `Route-Tables-Configuration-Step5.png` - Route table setup
+- `Security-Groups-Configuration.png` - Security groups overview
+
+## Screenshot Guidelines
+
+### Architecture Diagram Standards
+
+- Use AWS official icons and colors
+- Include clear labeling and CIDR blocks
+- Show connection flows between components
+- Maintain consistent visual style
+
+### Console Screenshot Standards
+
+- Capture full browser window with AWS console
+- Ensure all relevant configuration details are visible
+- Use consistent zoom level for readability
+- Include AWS region information when visible
+
+---
+
+**Document Control:**
+
+- **Version**: 2.0 (Optimized Structure)
+- **Last Updated**: September 3, 2025
 - "Create VPC" button visible
 
 ### 03-internet-gateway-setup.png

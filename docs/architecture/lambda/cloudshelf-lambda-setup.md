@@ -2,7 +2,7 @@
 
 > Implementation guide for AWS Lambda functions following ADR-004 serverless architecture strategy
 
-This guide provides setup instructions for AWS Lambda functions, implementing the serverless architecture decisions documented in [ADR-004: Lambda Serverless Architecture Strategy](../architecture-decisions.md#adr-004-lambda-serverless-architecture-strategy).
+This guide provides setup instructions for AWS Lambda functions, implementing the serverless architecture decisions documented in [ADR-004: Lambda Serverless Architecture Strategy](../cloudshelf-architecture-decisions.md#adr-004-lambda-serverless-architecture-strategy).
 
 ---
 
@@ -15,7 +15,7 @@ Based on **ADR-004**, Lambda functions provide the compute layer for CloudShelf 
 - **👤 User Authentication** - Cognito integration for secure user management
 - **🌐 API Integration** - API Gateway for RESTful endpoints
 
-**Architecture Decision Reference**: See [ADR-004](../architecture-decisions.md#adr-004) for the complete rationale behind this serverless approach.
+**Architecture Decision Reference**: See [ADR-004](../cloudshelf-architecture-decisions.md#adr-004) for the complete rationale behind this serverless approach.
 
 ---
 
@@ -174,8 +174,8 @@ Following ADR-004 architecture strategy:
 
 ## � Related Architecture Documentation
 
-- 🏛️ [**ADR-004: Lambda Architecture Strategy**](../architecture-decisions.md#adr-004) - Complete serverless architecture rationale
-- 🏛️ [**All Architecture Decisions**](../architecture-decisions.md) - Context for Lambda integration choices
+- 🏛️ [**ADR-004: Lambda Architecture Strategy**](../cloudshelf-architecture-decisions.md#adr-004) - Complete serverless architecture rationale
+- 🏛️ [**All Architecture Decisions**](../cloudshelf-architecture-decisions.md) - Context for Lambda integration choices
 - 🌐 [**VPC Setup**](../vpc/setup-vpc-reference.md) - Network configuration for Lambda VPC access
 - 🗃️ [**RDS Setup**](../setup-rds.md) - Database connectivity requirements
 - 🗂️ [**DynamoDB Setup**](../dynamodb/setup-dynamodb.md) - NoSQL integration patterns

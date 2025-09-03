@@ -2,7 +2,7 @@
 
 > Implementation guide for DynamoDB shopping cart storage following ADR-003 architecture strategy
 
-This guide provides setup instructions for DynamoDB tables, implementing the NoSQL storage decisions documented in [ADR-003: DynamoDB for Shopping Cart Storage](../architecture-decisions.md#adr-003-dynamodb-for-shopping-cart-storage).
+This guide provides setup instructions for DynamoDB tables, implementing the NoSQL storage decisions documented in [ADR-003: DynamoDB for Shopping Cart Storage](../cloudshelf-architecture-decisions.md#adr-003-dynamodb-for-shopping-cart-storage).
 
 ---
 
@@ -15,7 +15,7 @@ Based on **ADR-003**, DynamoDB provides the shopping cart storage layer for Clou
 - **📈 Serverless Scaling** - Automatic scaling based on demand
 - **💰 Cost Efficiency** - Pay-per-request pricing model
 
-**Architecture Decision Reference**: See [ADR-003](../architecture-decisions.md#adr-003) for the complete rationale behind this NoSQL approach.
+**Architecture Decision Reference**: See [ADR-003](../cloudshelf-architecture-decisions.md#adr-003) for the complete rationale behind this NoSQL approach.
 
 ---
 
@@ -148,8 +148,8 @@ Following ADR-003 architecture strategy:
 
 ## 📚 Related Architecture Documentation
 
-- 🏛️ [**ADR-003: DynamoDB Strategy**](../architecture-decisions.md#adr-003) - Complete NoSQL architecture rationale
-- 🏛️ [**All Architecture Decisions**](../architecture-decisions.md) - Context for data storage choices
+- 🏛️ [**ADR-003: DynamoDB Strategy**](../cloudshelf-architecture-decisions.md#adr-003) - Complete NoSQL architecture rationale
+- 🏛️ [**All Architecture Decisions**](../cloudshelf-architecture-decisions.md) - Context for data storage choices
 - 🗃️ [**RDS Setup**](../setup-rds.md) - Relational database for catalog operations
 - ⚡ [**Lambda Setup**](../lambda/setup-lambda.md) - Compute layer integration
 

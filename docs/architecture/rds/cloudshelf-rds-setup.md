@@ -2,7 +2,7 @@
 
 > Implementation guide for RDS PostgreSQL database following ADR-002 architecture strategy
 
-This guide provides setup instructions for Amazon RDS PostgreSQL, implementing the relational database decisions documented in [ADR-002: RDS Database Engine Selection](../architecture-decisions.md#adr-002-rds-database-engine-selection).
+This guide provides setup instructions for Amazon RDS PostgreSQL, implementing the relational database decisions documented in [ADR-002: RDS Database Engine Selection](../cloudshelf-architecture-decisions.md#adr-002-rds-database-engine-selection).
 
 ---
 
@@ -47,7 +47,7 @@ Based on **ADR-002**, PostgreSQL RDS provides the book catalog storage layer for
 - **📊 Analytics Support** - Complex reporting and business intelligence
 - **🔒 Data Integrity** - ACID compliance for transactional operations
 
-**Architecture Decision Reference**: See [ADR-002](../architecture-decisions.md#adr-002) for the complete rationale behind PostgreSQL selection.
+**Architecture Decision Reference**: See [ADR-002](../cloudshelf-architecture-decisions.md#adr-002) for the complete rationale behind PostgreSQL selection.
 
 ---
 
@@ -273,8 +273,8 @@ GRANT ALL PRIVILEGES ON DATABASE cloudshelf_catalog TO cloudshelf_app;
 
 ## 📚 Related Architecture Documentation
 
-- 🏛️ [**ADR-002: PostgreSQL Selection**](../architecture-decisions.md#adr-002) - Complete database choice rationale
-- 🏛️ [**All Architecture Decisions**](../architecture-decisions.md) - Context for database architecture
+- 🏛️ [**ADR-002: PostgreSQL Selection**](../cloudshelf-architecture-decisions.md#adr-002) - Complete database choice rationale
+- 🏛️ [**All Architecture Decisions**](../cloudshelf-architecture-decisions.md) - Context for database architecture
 - 🌐 [**VPC Setup**](../vpc/setup-vpc-reference.md) - Required network foundation
 - 🗂️ [**DynamoDB Setup**](../dynamodb/setup-dynamodb.md) - Complementary NoSQL storage
 - ⚡ [**Lambda Setup**](../lambda/setup-lambda.md) - Database connectivity integration
