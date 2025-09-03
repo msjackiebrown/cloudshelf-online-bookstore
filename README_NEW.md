@@ -20,7 +20,7 @@ CloudShelf is a **scalable e-commerce platform** that demonstrates AWS Solutions
 - 🔒 **Security by Design** - Multi-layer security (Authentication in Phase 2)
 - 💰 **Cost Optimization** - Pay-per-use serverless pricing model
 
-**Current Status**: Full-stack implementation with frontend hosting, backend services, and comprehensive documentation. Only user authentication (Cognito) is planned for Phase 2.
+**Current Status**: MVP Phase 1 implementation with core book catalog and shopping cart functionality.
 
 ---
 
@@ -44,7 +44,8 @@ CloudShelf is a **scalable e-commerce platform** that demonstrates AWS Solutions
 </div>
 
 ### Current Implementation Status
-- ✅ **Phase 1 (Current)**: Book Catalog & Shopping Cart Services + Frontend Hosting
+
+- ✅ **Phase 1 (MVP)**: Book Catalog & Shopping Cart Services
 - 🔄 **Phase 2 (Planned)**: User Authentication, Order Processing, Admin Portal
 
 ### Core AWS Services
@@ -55,8 +56,8 @@ CloudShelf is a **scalable e-commerce platform** that demonstrates AWS Solutions
 | ⚡ **Lambda**         | Serverless compute | Pay-per-execution pricing      | ✅ Current |
 | 🗄️ **RDS PostgreSQL** | Catalog database   | ACID compliance & performance  | ✅ Current |
 | 🗂️ **DynamoDB**       | Shopping carts     | Single-digit ms latency        | ✅ Current |
-| 🌐 **CloudFront**     | Global CDN         | Sub-2s page loads worldwide    | ✅ Current |
-| 🪣 **S3**             | Static hosting     | 99.999999999% durability       | ✅ Current |
+| 🌐 **CloudFront**     | Global CDN         | Sub-2s page loads worldwide    | 🔄 Phase 2 |
+| 🪣 **S3**             | Static hosting     | 99.999999999% durability       | 🔄 Phase 2 |
 | 🔐 **Cognito**        | Authentication     | Enterprise-grade security      | 🔄 Phase 2 |
 
 ---
@@ -64,33 +65,38 @@ CloudShelf is a **scalable e-commerce platform** that demonstrates AWS Solutions
 ## ✨ Features & Capabilities
 
 ### 🛍️ Customer Experience
-- 📖 **Book Catalog** - Advanced filtering and search *(MVP Implementation)*
-- 🛒 **Shopping Cart** - Real-time cart management *(MVP Implementation)*
-- 👤 **User Accounts** - Secure authentication *(Planned - Phase 2)*
-- 📦 **Order Processing** - Streamlined checkout *(Planned - Phase 2)*
+
+- 📖 **Book Catalog** - Advanced filtering and search _(MVP Implementation)_
+- 🛒 **Shopping Cart** - Real-time cart management _(MVP Implementation)_
+- 👤 **User Accounts** - Secure authentication _(Planned - Phase 2)_
+- 📦 **Order Processing** - Streamlined checkout _(Planned - Phase 2)_
 
 ### 🔧 Admin Portal
-- 📚 **Inventory Management** - Book catalog administration *(Planned - Phase 2)*
-- 📊 **Order Dashboard** - Sales and customer analytics *(Planned - Phase 2)*
-- 👥 **User Management** - Customer account administration *(Planned - Phase 2)*
+
+- 📚 **Inventory Management** - Book catalog administration _(Planned - Phase 2)_
+- 📊 **Order Dashboard** - Sales and customer analytics _(Planned - Phase 2)_
+- 👥 **User Management** - Customer account administration _(Planned - Phase 2)_
 
 ---
 
 ## 🗺️ Implementation Roadmap
 
-### ✅ Phase 1 (Current Implementation)
+### ✅ Phase 1 (Current MVP)
+
 - **Book Catalog Service** - Lambda + RDS PostgreSQL
-- **Shopping Cart Service** - Lambda + DynamoDB  
+- **Shopping Cart Service** - Lambda + DynamoDB
 - **API Gateway** - RESTful endpoints with CORS
-- **Frontend Hosting** - S3 Static Website + CloudFront CDN
 - **Core Documentation** - Architecture and requirements
 
 ### 🔄 Phase 2 (Planned)
+
+- **Frontend Hosting** - S3 Static Website + CloudFront CDN
 - **User Authentication** - AWS Cognito integration
 - **Order Processing** - Complete checkout workflow
 - **Admin Portal** - Inventory and user management
 
 ### 🚀 Phase 3 (Future)
+
 - **Advanced Features** - Search optimization, recommendations
 - **Performance Enhancements** - Caching, read replicas
 - **Analytics** - Real-time reporting and insights
@@ -102,23 +108,23 @@ CloudShelf is a **scalable e-commerce platform** that demonstrates AWS Solutions
 <details>
 <summary><strong>🏛️ Core Architecture</strong></summary>
 
-| Document | Purpose | Status |
-| -------- | ------- | ------ |
-| [System Architecture](docs/architecture/cloudshelf-system-architecture.md) | High-level system design | ✅ Complete |
-| [Integration Patterns](docs/architecture/cloudshelf-integration-patterns.md) | Service integration | ✅ Complete |
-| [Data Architecture](docs/architecture/cloudshelf-data-architecture.md) | Database design | ✅ Complete |
-| [Security Architecture](docs/architecture/cloudshelf-security-architecture.md) | Security patterns | ✅ Complete |
+| Document                                                                       | Purpose                  | Status      |
+| ------------------------------------------------------------------------------ | ------------------------ | ----------- |
+| [System Architecture](docs/architecture/cloudshelf-system-architecture.md)     | High-level system design | ✅ Complete |
+| [Integration Patterns](docs/architecture/cloudshelf-integration-patterns.md)   | Service integration      | ✅ Complete |
+| [Data Architecture](docs/architecture/cloudshelf-data-architecture.md)         | Database design          | ✅ Complete |
+| [Security Architecture](docs/architecture/cloudshelf-security-architecture.md) | Security patterns        | ✅ Complete |
 
 </details>
 
 <details>
 <summary><strong>⚡ Performance & Operations</strong></summary>
 
-| Document | Purpose | Status |
-| -------- | ------- | ------ |
-| [Performance Strategy](docs/architecture/cloudshelf-performance-scaling-strategy.md) | Scaling approach | ✅ Complete |
-| [Cost Optimization](docs/architecture/cloudshelf-cost-optimization-strategy.md) | Cost management | ✅ Complete |
-| [Monitoring](docs/architecture/cloudshelf-monitoring-observability.md) | Observability | ✅ Complete |
+| Document                                                                                   | Purpose             | Status      |
+| ------------------------------------------------------------------------------------------ | ------------------- | ----------- |
+| [Performance Strategy](docs/architecture/cloudshelf-performance-scaling-strategy.md)       | Scaling approach    | ✅ Complete |
+| [Cost Optimization](docs/architecture/cloudshelf-cost-optimization-strategy.md)            | Cost management     | ✅ Complete |
+| [Monitoring](docs/architecture/cloudshelf-monitoring-observability.md)                     | Observability       | ✅ Complete |
 | [Disaster Recovery](docs/architecture/cloudshelf-disaster-recovery-business-continuity.md) | Business continuity | ✅ Complete |
 
 </details>
@@ -126,27 +132,25 @@ CloudShelf is a **scalable e-commerce platform** that demonstrates AWS Solutions
 <details>
 <summary><strong>🔧 Setup Guides</strong></summary>
 
-| Service | Guide | Purpose |
-| ------- | ----- | ------- |
-| API Gateway | [Setup Guide](docs/architecture/apigateway/cloudshelf-apigateway-setup.md) | API management |
-| Lambda | [Setup Guide](docs/architecture/lambda/cloudshelf-lambda-setup.md) | Serverless compute |
-| RDS | [Setup Guide](docs/architecture/rds/cloudshelf-rds-setup.md) | PostgreSQL database |
-| DynamoDB | [Setup Guide](docs/architecture/dynamodb/cloudshelf-dynamodb-setup.md) | NoSQL shopping cart |
-| S3 | [Setup Guide](docs/architecture/s3/cloudshelf-s3-setup.md) | Static website hosting |
-| CloudFront | [Setup Guide](docs/architecture/cloudfront/cloudshelf-cloudfront-setup.md) | Global CDN |
+| Service     | Guide                                                                      | Purpose             |
+| ----------- | -------------------------------------------------------------------------- | ------------------- |
+| API Gateway | [Setup Guide](docs/architecture/apigateway/cloudshelf-apigateway-setup.md) | API management      |
+| Lambda      | [Setup Guide](docs/architecture/lambda/cloudshelf-lambda-setup.md)         | Serverless compute  |
+| RDS         | [Setup Guide](docs/architecture/rds/cloudshelf-rds-setup.md)               | PostgreSQL database |
+| DynamoDB    | [Setup Guide](docs/architecture/dynamodb/cloudshelf-dynamodb-setup.md)     | NoSQL shopping cart |
 
 </details>
 
 <details>
 <summary><strong>📚 Requirements & Planning</strong></summary>
 
-| Document | Description |
-| -------- | ----------- |
+| Document                                                                       | Description                        |
+| ------------------------------------------------------------------------------ | ---------------------------------- |
 | [Business Requirements](docs/requirements/cloudshelf-business-requirements.md) | Business goals and success metrics |
-| [Software Requirements](docs/requirements/cloudshelf-srs.md) | Technical specifications and NFRs |
-| [Use Cases](docs/requirements/cloudshelf-use-cases.md) | User interaction patterns |
-| [User Stories](docs/requirements/cloudshelf-user-stories.md) | Feature descriptions |
-| [Glossary](docs/requirements/cloudshelf-glossary.md) | Key terms and definitions |
+| [Software Requirements](docs/requirements/cloudshelf-srs.md)                   | Technical specifications and NFRs  |
+| [Use Cases](docs/requirements/cloudshelf-use-cases.md)                         | User interaction patterns          |
+| [User Stories](docs/requirements/cloudshelf-user-stories.md)                   | Feature descriptions               |
+| [Glossary](docs/requirements/cloudshelf-glossary.md)                           | Key terms and definitions          |
 
 </details>
 
@@ -168,35 +172,34 @@ CloudShelf is a **scalable e-commerce platform** that demonstrates AWS Solutions
 ### Quick Setup
 
 1. **📁 Clone Repository**
+
    ```bash
    git clone https://github.com/msjackiebrown/cloudshelf-online-bookstore.git
    cd cloudshelf-online-bookstore
    ```
 
 2. **📖 Review Documentation**
+
    ```bash
    # Start with business context
    open docs/requirements/cloudshelf-business-requirements.md
-   
+
    # Then review technical architecture
    open docs/architecture/cloudshelf-system-architecture.md
    ```
 
 3. **🏗️ Deploy Infrastructure (Current Phase 1)**
+
    ```bash
    # Follow setup guides in order:
-   # 1. Frontend Hosting
-   open docs/architecture/s3/cloudshelf-s3-setup.md
-   open docs/architecture/cloudfront/cloudshelf-cloudfront-setup.md
-   
-   # 2. API Gateway Setup
+   # 1. API Gateway Setup
    open docs/architecture/apigateway/cloudshelf-apigateway-setup.md
-   
-   # 3. Database Setup (RDS + DynamoDB)
+
+   # 2. Database Setup (RDS + DynamoDB)
    open docs/architecture/rds/cloudshelf-rds-setup.md
    open docs/architecture/dynamodb/cloudshelf-dynamodb-setup.md
-   
-   # 4. Lambda Functions
+
+   # 3. Lambda Functions
    open docs/architecture/lambda/cloudshelf-lambda-setup.md
    ```
 
@@ -206,13 +209,13 @@ CloudShelf is a **scalable e-commerce platform** that demonstrates AWS Solutions
 
 <div align="center">
 
-| Metric | Target (Year 1) | Target (Year 3) |
-| ------ | --------------- | --------------- |
-| 💰 **Revenue** | $2M | $46M |
-| 👥 **Active Users** | 10,000 | 85,000 |
-| ⚡ **Page Load Time** | <2 seconds | <2 seconds |
-| 📈 **Uptime** | 99.9% | 99.95% |
-| 💵 **Infrastructure Cost** | <0.5% revenue | <0.3% revenue |
+| Metric                     | Target (Year 1) | Target (Year 3) |
+| -------------------------- | --------------- | --------------- |
+| 💰 **Revenue**             | $2M             | $46M            |
+| 👥 **Active Users**        | 10,000          | 85,000          |
+| ⚡ **Page Load Time**      | <2 seconds      | <2 seconds      |
+| 📈 **Uptime**              | 99.9%           | 99.95%          |
+| 💵 **Infrastructure Cost** | <0.5% revenue   | <0.3% revenue   |
 
 </div>
 
@@ -224,13 +227,13 @@ This project demonstrates key **Solutions Architect competencies**:
 
 ### 🎯 Technical Excellence
 
-| Competency | Implementation | Evidence |
-| ---------- | -------------- | -------- |
-| **Serverless Design** | Lambda + API Gateway | [Integration Patterns](docs/architecture/cloudshelf-integration-patterns.md) |
-| **Database Architecture** | RDS + DynamoDB hybrid | [Data Architecture](docs/architecture/cloudshelf-data-architecture.md) |
-| **Security Implementation** | Multi-layer security | [Security Architecture](docs/architecture/cloudshelf-security-architecture.md) |
-| **Cost Optimization** | Right-sizing strategy | [Cost Strategy](docs/architecture/cloudshelf-cost-optimization-strategy.md) |
-| **Performance Design** | Scalable architecture | [Performance Strategy](docs/architecture/cloudshelf-performance-scaling-strategy.md) |
+| Competency                  | Implementation        | Evidence                                                                             |
+| --------------------------- | --------------------- | ------------------------------------------------------------------------------------ |
+| **Serverless Design**       | Lambda + API Gateway  | [Integration Patterns](docs/architecture/cloudshelf-integration-patterns.md)         |
+| **Database Architecture**   | RDS + DynamoDB hybrid | [Data Architecture](docs/architecture/cloudshelf-data-architecture.md)               |
+| **Security Implementation** | Multi-layer security  | [Security Architecture](docs/architecture/cloudshelf-security-architecture.md)       |
+| **Cost Optimization**       | Right-sizing strategy | [Cost Strategy](docs/architecture/cloudshelf-cost-optimization-strategy.md)          |
+| **Performance Design**      | Scalable architecture | [Performance Strategy](docs/architecture/cloudshelf-performance-scaling-strategy.md) |
 
 ### 📋 Documentation Standards
 
