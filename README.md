@@ -93,8 +93,11 @@ CloudShelf is a **scalable e-commerce platform** that demonstrates AWS Solutions
 - [VPC Setup](docs/architecture/vpc/cloudshelf-vpc-setup.md) - Network foundation
 - [Security Setup](docs/architecture/security/cloudshelf-iam-security-setup.md) - IAM roles and policies
 - [Database Setup](docs/architecture/rds/cloudshelf-rds-setup.md) - PostgreSQL configuration
+- [DynamoDB Setup](docs/architecture/dynamodb/cloudshelf-dynamodb-setup.md) - NoSQL database configuration
 - [Lambda Deployment](docs/architecture/lambda/cloudshelf-lambda-setup.md) - Function deployment
 - [API Gateway](docs/architecture/apigateway/cloudshelf-apigateway-setup.md) - API configuration
+- [S3 Storage](docs/architecture/s3/cloudshelf-s3-setup.md) - Static website hosting
+- [CloudFront CDN](docs/architecture/cloudfront/cloudshelf-cloudfront-setup.md) - Content delivery network
 - [Monitoring](docs/architecture/monitoring/cloudshelf-cloudwatch-setup.md) - CloudWatch setup
 
 ### 📚 Requirements & Planning
@@ -135,17 +138,17 @@ CloudShelf is a **scalable e-commerce platform** that demonstrates AWS Solutions
 
 ---
 
-## 👨‍💻 Solutions Architect Portfolio
+## 🏆 Technical Excellence
 
-This project demonstrates key **Solutions Architect competencies**:
+This project demonstrates **enterprise-grade AWS architecture** through:
 
 - **Serverless Design** - Event-driven architecture with AWS Lambda
-- **Database Strategy** - Hybrid RDS/DynamoDB approach
+- **Database Strategy** - Hybrid RDS/DynamoDB approach for optimal performance
 - **Security Implementation** - Multi-layer security with VPC and IAM
 - **Documentation Standards** - Enterprise-grade technical documentation
 - **Cost Optimization** - Pay-per-use serverless pricing model
 
-**Key Evidence**: [Technical Analysis](docs/requirements/cloudshelf-technical-analysis.md) | [Architecture Decisions](docs/architecture/cloudshelf-architecture-decisions.md)
+**Architecture Evidence**: [Technical Analysis](docs/requirements/cloudshelf-technical-analysis.md) | [Architecture Decisions](docs/architecture/cloudshelf-architecture-decisions.md)
 
 ---
 
