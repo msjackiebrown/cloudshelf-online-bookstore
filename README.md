@@ -2,7 +2,25 @@
 
 <div align="center">
 
-**A modern, cloud-native online bookstore built with AWS serverless architecture**
+*### ✅ Completed Features
+
+- **Book Catalog API** - Browse and search books (RDS PostgreSQL)
+- **Shopping Cart Service** - Add/remove items, session management (DynamoDB)
+- **API Gateway** - RESTful endpoints with CORS
+- **VPC Infrastructure** - Network isolation and security
+- **Static Website Hosting** - S3 + CloudFront CDN integration
+- **Monitoring Setup** - CloudWatch dashboards and alerts
+
+### 🔄 In Progress
+
+- **Performance Optimization** - Caching and scaling enhancements
+- **Advanced Monitoring** - Custom metrics and alerting
+
+### ⏳ Planned (Phase 2)
+
+- **User Authentication** - AWS Cognito integration
+- **Order Processing** - Complete checkout workflow
+- **Admin Portal** - Inventory and user managementnative online bookstore built with AWS serverless architecture**
 
 [![AWS](https://img.shields.io/badge/AWS-Serverless-orange?logo=aws)](https://aws.amazon.com/)
 [![Architecture](https://img.shields.io/badge/Architecture-Solutions_Architect-blue)](docs/architecture/)
@@ -20,7 +38,7 @@ CloudShelf is a **scalable e-commerce platform** that demonstrates AWS Solutions
 - 🔒 **Security by Design** - Multi-layer security with IAM and VPC isolation
 - 💰 **Cost Optimization** - Pay-per-use serverless pricing model
 
-**Current Status**: Book catalog and shopping cart services implemented. Frontend hosting and authentication planned for Phase 2.
+**Current Status**: Complete serverless architecture implemented with book catalog, shopping cart, and frontend hosting. Authentication and order processing planned for Phase 2.
 
 ---
 
@@ -51,8 +69,8 @@ CloudShelf is a **scalable e-commerce platform** that demonstrates AWS Solutions
 | ⚡ **Lambda**         | Serverless compute | ✅ Deployed |
 | 🗄️ **RDS PostgreSQL** | Book catalog       | ✅ Deployed |
 | 🗂️ **DynamoDB**       | Shopping carts     | ✅ Deployed |
-| 🌐 **CloudFront**     | Global CDN         | 🔄 Planned  |
-| 🪣 **S3**             | Static hosting     | 🔄 Planned  |
+| 🌐 **CloudFront**     | Global CDN         | ✅ Deployed |
+| 🪣 **S3**             | Static hosting     | ✅ Deployed |
 | 🔐 **Cognito**        | Authentication     | ⏳ Phase 2  |
 
 ---
