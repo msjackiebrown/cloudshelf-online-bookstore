@@ -2,9 +2,22 @@
 
 <div align="center">
 
-*### ✅ Completed Features
+\*### ✅ Completed Fea### ✅ Completed Features
 
 - **Book Catalog API** - Browse and search books (RDS PostgreSQL)
+- **Shopping Cart Service** - Add/remove items, session management (DynamoDB)
+- **API Gateway** - RESTful endpoints with CORS
+- **VPC Infrastructure** - Network isolation and security
+- **Static Website Hosting** - S3 + CloudFront CDN integration
+- **Monitoring Setup** - CloudWatch dashboards and alerts
+
+### 🔄 In Progress
+
+- **Performance Optimization** - Caching and scaling enhancements
+- **Advanced Monitoring** - Custom metrics and alerting In Progress
+
+- **Performance Optimization** - Caching and scaling enhancements
+- **Advanced Monitoring** - Custom metrics and alerting **Book Catalog API** - Browse and search books (RDS PostgreSQL)
 - **Shopping Cart Service** - Add/remove items, session management (DynamoDB)
 - **API Gateway** - RESTful endpoints with CORS
 - **VPC Infrastructure** - Network isolation and security
@@ -20,7 +33,7 @@
 
 - **User Authentication** - AWS Cognito integration
 - **Order Processing** - Complete checkout workflow
-- **Admin Portal** - Inventory and user managementnative online bookstore built with AWS serverless architecture**
+- **Admin Portal** - Inventory and user managementnative online bookstore built with AWS serverless architecture\*\*
 
 [![AWS](https://img.shields.io/badge/AWS-Serverless-orange?logo=aws)](https://aws.amazon.com/)
 [![Architecture](https://img.shields.io/badge/Architecture-Solutions_Architect-blue)](docs/architecture/)
