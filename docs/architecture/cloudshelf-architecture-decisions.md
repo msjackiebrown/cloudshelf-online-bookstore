@@ -601,3 +601,126 @@ Build Tool: Maven or Gradle
 This Java-first approach ensures enterprise-grade reliability, maintainability, and performance for the CloudShelf e-commerce platform.
 
 ---
+
+## ADR-006: IAM Policy Management Strategy
+
+**Date**: 2025-09-03  
+**Status**: ✅ Accepted  
+**Decision Makers**: Solutions Architect
+
+### Context
+
+Need to determine the approach for managing IAM policies in CloudShelf architecture, considering governance, reusability, development workflow, and production requirements. The choice impacts security management, compliance auditing, and operational maintenance.
+
+### Decision
+
+**Use Customer-Managed Policies for production deployment**, with a phased approach:
+
+1. **Development Phase**: Start with inline policies for rapid iteration
+2. **Production Phase**: Migrate to customer-managed policies for governance
+
+### Policy Creation Order
+
+```
+Phase 1: Create Custom Policies (FIRST)
+├── 1. CloudShelf-RDS-BookCatalog-Access
+├── 2. CloudShelf-DynamoDB-ShoppingCart-Access
+├── 3. CloudShelf-Lambda-Invoke-Access
+├── 4. CloudShelf-S3-Assets-Access
+└── 5. CloudShelf-CloudWatch-Monitoring-Access
+
+Phase 2: Create IAM Roles (SECOND)
+├── 6. cloudshelf-book-catalog-lambda-role
+├── 7. cloudshelf-shopping-cart-lambda-role
+├── 8. cloudshelf-apigateway-execution-role
+└── 9. Attach custom + AWS managed policies to roles
+
+Phase 3: Configure Resource-Based Policies (THIRD)
+├── 10. Lambda resource policies for API Gateway
+├── 11. S3 bucket policies for CloudFront
+└── 12. Security group configurations
+```
+
+### Options Considered
+
+| Approach                     | Pros                                      | Cons                                           | Decision |
+| ---------------------------- | ----------------------------------------- | ---------------------------------------------- | -------- |
+| **Inline Policies Only**     | Simple, fast development, tightly coupled | Not reusable, hard to audit, poor governance   | ❌       |
+| **Customer-Managed Only**    | Reusable, versioned, better governance    | More setup overhead, complex for development   | ❌       |
+| **Phased Approach (Chosen)** | Fast development + production governance  | Requires migration step                        | ✅       |
+| **AWS Managed Only**         | No maintenance, well-tested               | Too broad permissions, not CloudShelf-specific | ❌       |
+
+### Rationale
+
+**Why Phased Approach**:
+
+1. **Development Velocity**: Inline policies allow rapid iteration during development
+2. **Production Governance**: Customer-managed policies provide enterprise-grade governance
+3. **Security Compliance**: Easier to audit and review centralized policies
+4. **Policy Reusability**: Custom policies can be shared across similar roles
+5. **Version Control**: Policy changes can be tracked and approved
+6. **Least Privilege**: Granular control over specific CloudShelf resources
+
+### Implementation Strategy
+
+**Development Phase (Now)**:
+
+```json
+{
+  "PolicyType": "Inline",
+  "AttachedTo": "Role directly",
+  "Benefits": ["Fast iteration", "Simple testing", "Rapid prototyping"],
+  "Limitations": ["Not reusable", "Hard to audit", "No versioning"]
+}
+```
+
+**Production Phase (Later)**:
+
+```json
+{
+  "PolicyType": "Customer-Managed",
+  "NamingConvention": "CloudShelf-{Service}-{Resource}-Access",
+  "Benefits": ["Reusable", "Versioned", "Auditable", "Governance"],
+  "Requirements": ["Approval workflow", "Version control", "Regular reviews"]
+}
+```
+
+### Consequences
+
+**Positive**:
+
+- ✅ Faster development and testing cycles
+- ✅ Production-ready governance model
+- ✅ Clear migration path from dev to prod
+- ✅ Better security compliance for enterprise
+- ✅ Easier policy auditing and review
+
+**Negative**:
+
+- ⚠️ Requires migration step before production
+- ⚠️ Additional overhead in production policy management
+- ⚠️ Need to maintain both approaches temporarily
+
+**Mitigation**:
+
+- Document clear migration procedures
+- Automate policy creation with Infrastructure as Code
+- Implement policy validation and testing
+
+### Monitoring
+
+**Success Metrics**:
+
+- Policy deployment time < 5 minutes
+- Zero security incidents related to overprivileged access
+- 100% policy compliance in production
+- Policy review cycle completed quarterly
+
+**Review Triggers**:
+
+- New AWS service integration
+- Security incident or audit finding
+- Quarterly security review
+- Major application architecture changes
+
+---
