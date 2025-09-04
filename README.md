@@ -2,12 +2,12 @@
 
 <div align="center">
 
-**AWS Solutions Architect Tut### 🎯 Learning Prerequisites
+\*\*AWS Solutions Architect Tut### 🎯 Learning Prerequisites
 
 - [Business Requirements](docs/requirements/cloudshelf-business-requirements.md) - Tutorial context and objectives
 - [Software Requirements](docs/requirements/cloudshelf-srs.md) - Technical specifications
 - [Technical Analysis](docs/requirements/cloudshelf-technical-analysis.md) - Architecture decisions
-- [Architecture Decision Records](docs/architecture/cloudshelf-architecture-decisions.md) - Detailed ADRs for all major decisions Project - Serverless E-commerce Demo**
+- [Architecture Decision Records](docs/architecture/cloudshelf-architecture-decisions.md) - Detailed ADRs for all major decisions Project - Serverless E-commerce Demo\*\*
 
 [![AWS](https://img.shields.io/badge/AWS-Tutorial_Project-orange?logo=aws)](https://aws.amazon.com/)
 [![Architecture](https://img.shields.io/badge/Architecture-Learning_Demo-blue)](docs/architecture/)
