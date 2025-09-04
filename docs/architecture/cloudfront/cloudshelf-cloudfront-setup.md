@@ -20,7 +20,7 @@ CloudFront serves as the global CDN layer for CloudShelf's static web assets, pr
 | **Custom Domain**         | Route 53 integration | Professional domain presentation           |
 | **SSL Certificate**       | ACM certificate      | HTTPS security and trust                   |
 
-![CloudShelf CloudFront Architecture](../cloudshelf-detailed-architecture-diagrams.md#6-cloudfront-content-delivery-network)
+![CloudShelf CloudFront Architecture](CloudFront-CDN-Architecture-Diagram.png)
 
 ---
 
@@ -188,7 +188,7 @@ curl -H "Cache-Control: no-cache" https://d1234567890abc.cloudfront.net
 - [📖 CloudShelf Architecture Decisions](../cloudshelf-architecture-decisions.md) - Complete ADR documentation
 - [🗄️ S3 Setup Guide](../s3/cloudshelf-s3-setup.md) - Origin bucket configuration
 - � [**IAM Security Setup**](../security/cloudshelf-iam-security-setup.md) - Security roles and policies
-- [📊 Monitoring Setup](../monitoring/cloudshelf-monitoring-observability.md) - Performance monitoring
+- 📊 [**CloudWatch Setup**](../monitoring/cloudshelf-cloudwatch-setup.md) - Performance monitoring
 - [🌐 Route 53 Configuration](../cloudshelf-system-architecture.md) - Custom domain setup
 
 ---

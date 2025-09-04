@@ -304,7 +304,82 @@ graph TD
 
 ---
 
-## 🔧 Best Practices & Optimization
+## � API Endpoints Reference
+
+### **📚 Book Catalog API**
+
+**Base URL**: `https://{api-id}.execute-api.{region}.amazonaws.com/prod`
+
+#### **Books Endpoints**
+
+```
+GET    /books              - List all books
+GET    /books/{id}         - Get book by ID
+GET    /books/search?q={}  - Search books by title/author
+POST   /books              - Add new book (admin)
+PUT    /books/{id}         - Update book (admin)
+DELETE /books/{id}         - Delete book (admin)
+```
+
+**Example Request:**
+
+```bash
+curl -X GET "https://your-api-id.execute-api.us-east-1.amazonaws.com/prod/books" \
+  -H "Content-Type: application/json"
+```
+
+**Example Response:**
+
+```json
+{
+  "books": [
+    {
+      "id": 1,
+      "title": "The Great Gatsby",
+      "author": "F. Scott Fitzgerald",
+      "price": 12.99,
+      "stock": 50,
+      "category": "Fiction"
+    }
+  ],
+  "totalCount": 1
+}
+```
+
+### **🛒 Shopping Cart API**
+
+#### **Cart Endpoints**
+
+```
+GET    /cart/{userId}           - Get user's cart
+POST   /cart/{userId}/items     - Add item to cart
+PUT    /cart/{userId}/items/{itemId} - Update item quantity
+DELETE /cart/{userId}/items/{itemId} - Remove item from cart
+DELETE /cart/{userId}           - Clear entire cart
+```
+
+**Example Add to Cart:**
+
+```bash
+curl -X POST "https://your-api-id.execute-api.us-east-1.amazonaws.com/prod/cart/user123/items" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "bookId": 1,
+    "quantity": 2
+  }'
+```
+
+### **🔒 Authentication**
+
+For this tutorial, APIs are public. In production, implement:
+
+- **API Keys** for partner access
+- **AWS Cognito** for user authentication
+- **IAM roles** for service-to-service calls
+
+---
+
+## �🔧 Best Practices & Optimization
 
 <details>
 <summary><strong>📋 API Gateway Configuration Best Practices</strong></summary>
@@ -378,7 +453,7 @@ graph TD
 - [🔧 Lambda Setup Guide](../lambda/cloudshelf-lambda-setup.md) - Lambda function configuration
 - [🗄️ DynamoDB Setup Guide](../dynamodb/cloudshelf-dynamodb-setup.md) - Cart data store setup
 - � [**IAM Security Setup**](../security/cloudshelf-iam-security-setup.md) - Security roles and policies
-- [📊 Monitoring Setup](../monitoring/cloudshelf-monitoring-observability.md) - Observability configuration
+- 📊 [**CloudWatch Setup**](../monitoring/cloudshelf-cloudwatch-setup.md) - API monitoring and observability
 
 ---
 

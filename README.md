@@ -86,9 +86,10 @@ CloudShelf is a **scalable e-commerce platform** that demonstrates AWS Solutions
 ### 🏛️ Architecture & Design
 
 - [System Architecture](docs/architecture/cloudshelf-system-architecture.md) - Complete technical design
-- [Detailed Architecture Diagrams](docs/architecture/cloudshelf-detailed-architecture-diagrams.md) - 16 comprehensive technical diagrams
+- [Architecture Decisions](docs/architecture/cloudshelf-architecture-decisions.md) - ADRs and design rationale
 - [IAM Security Setup](docs/architecture/security/cloudshelf-iam-security-setup.md) - Security roles and policies
-- [Data Architecture](docs/architecture/cloudshelf-data-architecture.md) - Database design strategy
+- [RDS Database Setup](docs/architecture/rds/cloudshelf-rds-setup.md) - PostgreSQL database configuration
+- [DynamoDB Setup](docs/architecture/dynamodb/cloudshelf-dynamodb-setup.md) - Shopping cart storage
 - [Technical Analysis](docs/requirements/cloudshelf-technical-analysis.md) - Solutions architect overview
 
 ### 🔧 Implementation Guides

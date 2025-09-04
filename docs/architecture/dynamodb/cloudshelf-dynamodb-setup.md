@@ -200,7 +200,81 @@ aws dynamodb get-item --table-name cloudshelf-shopping-cart --key '{"userId":{"S
 
 ---
 
-## 📋 Quick Reference
+## �️ Shopping Cart Table Structure
+
+### **Table Schema Design**
+
+**Primary Key Structure:**
+
+- **Partition Key**: `userId` (String) - Enables user-specific cart retrieval
+- **No Sort Key**: Single cart per user design pattern
+
+**Attribute Design:**
+
+```json
+{
+  "userId": "string", // Partition key - unique user identifier
+  "cartItems": [
+    // List of cart items
+    {
+      "bookId": "string", // Reference to book catalog
+      "title": "string", // Book title for display
+      "author": "string", // Book author
+      "price": "number", // Current price
+      "quantity": "number", // Quantity in cart
+      "addedAt": "string" // ISO timestamp
+    }
+  ],
+  "totalItems": "number", // Total quantity of all items
+  "totalPrice": "number", // Total cart value
+  "lastUpdated": "string", // Last modification timestamp
+  "ttl": "number" // Time-to-live for automatic cleanup
+}
+```
+
+### **Access Patterns**
+
+**Primary Operations:**
+
+1. **Get Cart**: `GetItem` by `userId`
+2. **Add Item**: `UpdateItem` to append to `cartItems`
+3. **Update Quantity**: `UpdateItem` specific cart item
+4. **Remove Item**: `UpdateItem` to remove from `cartItems`
+5. **Clear Cart**: `DeleteItem` by `userId`
+
+### **Lambda Integration Example**
+
+```python
+import boto3
+import json
+from decimal import Decimal
+
+dynamodb = boto3.resource('dynamodb')
+table = dynamodb.Table('cloudshelf-shopping-cart')
+
+def add_to_cart(user_id, book_item):
+    """Add item to user's shopping cart"""
+    response = table.update_item(
+        Key={'userId': user_id},
+        UpdateExpression='SET cartItems = list_append(if_not_exists(cartItems, :empty_list), :item), totalItems = totalItems + :qty, totalPrice = totalPrice + :price',
+        ExpressionAttributeValues={
+            ':empty_list': [],
+            ':item': [book_item],
+            ':qty': book_item['quantity'],
+            ':price': Decimal(str(book_item['price'] * book_item['quantity']))
+        }
+    )
+    return response
+
+def get_cart(user_id):
+    """Retrieve user's shopping cart"""
+    response = table.get_item(Key={'userId': user_id})
+    return response.get('Item', {})
+```
+
+---
+
+## �📋 Quick Reference
 
 <details>
 <summary><strong>📊 Configuration Values</strong></summary>

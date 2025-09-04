@@ -21,7 +21,7 @@ CloudWatch provides unified monitoring and observability for the entire CloudShe
 | **DynamoDB**         | Read/Write capacity, Throttling          | >80% capacity, any throttling      |
 | **CloudFront**       | Cache hit ratio, Origin requests         | <85% cache hit, >1000 origin/min   |
 
-![CloudShelf Monitoring Architecture](../cloudshelf-detailed-architecture-diagrams.md#14-cloudwatch-monitoring-dashboard)
+![CloudShelf Monitoring Architecture](CloudWatch-Monitoring-Architecture-Diagram.png)
 
 ---
 
@@ -323,8 +323,8 @@ Navigate to **CloudWatch Console → Dashboards → Create Dashboard**
 
 - [CloudShelf System Architecture](../cloudshelf-system-architecture.md) - Overall system design
 - [Security Architecture](../security/) - Security monitoring integration
-- [Performance Optimization](../cloudshelf-performance-scaling-strategy.md) - Performance tuning
-- [Disaster Recovery](../cloudshelf-disaster-recovery-business-continuity.md) - Monitoring in DR scenarios
+- ⚡ [**Lambda Setup**](../lambda/cloudshelf-lambda-setup.md) - Function performance monitoring
+- 🏛️ [**Architecture Decisions**](../cloudshelf-architecture-decisions.md) - Monitoring strategy context
 
 ---
 

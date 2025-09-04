@@ -20,7 +20,7 @@ S3 provides scalable object storage for CloudShelf's static assets and content d
 | **Backup Bucket**      | Cross-region replication    | Disaster recovery             |
 | **Lifecycle Policies** | Automated transitions       | Cost optimization             |
 
-![CloudShelf S3 Architecture](../cloudshelf-detailed-architecture-diagrams.md#7-s3-storage-architecture)
+![CloudShelf S3 Architecture](S3-Storage-Architecture-Diagram.png)
 
 ---
 
@@ -228,8 +228,8 @@ curl -I https://d1234567890abc.cloudfront.net
 - [📖 CloudShelf Architecture Decisions](../cloudshelf-architecture-decisions.md) - Complete ADR documentation
 - [🌐 CloudFront Setup Guide](../cloudfront/cloudshelf-cloudfront-setup.md) - CDN integration
 - � [**IAM Security Setup**](../security/cloudshelf-iam-security-setup.md) - Security roles and policies
-- [📊 Monitoring Setup](../monitoring/cloudshelf-monitoring-observability.md) - Performance monitoring
-- [💰 Cost Optimization](../cloudshelf-cost-optimization-strategy.md) - Storage cost management
+- 📊 [**CloudWatch Setup**](../monitoring/cloudshelf-cloudwatch-setup.md) - Performance monitoring
+- 💰 **Cost Management**: Use S3 storage classes and lifecycle policies for cost optimization
 
 ---
 

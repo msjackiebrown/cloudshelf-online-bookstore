@@ -278,6 +278,89 @@ GRANT ALL PRIVILEGES ON DATABASE cloudshelf_catalog TO cloudshelf_app;
 
 ---
 
+---
+
+## 📊 Database Schema Setup
+
+### **Essential Tables for CloudShelf**
+
+After RDS deployment, create the core database schema for the book catalog:
+
+#### **Books Table**
+
+```sql
+-- Core book catalog table
+CREATE TABLE books (
+    id SERIAL PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    author VARCHAR(255) NOT NULL,
+    isbn VARCHAR(13) UNIQUE,
+    price DECIMAL(10,2) NOT NULL,
+    stock_quantity INTEGER DEFAULT 0,
+    description TEXT,
+    category VARCHAR(100),
+    published_date DATE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Index for fast searches
+CREATE INDEX idx_books_title ON books(title);
+CREATE INDEX idx_books_author ON books(author);
+CREATE INDEX idx_books_category ON books(category);
+```
+
+#### **Categories Table (Optional)**
+
+```sql
+-- Book categories for organization
+CREATE TABLE categories (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL UNIQUE,
+    description TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Update books table to reference categories
+ALTER TABLE books ADD COLUMN category_id INTEGER REFERENCES categories(id);
+```
+
+### **Sample Data for Testing**
+
+```sql
+-- Insert sample categories
+INSERT INTO categories (name, description) VALUES
+    ('Fiction', 'Fiction books'),
+    ('Technology', 'Technology and programming books'),
+    ('Business', 'Business and entrepreneurship');
+
+-- Insert sample books
+INSERT INTO books (title, author, isbn, price, stock_quantity, description, category_id) VALUES
+    ('The Great Gatsby', 'F. Scott Fitzgerald', '9780743273565', 12.99, 50, 'Classic American novel', 1),
+    ('Clean Code', 'Robert C. Martin', '9780132350884', 42.99, 25, 'A handbook of agile software craftsmanship', 2),
+    ('The Lean Startup', 'Eric Ries', '9780307887894', 26.99, 30, 'How constant innovation creates successful businesses', 3);
+```
+
+### **Database Connection from Lambda**
+
+```python
+# Example Lambda database connection
+import psycopg2
+import os
+
+def get_db_connection():
+    return psycopg2.connect(
+        host=os.environ['DB_HOST'],
+        database=os.environ['DB_NAME'],
+        user=os.environ['DB_USER'],
+        password=os.environ['DB_PASSWORD'],
+        port=5432,
+        sslmode='require'
+    )
+```
+
+---
+
 ## 📚 Related Architecture Documentation
 
 - 🏛️ [**ADR-002: PostgreSQL Selection**](../cloudshelf-architecture-decisions.md#adr-002) - Complete database choice rationale

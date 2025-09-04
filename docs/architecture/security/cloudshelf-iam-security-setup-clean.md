@@ -17,7 +17,7 @@ IAM security provides the foundation for all CloudShelf services with:
 
 **Security Principle**: Zero-trust model with explicit permissions for each service interaction.
 
-![CloudShelf IAM Architecture](../cloudshelf-detailed-architecture-diagrams.md#15-iam-security-model)
+![CloudShelf IAM Security Architecture](screenshots/cloudshelf-iam-security-architecture.png)
 
 ---
 

@@ -202,5 +202,5 @@ This approach showcases complete end-to-end architecture ownership and implement
 ## Related Documentation
 
 - [System Architecture](../../docs/architecture/cloudshelf-system-architecture.md)
-- [Integration Patterns](../../docs/architecture/cloudshelf-integration-patterns.md)
+- [API Gateway Setup](../../docs/architecture/apigateway/cloudshelf-apigateway-setup.md) - Lambda integration patterns
 - [Development Guidelines](../../docs/architecture/cloudshelf-development-guidelines.md)
