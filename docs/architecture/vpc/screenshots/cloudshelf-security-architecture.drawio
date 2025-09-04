@@ -1,0 +1,39 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36" version="28.1.2">
+  <diagram name="Page-1" id="7pKfSTON3Oha81CHC57H">
+    <mxGraphModel dx="1701" dy="349" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="nynDamc-mnajhMovp2xW-1" value="CloudShelf Security Architecture&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="260" y="20" width="200" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="nynDamc-mnajhMovp2xW-7" value="cloudshelf-lambda-sg" style="swimlane;whiteSpace=wrap;html=1;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="270.5" y="100" width="220" height="170" as="geometry" />
+        </mxCell>
+        <mxCell id="nynDamc-mnajhMovp2xW-4" value="&lt;span style=&quot;color: rgb(0, 0, 0);&quot;&gt;Lambda Functions&lt;/span&gt;&lt;div style=&quot;color: rgb(0, 0, 0);&quot;&gt;&lt;br&gt;&lt;/div&gt;" style="sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[0,1,0],[0.25,1,0],[0.5,1,0],[0.75,1,0],[1,1,0],[0,0.25,0],[0,0.5,0],[0,0.75,0],[1,0.25,0],[1,0.5,0],[1,0.75,0]];outlineConnect=0;fontColor=#232F3E;fillColor=#ED7100;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.lambda;" vertex="1" parent="nynDamc-mnajhMovp2xW-7">
+          <mxGeometry x="74.5" y="30" width="50" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="nynDamc-mnajhMovp2xW-17" value="Outbound Rules:&amp;nbsp;&lt;div&gt;HTTPS (443) -&amp;gt; 0.0.0.0/0&lt;/div&gt;&lt;div&gt;PostgreSQL (5432) -&amp;gt; RDS Security Group&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=9;" vertex="1" parent="nynDamc-mnajhMovp2xW-7">
+          <mxGeometry x="10" y="108" width="200" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="nynDamc-mnajhMovp2xW-8" value="cloudshelf-rds-sg" style="swimlane;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="280" y="390" width="201" height="170" as="geometry" />
+        </mxCell>
+        <mxCell id="nynDamc-mnajhMovp2xW-10" value="RDS PostgreSQL Database" style="sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[0,1,0],[0.25,1,0],[0.5,1,0],[0.75,1,0],[1,1,0],[0,0.25,0],[0,0.5,0],[0,0.75,0],[1,0.25,0],[1,0.5,0],[1,0.75,0]];outlineConnect=0;fontColor=#232F3E;fillColor=#C925D1;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.rds;" vertex="1" parent="nynDamc-mnajhMovp2xW-8">
+          <mxGeometry x="75.5" y="30" width="50" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="nynDamc-mnajhMovp2xW-11" value="&lt;font style=&quot;font-size: 9px;&quot;&gt;Inbound Rules:&lt;/font&gt;&lt;div&gt;&lt;font style=&quot;font-size: 9px;&quot;&gt;PostgreSQL (5432) &amp;lt;-, Lambda ,SG ONLY&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font style=&quot;font-size: 9px;&quot;&gt;NO Public, Access&lt;/font&gt;&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="nynDamc-mnajhMovp2xW-8">
+          <mxGeometry x="5.5" y="110" width="190" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="nynDamc-mnajhMovp2xW-14" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.498;entryY=0.045;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" target="nynDamc-mnajhMovp2xW-8">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="381" y="270" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="nynDamc-mnajhMovp2xW-15" value="PostgreSQL (5432)" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="390" y="310" width="110" height="30" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

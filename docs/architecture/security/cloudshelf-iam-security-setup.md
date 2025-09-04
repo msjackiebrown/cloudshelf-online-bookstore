@@ -15,7 +15,11 @@ IAM security provides the foundation for all CloudShelf services with:
 - **⚡ Cross-Service Access** - Secure communication between AWS services
 - **📈 Scalable Security** - Role-based access that scales with architecture
 
-**IAM Security Strategy**: CloudShelf implements a role-based security model with customer-managed policies for governance, least-privilege access principles, and network-level security groups for defense in depth. The security model follows AWS Well-Architected Framework principles with explicit trust relationships between services.---
+**IAM Security Strategy**: CloudShelf implements a role-based security model with customer-managed policies for governance, least-privilege access principles, and network-level security groups for defense in depth. The security model follows AWS Well-Architected Framework principles with explicit trust relationships between services.
+
+![CloudShelf IAM Security Architecture Diagram](screenshots/cloudshelf-iam-security-architecture.png)
+
+---
 
 ## 🚀 Implementation Steps
 
@@ -46,6 +50,8 @@ IAM security provides the foundation for all CloudShelf services with:
 }
 ```
 
+![CloudShelf RDS Book Catalog Access Policy](screenshots/Cloudshelf-RDS-Book-Catalog-Access.png)
+
 #### CloudShelf DynamoDB Access Policy
 
 **Policy Name**: `CloudShelf-DynamoDB-ShoppingCart-Access`  
@@ -74,10 +80,14 @@ IAM security provides the foundation for all CloudShelf services with:
 }
 ```
 
+![CloudShelf DynamoDB Shopping Cart Access Policy](screenshots/Cloudshelf-DynamoDB-ShoppingCart-Access.png)
+
 #### CloudShelf Lambda Invoke Policy
 
+> **📝 Note**: This policy is for future use cases where other AWS services might need to invoke Lambda functions programmatically. API Gateway uses resource-based policies instead.
+
 **Policy Name**: `CloudShelf-Lambda-Invoke-Access`  
-**Description**: "Lambda invocation policy for CloudShelf API Gateway"
+**Description**: "Lambda invocation policy for programmatic access (future use)"
 
 ```json
 {
@@ -94,6 +104,8 @@ IAM security provides the foundation for all CloudShelf services with:
   ]
 }
 ```
+
+![CloudShelf Lambda Invoke Access Policy](screenshots/Cloudshelf-Lambda-Invoke-Access.png)
 
 #### CloudShelf S3 Access Policy
 
@@ -115,6 +127,8 @@ IAM security provides the foundation for all CloudShelf services with:
   ]
 }
 ```
+
+![CloudShelf S3 Assets Access Policy](screenshots/Cloudshelf-S3-Assets-Access.png)
 
 ---
 
@@ -154,132 +168,6 @@ Now create roles and attach the custom policies created in Step 1.
 
 ![Shopping Cart Lambda Role Configuration](screenshots/lambda-shopping-cart-role.png)
 
-#### API Gateway Execution Role
-
-**Configuration Requirements:**
-
-- **Trusted entity**: API Gateway
-- **Role name**: `cloudshelf-apigateway-execution-role`
-- **Description**: "Execution role for CloudShelf API Gateway"
-
-**Attach Policies:**
-
-- **Custom**: `CloudShelf-Lambda-Invoke-Access`
-
-![API Gateway Execution Role Configuration](screenshots/apigateway-execution-role.png)
-
----
-
-### Step 3: Database Security Configuration
-
-#### RDS IAM Authentication Setup
-
-**Configuration Requirements:**
-
-- **Role name**: `cloudshelf-rds-access-role`
-- **Description**: "Database access role for CloudShelf application"
-
-**Database User Setup:**
-
-```sql
--- Connect as master user
-CREATE USER book_catalog_user;
-GRANT rds_iam TO book_catalog_user;
-GRANT SELECT, INSERT, UPDATE, DELETE ON books.* TO book_catalog_user;
-```
-
-Enable **IAM database authentication** on RDS instance.
-
----
-
-### Step 4: S3 Security Configuration
-
-#### Static Website Bucket Policy
-
-```json
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Sid": "CloudFrontOriginAccess",
-      "Effect": "Allow",
-      "Principal": {
-        "Service": "cloudfront.amazonaws.com"
-      },
-      "Action": "s3:GetObject",
-      "Resource": "arn:aws:s3:::cloudshelf-static-website/*",
-      "Condition": {
-        "StringEquals": {
-          "AWS:SourceArn": "arn:aws:cloudfront::ACCOUNT:distribution/DISTRIBUTION-ID"
-        }
-      }
-    }
-  ]
-}
-```
-
----
-
-### Step 5: Security Groups Configuration
-
-#### Lambda Security Group
-
-**Configuration Requirements:**
-
-- **Name**: `cloudshelf-lambda-sg`
-- **Description**: "Security group for Lambda functions"
-- **VPC**: CloudShelf VPC
-
-**Rules:**
-
-- **Outbound**: HTTPS (443) to 0.0.0.0/0 (AWS API calls)
-- **Outbound**: PostgreSQL (5432) to RDS security group
-- **Outbound**: HTTPS (443) to DynamoDB VPC endpoint
-
-![Lambda Security Group Configuration](screenshots/lambda-security-group.png)
-
-#### RDS Security Group
-
-**Configuration Requirements:**
-
-- **Name**: `cloudshelf-rds-sg`
-- **Description**: "Security group for RDS PostgreSQL"
-
-**Rules:**
-
-- **Inbound**: PostgreSQL (5432) from Lambda security group only
-- **No public access**
-
-![RDS Security Group Configuration](screenshots/rds-security-group.png)
-
----
-
-### Step 6: Resource-Based Policies
-
-#### Lambda Resource Policies
-
-**Book Catalog Lambda Permission:**
-
-```bash
-aws lambda add-permission \
-  --function-name cloudshelf-book-catalog \
-  --statement-id apigateway-invoke \
-  --action lambda:InvokeFunction \
-  --principal apigateway.amazonaws.com \
-  --source-arn "arn:aws:execute-api:*:*:*/*/GET/books/*"
-```
-
-**Shopping Cart Lambda Permission:**
-
-```bash
-aws lambda add-permission \
-  --function-name cloudshelf-shopping-cart \
-  --statement-id apigateway-invoke \
-  --action lambda:InvokeFunction \
-  --principal apigateway.amazonaws.com \
-  --source-arn "arn:aws:execute-api:*:*:*/*/POST/cart/*"
-```
-
 ---
 
 ## 🔧 Best Practices & Security
@@ -310,41 +198,43 @@ aws lambda add-permission \
 <details>
 <summary><strong>🛡️ Security Validation & Testing</strong></summary>
 
-### Role Testing Commands
+### Role Testing
 
 **Lambda Role Validation:**
 
-```bash
-# Test RDS connection from Lambda
-aws lambda invoke \
-  --function-name cloudshelf-book-catalog \
-  --payload '{"action":"test-db-connection"}' \
-  response.json
-```
+- Navigate to Lambda Console → Test tab
+- Create test event with payload: `{"action":"test-db-connection"}`
+- Execute test and review CloudWatch logs for connection success
+
+![Lambda Function Test Configuration](screenshots/lambda-test-configuration.png)
+![Lambda Test Results and CloudWatch Logs](screenshots/lambda-test-results-cloudwatch.png)
 
 **API Gateway Integration Test:**
 
-```bash
-# Test API Gateway to Lambda integration
-curl -X GET https://your-api-id.execute-api.region.amazonaws.com/prod/books
-```
+- Use API Gateway Console → Test feature
+- Test GET `/books` endpoint
+- Verify successful Lambda invocation and response
 
-### Debug Commands
+![API Gateway Test Console Configuration](screenshots/apigateway-test-console.png)
+![API Gateway Test Results](screenshots/apigateway-test-results.png)
 
-```bash
-# Check role permissions
-aws iam simulate-principal-policy \
-  --policy-source-arn arn:aws:iam::account:role/cloudshelf-lambda-role \
-  --action-names rds-db:connect \
-  --resource-arns arn:aws:rds-db:region:account:dbuser:instance/username
+### Permission Validation
 
-# Test Lambda execution
-aws lambda invoke \
-  --function-name cloudshelf-book-catalog \
-  --log-type Tail \
-  --payload '{}' \
-  output.json
-```
+**IAM Role Verification:**
+
+- Navigate to IAM Console → Roles
+- Select Lambda role and review attached policies
+- Use IAM Policy Simulator to test specific actions
+
+![IAM Policy Simulator Results](screenshots/iam-policy-simulator-results.png)
+
+- Use IAM Policy Simulator to test specific actions
+
+**Security Group Validation:**
+
+- Navigate to VPC Console → Security Groups
+- Verify Lambda security group outbound rules
+- Confirm RDS security group inbound rules
 
 </details>
 
@@ -357,12 +247,16 @@ aws lambda invoke \
 - **Unusual API Activity**: 4xx/5xx error rate spikes
 - **Database Connection Monitoring**: Connection count approaching limits
 
+![CloudWatch Security Alarms Dashboard](screenshots/cloudwatch-security-alarms-dashboard.png)
+
 ### Security Metrics
 
 - **Authentication Success Rate**: >99.5%
 - **Authorization Failures**: <0.1% of requests
 - **Security Group Violations**: 0 attempts
 - **Credential Exposure**: 0 incidents
+
+![Security Metrics Dashboard](screenshots/security-metrics-dashboard.png)
 
 ### Troubleshooting Common Issues
 
@@ -372,17 +266,23 @@ aws lambda invoke \
 - Check resource ARNs in policy statements
 - Confirm VPC configuration if applicable
 
+![IAM Role Troubleshooting Console](screenshots/iam-role-troubleshooting.png)
+
 **RDS Connection Failures:**
 
 - Verify IAM database authentication enabled
 - Check security group rules
 - Confirm database user permissions
 
+![RDS Security Configuration Validation](screenshots/rds-security-validation.png)
+
 **API Gateway 403 Errors:**
 
 - Verify Lambda resource-based policies
 - Check API Gateway execution role
 - Confirm CORS configuration
+
+![API Gateway Permission Troubleshooting](screenshots/apigateway-permission-troubleshooting.png)
 
 </details>
 
@@ -403,10 +303,8 @@ aws lambda invoke \
 - [ ] Custom IAM policies created with least privilege permissions
 - [ ] IAM roles created and policies attached correctly
 - [ ] RDS IAM authentication configured and tested
-- [ ] API Gateway roles and resource policies configured
 - [ ] S3 bucket policies restrict access appropriately
 - [ ] DynamoDB access policies configured for cart operations
-- [ ] Security groups follow principle of least privilege
 - [ ] CloudWatch logging permissions configured
 - [ ] Cross-service permissions explicitly defined
 - [ ] No hardcoded credentials in application code

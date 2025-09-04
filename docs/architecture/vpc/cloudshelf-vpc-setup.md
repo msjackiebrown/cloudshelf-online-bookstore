@@ -19,8 +19,11 @@ Based on **ADR-001**, VPC provides the network foundation for CloudShelf with:
 
 ### **🏗️ VPC Architecture Design**
 
-![CloudShelf VPC Architecture](CloudShelf-VPC-Architecture-Diagram.png)
-_Complete VPC architecture showing subnets, gateways, and routing relationships_
+![CloudShelf VPC Architecture Diagram](cloudshelf-vpc-architecture-diagram.png)
+_Complete VPC architecture showing subnets, gateways, security groups, and routing relationships_
+
+![CloudShelf Network Security Architecture](cloudshelf-network-security-architecture.png)
+_Security group relationships and traffic flow patterns_
 
 ---
 
@@ -59,7 +62,8 @@ Create a Virtual Private Cloud to isolate your resources.
 - CIDR Block: `10.0.0.0/16` (provides 65,536 IP addresses)
 - Enable DNS support and DNS hostnames
 
-![VPC Creation](VPC-Creation-Step1.png)
+![VPC Creation Configuration](VPC-Creation-Step1.png)
+![VPC DNS Settings](screenshots/vpc-dns-settings.png)
 
 ---
 
@@ -68,6 +72,7 @@ Create a Virtual Private Cloud to isolate your resources.
 Create and attach an Internet Gateway to enable internet access for public subnets.
 
 ![Internet Gateway Creation](Internet-Gateway-Creation-Step2.png)
+![Internet Gateway Attachment](screenshots/internet-gateway-attachment.png)
 
 ---
 
@@ -81,6 +86,7 @@ Create a public subnet for internet-facing resources.
 - Availability Zone: Choose your preferred AZ (e.g., us-east-1a)
 
 ![Public Subnet Creation](Public-Subnet-Creation-Step3.png)
+![Public Subnet Configuration](screenshots/public-subnet-configuration.png)
 
 ---
 
@@ -94,6 +100,7 @@ Create a private subnet for backend resources.
 - Availability Zone: Different from public subnet for high availability
 
 ![Private Subnet Creation](Private-Subnet-Creation-Step4.png)
+![Private Subnet Configuration](screenshots/private-subnet-configuration.png)
 
 ---
 
@@ -107,6 +114,7 @@ Set up routing to direct traffic properly between subnets and the internet.
 - Associate with public subnet
 
 ![Public Route Table Configuration](Public-Route-Table-Configuration-Step5.png)
+![Public Route Table Association](screenshots/public-route-table-association.png)
 
 **Private Route Table Configuration:**
 
@@ -114,10 +122,84 @@ Set up routing to direct traffic properly between subnets and the internet.
 - Associate with private subnet
 
 ![Private Route Table Configuration](Private-Route-Table-Configuration-Step5.png)
+![Private Route Table Association](screenshots/private-route-table-association.png)
 
 ---
 
-### **Step 6: NAT Gateway (Optional)**
+### **Step 6: Security Groups Configuration**
+
+Configure security groups to control network traffic at the instance level.
+
+#### Lambda Security Group
+
+**Configuration Requirements:**
+
+- **Name**: `cloudshelf-lambda-sg`
+- **Description**: "Security group for Lambda functions"
+- **VPC**: CloudShelf VPC
+
+**Outbound Rules:**
+
+- **HTTPS (443)** to `0.0.0.0/0` (AWS API calls)
+- **PostgreSQL (5432)** to RDS security group
+- **HTTPS (443)** to DynamoDB VPC endpoint
+
+![Lambda Security Group Configuration](screenshots/lambda-security-group-configuration.png)
+
+#### RDS Security Group
+
+**Configuration Requirements:**
+
+- **Name**: `cloudshelf-rds-sg`
+- **Description**: "Security group for RDS PostgreSQL database"
+- **VPC**: CloudShelf VPC
+
+**Inbound Rules:**
+
+- **PostgreSQL (5432)** from Lambda security group only
+- **No public access**
+
+**Outbound Rules:**
+
+- **All traffic** to `0.0.0.0/0` (default - for maintenance)
+
+![RDS Security Group Configuration](screenshots/rds-security-group-configuration.png)
+
+#### API Gateway Security Group (Optional)
+
+> **📝 Note**: API Gateway doesn't require VPC security groups unless using VPC Links for private integration.
+
+For standard public API Gateway deployment, no additional security groups are needed.
+
+---
+
+### **Step 7: VPC Endpoints (Optional)**
+
+Configure VPC endpoints for cost-effective AWS service access without internet gateway.
+
+#### DynamoDB VPC Endpoint
+
+**Configuration Requirements:**
+
+- **Service**: `com.amazonaws.region.dynamodb`
+- **Type**: Gateway endpoint
+- **Route Tables**: Associate with private route table
+
+![DynamoDB VPC Endpoint Configuration](screenshots/dynamodb-vpc-endpoint.png)
+
+#### S3 VPC Endpoint
+
+**Configuration Requirements:**
+
+- **Service**: `com.amazonaws.region.s3`
+- **Type**: Gateway endpoint
+- **Route Tables**: Associate with private route table
+
+![S3 VPC Endpoint Configuration](screenshots/s3-vpc-endpoint.png)
+
+---
+
+### **Step 8: NAT Gateway (Optional)**
 
 > ⚠️ **Cost Warning**: NAT Gateway costs approximately $45/month and is not needed for this tutorial.
 
@@ -184,16 +266,30 @@ Set up routing to direct traffic properly between subnets and the internet.
 
 ### Testing VPC Connectivity
 
-```bash
-# Test internet connectivity from public subnet
-curl -I http://aws.amazon.com
+**Console-Based Testing:**
 
-# Test VPC DNS resolution
-nslookup amazon.com
+**Internet Connectivity Test:**
 
-# Check route tables
-aws ec2 describe-route-tables --filters "Name=vpc-id,Values=vpc-xxxxxx"
-```
+- Launch EC2 instance in public subnet
+- Use Session Manager to connect (no SSH keys needed)
+- Test internet access through instance browser/curl
+
+![VPC Connectivity Testing](screenshots/vpc-connectivity-testing.png)
+
+**VPC DNS Resolution Test:**
+
+- Navigate to VPC Console → DNS hostnames/resolution settings
+- Verify both DNS resolution and DNS hostnames are enabled
+
+![VPC DNS Configuration Validation](screenshots/vpc-dns-configuration.png)
+
+**Route Table Verification:**
+
+- Navigate to VPC Console → Route Tables
+- Verify routes for public and private subnets
+- Check association with correct subnets
+
+![Route Table Verification](screenshots/route-table-verification.png)
 
 </details>
 
@@ -235,9 +331,13 @@ aws ec2 describe-route-tables --filters "Name=vpc-id,Values=vpc-xxxxxx"
 - ✅ Use different Availability Zones for high availability
 - ✅ Keep databases and backend resources in private subnets
 - ✅ Enable DNS hostnames and DNS resolution
+- ✅ Configure security groups with least privilege access
+- ✅ Set up Lambda security group for AWS API and database access
+- ✅ Configure RDS security group to only allow Lambda access
 - ✅ Use descriptive names with project prefix
 - ✅ Plan CIDR blocks to avoid future conflicts
 - ✅ Document network architecture and dependencies
+- ✅ Configure VPC endpoints for cost optimization (optional)
 - ⚠️ Avoid NAT Gateway for cost savings in development environments
 
 ### **Next Steps After VPC Setup**
