@@ -2,7 +2,12 @@
 
 <div align="center">
 
-**AWS Solutions Architect Tutorial Project - Serverless E-commerce Demo**
+**AWS Solutions Architect Tut### 🎯 Learning Prerequisites
+
+- [Business Requirements](docs/requirements/cloudshelf-business-requirements.md) - Tutorial context and objectives
+- [Software Requirements](docs/requirements/cloudshelf-srs.md) - Technical specifications
+- [Technical Analysis](docs/requirements/cloudshelf-technical-analysis.md) - Architecture decisions
+- [Architecture Decision Records](docs/architecture/cloudshelf-architecture-decisions.md) - Detailed ADRs for all major decisions Project - Serverless E-commerce Demo**
 
 [![AWS](https://img.shields.io/badge/AWS-Tutorial_Project-orange?logo=aws)](https://aws.amazon.com/)
 [![Architecture](https://img.shields.io/badge/Architecture-Learning_Demo-blue)](docs/architecture/)
@@ -106,6 +111,7 @@ _Serverless architecture demonstrating AWS best practices for e-commerce applica
 
 ### 📚 Learning Resources
 
+- [Architecture Decision Records](docs/architecture/cloudshelf-architecture-decisions.md) - Complete ADR documentation
 - [Use Cases](docs/requirements/cloudshelf-use-cases.md) - User interaction patterns
 - [User Stories](docs/requirements/cloudshelf-user-stories.md) - Feature descriptions
 
@@ -150,7 +156,7 @@ This tutorial project demonstrates **AWS Solutions Architect skills** through:
 - **Documentation Skills** - Professional technical documentation standards
 - **Cost Management** - Pay-per-use serverless pricing optimization
 
-**Learning Evidence**: [Technical Analysis](docs/requirements/cloudshelf-technical-analysis.md) | [Implementation Guides](docs/architecture/)
+**Learning Evidence**: [Technical Analysis](docs/requirements/cloudshelf-technical-analysis.md) | [Architecture Decision Records](docs/architecture/cloudshelf-architecture-decisions.md) | [Implementation Guides](docs/architecture/)
 
 ---
 
