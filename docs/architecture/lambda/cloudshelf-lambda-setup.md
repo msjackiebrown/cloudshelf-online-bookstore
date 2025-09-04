@@ -303,7 +303,7 @@ Following ADR-004 architecture strategy:
 
 - 🏛️ [**ADR-004: Lambda Architecture Strategy**](../cloudshelf-architecture-decisions.md#adr-004) - Complete serverless architecture rationale
 - 🏛️ [**All Architecture Decisions**](../cloudshelf-architecture-decisions.md) - Context for Lambda integration choices
-- 🌐 [**VPC Setup**](../vpc/setup-vpc-reference.md) - Network configuration for Lambda VPC access
+- 🌐 [**VPC Setup**](../vpc/cloudshelf-vpc-reference.md) - Network configuration for Lambda VPC access
 - 🗃️ [**RDS Setup**](../setup-rds.md) - Database connectivity requirements
 - 🗂️ [**DynamoDB Setup**](../dynamodb/setup-dynamodb.md) - NoSQL integration patterns
 

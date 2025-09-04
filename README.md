@@ -2,180 +2,180 @@
 
 <div align="center">
 
-**A modern, cloud-native online bookstore built with AWS serverless architecture**
+**AWS Solutions Architect Tutorial Project - Serverless E-commerce Demo**
 
-[![AWS](https://img.shields.io/badge/AWS-Serverless-orange?logo=aws)](https://aws.amazon.com/)
-[![Architecture](https://img.shields.io/badge/Architecture-Solutions_Architect-blue)](docs/architecture/)
-[![Documentation](https://img.shields.io/badge/Documentation-Complete-green)](docs/)
+[![AWS](https://img.shields.io/badge/AWS-Tutorial_Project-orange?logo=aws)](https://aws.amazon.com/)
+[![Architecture](https://img.shields.io/badge/Architecture-Learning_Demo-blue)](docs/architecture/)
+[![Documentation](https://img.shields.io/badge/Documentation-Tutorial_Guides-green)](docs/)
 [![License](https://img.shields.io/badge/License-MIT-yellow)](LICENSE)
 
 </div>
 
-## 🎯 Overview
+## 🎯 Tutorial Overview
 
-CloudShelf is a **scalable e-commerce platform** that demonstrates AWS Solutions Architect best practices through:
+CloudShelf is a **fictional online bookstore** designed as an AWS Solutions Architect learning project that demonstrates serverless architecture best practices:
 
 - 🏗️ **Serverless Architecture** - Lambda, API Gateway, DynamoDB, RDS
-- 📊 **Enterprise Documentation** - Comprehensive technical specifications
-- 🔒 **Security by Design** - Multi-layer security with IAM and VPC isolation
-- 💰 **Cost Optimization** - Pay-per-use serverless pricing model
+- � **Learning Documentation** - Step-by-step implementation guides
+- 🔒 **Security Best Practices** - Multi-layer security with IAM and VPC
+- 💰 **Cost-Effective Design** - Pay-per-use serverless pricing model
 
-**Current Status**: Complete serverless architecture implemented with book catalog, shopping cart, and frontend hosting. Authentication and order processing planned for Phase 2.
-
----
-
-## 🚀 Quick Start
-
-| Step | Action                            | Link                                                                           |
-| ---- | --------------------------------- | ------------------------------------------------------------------------------ |
-| 1    | **Understand Business Context**   | [Business Requirements](docs/requirements/cloudshelf-business-requirements.md) |
-| 2    | **Review Technical Architecture** | [System Architecture](docs/architecture/cloudshelf-system-architecture.md)     |
-| 3    | **Explore Implementation**        | [Setup Guides](docs/architecture/)                                             |
-| 4    | **Browse Documentation**          | [Requirements & Planning](#-documentation)                                     |
+**Learning Objective**: Hands-on experience implementing AWS serverless e-commerce architecture with real-world patterns and security best practices.
 
 ---
 
-## 🏗️ Architecture Overview
+## 🚀 Quick Start for Learning
+
+| Step | Learning Phase                   | Documentation Link                                                             |
+| ---- | -------------------------------- | ------------------------------------------------------------------------------ |
+| 1    | **Understand Tutorial Context**  | [Business Requirements](docs/requirements/cloudshelf-business-requirements.md) |
+| 2    | **Review Technical Approach**    | [Technical Analysis](docs/requirements/cloudshelf-technical-analysis.md)       |
+| 3    | **Follow Implementation Guides** | [Setup Guides](docs/architecture/)                                             |
+| 4    | **Study Architecture Patterns**  | [Documentation](#-tutorial-documentation)                                      |
+
+---
+
+## 🏗️ Tutorial Architecture
 
 <div align="center">
 
-![CloudShelf Architecture Diagram](docs/architecture/cloudshelf-architecture-diagram.png)
+![CloudShelf Architecture Diagram](docs/architecture/diagrams/source/cloudshelf-architecture-diagram.png)
+
+_Serverless architecture demonstrating AWS best practices for e-commerce applications_
 
 </div>
 
-### Core AWS Services
+### AWS Services for Learning
 
-| Service               | Purpose            | Status      |
-| --------------------- | ------------------ | ----------- |
-| 🚪 **API Gateway**    | RESTful APIs       | ✅ Deployed |
-| ⚡ **Lambda**         | Serverless compute | ✅ Deployed |
-| 🗄️ **RDS PostgreSQL** | Book catalog       | ✅ Deployed |
-| 🗂️ **DynamoDB**       | Shopping carts     | ✅ Deployed |
-| 🌐 **CloudFront**     | Global CDN         | ✅ Deployed |
-| 🪣 **S3**             | Static hosting     | ✅ Deployed |
-| 🔐 **Cognito**        | Authentication     | ⏳ Phase 2  |
+| Service               | Learning Purpose       | Implementation Status |
+| --------------------- | ---------------------- | --------------------- |
+| 🚪 **API Gateway**    | REST API management    | ✅ Tutorial Complete  |
+| ⚡ **Lambda**         | Serverless compute     | ✅ Tutorial Complete  |
+| 🗄️ **RDS PostgreSQL** | Relational database    | ✅ Tutorial Complete  |
+| 🗂️ **DynamoDB**       | NoSQL database         | ✅ Tutorial Complete  |
+| 🌐 **CloudFront**     | CDN and performance    | ✅ Tutorial Complete  |
+| 🪣 **S3**             | Static website hosting | ✅ Tutorial Complete  |
+| 🔐 **VPC**            | Network security       | ✅ Tutorial Complete  |
+| 🛡️ **IAM**            | Access control         | ✅ Tutorial Complete  |
 
 ---
 
-## ✨ Current Implementation
+## ✨ Tutorial Implementation Progress
 
-### ✅ Completed Features
+### ✅ Core Tutorial Features Complete
 
+- **VPC Network Foundation** - Security isolation and network setup
+- **IAM Security Configuration** - Roles, policies, and access control
 - **Book Catalog API** - Browse and search books (RDS PostgreSQL)
 - **Shopping Cart Service** - Add/remove items, session management (DynamoDB)
-- **API Gateway** - RESTful endpoints with CORS
-- **VPC Infrastructure** - Network isolation and security
+- **API Gateway Setup** - RESTful endpoints with security
 - **Static Website Hosting** - S3 + CloudFront CDN integration
-- **Monitoring Setup** - CloudWatch dashboards and alerts
 
-### 🔄 In Progress
+### 🔄 Tutorial Extensions (Optional)
 
-- **Performance Optimization** - Caching and scaling enhancements
-- **Advanced Monitoring** - Custom metrics and alerting
+- **Performance Optimization** - Advanced caching patterns
+- **Enhanced Monitoring** - Custom CloudWatch dashboards
+- **Security Hardening** - Additional security layers
 
-### ⏳ Planned (Phase 2)
+### ⏳ Future Learning Phases
 
-- **User Authentication** - AWS Cognito integration
-- **Order Processing** - Complete checkout workflow
-- **Admin Portal** - Inventory and user management
+- **User Authentication** - AWS Cognito integration patterns
+- **Order Processing** - Complete e-commerce workflow
+- **Advanced Features** - Microservices patterns
 
 ---
 
-## 📋 Documentation
+## 📋 Tutorial Documentation
 
-### 🏛️ Architecture & Design
+### � Learning Prerequisites
 
-- [System Architecture](docs/architecture/cloudshelf-system-architecture.md) - Complete technical design
-- [Architecture Decisions](docs/architecture/cloudshelf-architecture-decisions.md) - ADRs and design rationale
-- [IAM Security Setup](docs/architecture/security/cloudshelf-iam-security-setup.md) - Security roles and policies
-- [RDS Database Setup](docs/architecture/rds/cloudshelf-rds-setup.md) - PostgreSQL database configuration
-- [DynamoDB Setup](docs/architecture/dynamodb/cloudshelf-dynamodb-setup.md) - Shopping cart storage
-- [Technical Analysis](docs/requirements/cloudshelf-technical-analysis.md) - Solutions architect overview
-
-### 🔧 Implementation Guides
-
-- [VPC Setup](docs/architecture/vpc/cloudshelf-vpc-setup.md) - Network foundation
-- [Security Setup](docs/architecture/security/cloudshelf-iam-security-setup.md) - IAM roles and policies
-- [Database Setup](docs/architecture/rds/cloudshelf-rds-setup.md) - PostgreSQL configuration
-- [DynamoDB Setup](docs/architecture/dynamodb/cloudshelf-dynamodb-setup.md) - NoSQL database configuration
-- [Lambda Deployment](docs/architecture/lambda/cloudshelf-lambda-setup.md) - Function deployment
-- [API Gateway](docs/architecture/apigateway/cloudshelf-apigateway-setup.md) - API configuration
-- [S3 Storage](docs/architecture/s3/cloudshelf-s3-setup.md) - Static website hosting
-- [CloudFront CDN](docs/architecture/cloudfront/cloudshelf-cloudfront-setup.md) - Content delivery network
-- [Monitoring](docs/architecture/monitoring/cloudshelf-cloudwatch-setup.md) - CloudWatch setup
-
-### 📚 Requirements & Planning
-
-- [Business Requirements](docs/requirements/cloudshelf-business-requirements.md) - Business goals and metrics
+- [Business Requirements](docs/requirements/cloudshelf-business-requirements.md) - Tutorial context and objectives
 - [Software Requirements](docs/requirements/cloudshelf-srs.md) - Technical specifications
+- [Technical Analysis](docs/requirements/cloudshelf-technical-analysis.md) - Architecture decisions
+
+### �️ Implementation Guides (Follow in Order)
+
+1. [VPC Setup](docs/architecture/vpc/cloudshelf-vpc-setup.md) - Network foundation
+2. [IAM Security Setup](docs/architecture/security/cloudshelf-iam-security-setup.md) - Access control
+3. [RDS Database Setup](docs/architecture/rds/cloudshelf-rds-setup.md) - PostgreSQL configuration
+4. [DynamoDB Setup](docs/architecture/dynamodb/cloudshelf-dynamodb-setup.md) - NoSQL database
+5. [Lambda Functions](docs/architecture/lambda/cloudshelf-lambda-setup.md) - Serverless compute
+6. [API Gateway](docs/architecture/apigateway/cloudshelf-apigateway-setup.md) - API management
+7. [S3 Storage](docs/architecture/s3/cloudshelf-s3-setup.md) - Static website hosting
+8. [CloudFront CDN](docs/architecture/cloudfront/cloudshelf-cloudfront-setup.md) - Content delivery
+
+### 📚 Learning Resources
+
 - [Use Cases](docs/requirements/cloudshelf-use-cases.md) - User interaction patterns
 - [User Stories](docs/requirements/cloudshelf-user-stories.md) - Feature descriptions
 
 ---
 
-## 🛠️ Getting Started
+## 🛠️ Getting Started with Tutorial
 
-### Prerequisites
+### Prerequisites for Learning
 
-- AWS Account with appropriate permissions
+- AWS Account with appropriate permissions (free tier friendly)
 - AWS CLI configured
 - Java 21 JDK and Maven 3.8+ (for Lambda development)
-- Git for version control
+- Basic understanding of cloud computing concepts
 
-### Setup Instructions
+### Tutorial Setup Instructions
 
-1. **Clone Repository**
+1. **Clone Tutorial Repository**
 
    ```bash
    git clone https://github.com/msjackiebrown/cloudshelf-online-bookstore.git
    cd cloudshelf-online-bookstore
    ```
 
-2. **Review Architecture**
+2. **Study Tutorial Context**
 
    - Start with [Business Requirements](docs/requirements/cloudshelf-business-requirements.md)
-   - Review [System Architecture](docs/architecture/cloudshelf-system-architecture.md)
+   - Review [Technical Analysis](docs/requirements/cloudshelf-technical-analysis.md)
 
-3. **Follow Setup Guides**
-   - Implementation guides available in [docs/architecture/](docs/architecture/)
-   - Follow the setup order: VPC → Security → Databases → Lambda → API Gateway
-
----
-
-## 🏆 Technical Excellence
-
-This project demonstrates **enterprise-grade AWS architecture** through:
-
-- **Serverless Design** - Event-driven architecture with AWS Lambda
-- **Database Strategy** - Hybrid RDS/DynamoDB approach for optimal performance
-- **Security Implementation** - Multi-layer security with VPC and IAM
-- **Documentation Standards** - Enterprise-grade technical documentation
-- **Cost Optimization** - Pay-per-use serverless pricing model
-
-**Architecture Evidence**: [Technical Analysis](docs/requirements/cloudshelf-technical-analysis.md) | [Architecture Decisions](docs/architecture/cloudshelf-architecture-decisions.md)
+3. **Follow Implementation Guides in Order**
+   - Complete setup guides in [docs/architecture/](docs/architecture/)
+   - Recommended sequence: VPC → IAM → RDS → DynamoDB → Lambda → API Gateway → S3 → CloudFront
 
 ---
 
-## 🤝 Contributing
+## � Learning Outcomes
 
-1. Review [Business Requirements](docs/requirements/cloudshelf-business-requirements.md)
-2. Understand [System Architecture](docs/architecture/cloudshelf-system-architecture.md)
-3. Follow setup guides in [docs/architecture/](docs/architecture/)
-4. Create feature branch and submit pull request
+This tutorial project demonstrates **AWS Solutions Architect skills** through:
+
+- **Serverless Patterns** - Event-driven architecture with AWS Lambda
+- **Data Architecture** - Hybrid RDS/DynamoDB approach for different use cases
+- **Security Implementation** - Multi-layer security with VPC and IAM best practices
+- **Documentation Skills** - Professional technical documentation standards
+- **Cost Management** - Pay-per-use serverless pricing optimization
+
+**Learning Evidence**: [Technical Analysis](docs/requirements/cloudshelf-technical-analysis.md) | [Implementation Guides](docs/architecture/)
+
+---
+
+## 🤝 Using This Tutorial
+
+1. **Study** [Business Requirements](docs/requirements/cloudshelf-business-requirements.md) for context
+2. **Review** [Technical Analysis](docs/requirements/cloudshelf-technical-analysis.md) for architecture approach
+3. **Implement** following setup guides in [docs/architecture/](docs/architecture/)
+4. **Experiment** with modifications and enhancements
+
+**Tutorial Focus**: Hands-on AWS implementation skills for Solutions Architects
 
 ---
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This tutorial project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ---
 
 <div align="center">
 
-**🎯 Ready to explore AWS Solutions Architecture?**
+**🎯 Ready to learn AWS Solutions Architecture?**
 
-[Business Requirements](docs/requirements/cloudshelf-business-requirements.md) → [System Architecture](docs/architecture/cloudshelf-system-architecture.md) → [Setup Guides](docs/architecture/)
+[Tutorial Context](docs/requirements/cloudshelf-business-requirements.md) → [Technical Approach](docs/requirements/cloudshelf-technical-analysis.md) → [Implementation Guides](docs/architecture/)
 
 [![GitHub Stars](https://img.shields.io/github/stars/msjackiebrown/cloudshelf-online-bookstore?style=social)](https://github.com/msjackiebrown/cloudshelf-online-bookstore)
 

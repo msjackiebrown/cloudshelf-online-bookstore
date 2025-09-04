@@ -82,8 +82,7 @@ Create a Virtual Private Cloud to isolate your resources.
 - CIDR Block: `10.0.0.0/16` (provides 65,536 IP addresses)
 - Enable DNS support and DNS hostnames
 
-![VPC Creation Configuration](VPC-Creation-Step1.png)
-![VPC DNS Settings](screenshots/vpc-dns-settings.png)
+![VPC Creation Configuration](screenshots/cloudshelf-vpc-dns-settings.png)
 
 ---
 
@@ -91,8 +90,7 @@ Create a Virtual Private Cloud to isolate your resources.
 
 Create and attach an Internet Gateway to enable internet access for public subnets.
 
-![Internet Gateway Creation](Internet-Gateway-Creation-Step2.png)
-![Internet Gateway Attachment](screenshots/internet-gateway-attachment.png)
+![Internet Gateway Creation](screenshots/cloudshelf-internet-gateway-attachment.png)
 
 ---
 
@@ -105,8 +103,7 @@ Create a public subnet for internet-facing resources.
 - CIDR Block: `10.0.1.0/24` (256 IP addresses)
 - Availability Zone: Choose your preferred AZ (e.g., us-east-1a)
 
-![Public Subnet Creation](Public-Subnet-Creation-Step3.png)
-![Public Subnet Configuration](screenshots/public-subnet-configuration.png)
+![Public Subnet Creation](screenshots/cloudshelf-public-subnet-configuration.png)
 
 ---
 
@@ -119,8 +116,7 @@ Create a private subnet for backend resources.
 - CIDR Block: `10.0.2.0/24` (256 IP addresses)
 - Availability Zone: Different from public subnet for high availability
 
-![Private Subnet Creation](Private-Subnet-Creation-Step4.png)
-![Private Subnet Configuration](screenshots/private-subnet-configuration.png)
+![Private Subnet Creation](screenshots/cloudshelf-private-subnet-configuration.png)
 
 ---
 
@@ -133,16 +129,14 @@ Set up routing to direct traffic properly between subnets and the internet.
 - Route `0.0.0.0/0` → Internet Gateway
 - Associate with public subnet
 
-![Public Route Table Configuration](Public-Route-Table-Configuration-Step5.png)
-![Public Route Table Association](screenshots/public-route-table-association.png)
+![Public Route Table Configuration](screenshots/cloudshelf-public-route-table-association.png)
 
 **Private Route Table Configuration:**
 
 - Keep default routes (no internet access)
 - Associate with private subnet
 
-![Private Route Table Configuration](Private-Route-Table-Configuration-Step5.png)
-![Private Route Table Association](screenshots/private-route-table-association.png)
+![Private Route Table Configuration](screenshots/cloudshelf-private-route-table-association.png)
 
 ---
 
@@ -164,7 +158,7 @@ Configure security groups to control network traffic at the instance level.
 - **PostgreSQL (5432)** to RDS security group
 - **HTTPS (443)** to DynamoDB VPC endpoint
 
-![Lambda Security Group Configuration](screenshots/lambda-security-group-configuration.png)
+![Lambda Security Group Configuration](screenshots/cloudshelf-lambda-security-group-configuration.png)
 
 #### RDS Security Group
 
@@ -183,7 +177,7 @@ Configure security groups to control network traffic at the instance level.
 
 - **All traffic** to `0.0.0.0/0` (default - for maintenance)
 
-![RDS Security Group Configuration](screenshots/rds-security-group-configuration.png)
+![RDS Security Group Configuration](screenshots/cloudshelf-rds-security-group-configuration.png)
 
 #### API Gateway Security Group (Optional)
 
@@ -205,7 +199,7 @@ Configure VPC endpoints for cost-effective AWS service access without internet g
 - **Type**: Gateway endpoint
 - **Route Tables**: Associate with private route table
 
-![DynamoDB VPC Endpoint Configuration](screenshots/dynamodb-vpc-endpoint.png)
+![DynamoDB VPC Endpoint Configuration](screenshots/cloudshelf-dynamodb-vpc-endpoint.png)
 
 #### S3 VPC Endpoint
 
@@ -215,7 +209,7 @@ Configure VPC endpoints for cost-effective AWS service access without internet g
 - **Type**: Gateway endpoint
 - **Route Tables**: Associate with private route table
 
-![S3 VPC Endpoint Configuration](screenshots/s3-vpc-endpoint.png)
+![S3 VPC Endpoint Configuration](screenshots/cloudshelf-s3-vpc-endpoint.png)
 
 ---
 
@@ -294,14 +288,14 @@ Configure VPC endpoints for cost-effective AWS service access without internet g
 - Use Session Manager to connect (no SSH keys needed)
 - Test internet access through instance browser/curl
 
-![VPC Connectivity Testing](screenshots/vpc-connectivity-testing.png)
+![VPC Connectivity Testing](screenshots/cloudshelf-vpc-connectivity-testing.png)
 
 **VPC DNS Resolution Test:**
 
 - Navigate to VPC Console → DNS hostnames/resolution settings
 - Verify both DNS resolution and DNS hostnames are enabled
 
-![VPC DNS Configuration Validation](screenshots/vpc-dns-configuration.png)
+![VPC DNS Configuration Validation](screenshots/cloudshelf-vpc-dns-configuration.png)
 
 **Route Table Verification:**
 
@@ -309,7 +303,7 @@ Configure VPC endpoints for cost-effective AWS service access without internet g
 - Verify routes for public and private subnets
 - Check association with correct subnets
 
-![Route Table Verification](screenshots/route-table-verification.png)
+![Route Table Verification](screenshots/cloudshelf-route-table-verification.png)
 
 </details>
 

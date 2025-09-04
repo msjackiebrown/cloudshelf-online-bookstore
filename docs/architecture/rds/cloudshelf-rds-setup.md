@@ -62,7 +62,7 @@ Before creating RDS instances, ensure the network foundation is established per 
 
 ### **🛠️ Infrastructure Validation**
 
-⚠️ **Important**: Complete [VPC Setup Guide](../vpc/setup-vpc-reference.md) before proceeding.
+⚠️ **Important**: Complete [VPC Setup Guide](../vpc/cloudshelf-vpc-reference.md) before proceeding.
 
 - ✅ VPC and Security Group Setup completed
 - ✅ Private subnets available in multiple AZs
@@ -365,7 +365,7 @@ def get_db_connection():
 
 - 🏛️ [**ADR-002: PostgreSQL Selection**](../cloudshelf-architecture-decisions.md#adr-002) - Complete database choice rationale
 - 🏛️ [**All Architecture Decisions**](../cloudshelf-architecture-decisions.md) - Context for database architecture
-- 🌐 [**VPC Setup**](../vpc/setup-vpc-reference.md) - Required network foundation
+- 🌐 [**VPC Setup**](../vpc/cloudshelf-vpc-reference.md) - Required network foundation
 - 🗂️ [**DynamoDB Setup**](../dynamodb/setup-dynamodb.md) - Complementary NoSQL storage
 - ⚡ [**Lambda Setup**](../lambda/setup-lambda.md) - Database connectivity integration
 
