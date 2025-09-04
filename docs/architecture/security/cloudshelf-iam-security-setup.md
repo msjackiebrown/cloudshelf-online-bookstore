@@ -6,6 +6,35 @@ This guide provides step-by-step instructions for setting up IAM security for th
 
 ---
 
+## 🔒 Security Essentials
+
+### **✅ Security Checklist**
+
+Before implementing CloudShelf, ensure these security fundamentals:
+
+- [ ] **No Hardcoded Credentials** - Use IAM roles, never embed API keys
+- [ ] **Least Privilege Access** - Grant only necessary permissions
+- [ ] **Network Isolation** - Database in private subnets only
+- [ ] **Encryption at Rest** - Enable RDS encryption
+- [ ] **Secure Communication** - HTTPS only for all endpoints
+- [ ] **Security Groups** - Restrict access between services
+
+### **🛡️ Key Security Principles**
+
+**Defense in Depth**:
+
+- **Network Layer**: VPC security groups and private subnets
+- **Application Layer**: IAM roles with minimal permissions
+- **Data Layer**: Database encryption and access control
+
+**Zero Trust Model**:
+
+- Every service interaction requires explicit permission
+- No default trust relationships between AWS services
+- Regular review and rotation of access permissions
+
+---
+
 ## 🏛️ Architecture Overview
 
 IAM security provides the foundation for all CloudShelf services with:
@@ -294,7 +323,7 @@ Now create roles and attach the custom policies created in Step 1.
 - [🌐 VPC Setup Guide](../vpc/cloudshelf-vpc-setup.md) - Network foundation
 - [⚡ Lambda Setup Guide](../lambda/cloudshelf-lambda-setup.md) - Function deployment
 - [🔌 API Gateway Setup](../apigateway/cloudshelf-apigateway-setup.md) - API configuration
-- [🛡️ Security Architecture](../cloudshelf-security-architecture.md) - Security strategy
+- 🏛️ [**All Architecture Decisions**](../cloudshelf-architecture-decisions.md) - Context for security architecture choices
 
 ---
 

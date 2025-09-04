@@ -227,7 +227,7 @@ curl -I https://d1234567890abc.cloudfront.net
 
 - [📖 CloudShelf Architecture Decisions](../cloudshelf-architecture-decisions.md) - Complete ADR documentation
 - [🌐 CloudFront Setup Guide](../cloudfront/cloudshelf-cloudfront-setup.md) - CDN integration
-- [🔒 Security Architecture](../security/cloudshelf-security-architecture.md) - Security best practices
+- � [**IAM Security Setup**](../security/cloudshelf-iam-security-setup.md) - Security roles and policies
 - [📊 Monitoring Setup](../monitoring/cloudshelf-monitoring-observability.md) - Performance monitoring
 - [💰 Cost Optimization](../cloudshelf-cost-optimization-strategy.md) - Storage cost management
 

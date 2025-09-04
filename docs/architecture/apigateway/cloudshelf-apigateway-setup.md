@@ -6,6 +6,28 @@ This guide provides setup instructions for AWS API Gateway, implementing the API
 
 ---
 
+## 🔒 API Security Configuration
+
+### **🛡️ API Gateway Security Features**
+
+**Built-in Security Capabilities**:
+
+- **HTTPS Only** - All API endpoints use SSL/TLS encryption
+- **CORS Configuration** - Cross-origin resource sharing control
+- **Rate Limiting** - Throttling to prevent abuse
+- **Resource Policies** - Control access to API endpoints
+- **Integration Security** - Secure Lambda function invocation
+
+**Security Best Practices**:
+
+- [ ] Enable HTTPS only (no HTTP endpoints)
+- [ ] Configure CORS properly for web applications
+- [ ] Set up throttling limits to prevent abuse
+- [ ] Use resource policies for additional access control
+- [ ] Monitor API usage and errors
+
+---
+
 ## 🏛️ Architecture Overview
 
 Based on **ADR-005**, API Gateway provides the unified API layer for CloudShelf with:
@@ -355,7 +377,7 @@ graph TD
 - [📖 CloudShelf Architecture Decisions](../cloudshelf-architecture-decisions.md) - Complete ADR documentation
 - [🔧 Lambda Setup Guide](../lambda/cloudshelf-lambda-setup.md) - Lambda function configuration
 - [🗄️ DynamoDB Setup Guide](../dynamodb/cloudshelf-dynamodb-setup.md) - Cart data store setup
-- [🔒 Security Architecture](../security/cloudshelf-security-architecture.md) - Security best practices
+- � [**IAM Security Setup**](../security/cloudshelf-iam-security-setup.md) - Security roles and policies
 - [📊 Monitoring Setup](../monitoring/cloudshelf-monitoring-observability.md) - Observability configuration
 
 ---

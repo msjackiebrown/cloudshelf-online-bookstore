@@ -6,6 +6,26 @@ This guide provides setup instructions for AWS VPC networking infrastructure, im
 
 ---
 
+## 🔒 Network Security Principles
+
+### **🛡️ Security-First VPC Design**
+
+**Key Security Benefits**:
+
+- **Network Isolation** - VPC creates a private cloud environment
+- **Traffic Control** - Security groups act as virtual firewalls
+- **Private Resources** - Databases never exposed to internet
+- **Controlled Access** - Only necessary ports and protocols allowed
+
+**Security Architecture**:
+
+- **Public Subnets**: API Gateway endpoints only
+- **Private Subnets**: Lambda functions and databases
+- **No Direct Database Access**: RDS accessible only from Lambda
+- **Encrypted Communication**: All traffic uses HTTPS/TLS
+
+---
+
 ## 🏛️ Architecture Overview
 
 Based on **ADR-001**, VPC provides the network foundation for CloudShelf with:

@@ -187,7 +187,7 @@ curl -H "Cache-Control: no-cache" https://d1234567890abc.cloudfront.net
 
 - [📖 CloudShelf Architecture Decisions](../cloudshelf-architecture-decisions.md) - Complete ADR documentation
 - [🗄️ S3 Setup Guide](../s3/cloudshelf-s3-setup.md) - Origin bucket configuration
-- [🔒 Security Architecture](../security/cloudshelf-security-architecture.md) - Security best practices
+- � [**IAM Security Setup**](../security/cloudshelf-iam-security-setup.md) - Security roles and policies
 - [📊 Monitoring Setup](../monitoring/cloudshelf-monitoring-observability.md) - Performance monitoring
 - [🌐 Route 53 Configuration](../cloudshelf-system-architecture.md) - Custom domain setup
 

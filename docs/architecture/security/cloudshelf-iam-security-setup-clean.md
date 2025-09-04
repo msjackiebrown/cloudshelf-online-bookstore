@@ -398,7 +398,7 @@ aws lambda invoke \
 - [🌐 VPC Setup Guide](../vpc/cloudshelf-vpc-setup.md) - Network foundation
 - [⚡ Lambda Setup Guide](../lambda/cloudshelf-lambda-setup.md) - Function deployment
 - [🔌 API Gateway Setup](../apigateway/cloudshelf-apigateway-setup.md) - API configuration
-- [🛡️ Security Architecture](../cloudshelf-security-architecture.md) - Security strategy
+- 🏛️ [**All Architecture Decisions**](../cloudshelf-architecture-decisions.md) - Context for security architecture choices
 
 ---
 

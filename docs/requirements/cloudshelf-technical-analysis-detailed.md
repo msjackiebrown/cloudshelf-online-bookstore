@@ -459,7 +459,7 @@ The solution implements a **serverless-first AWS architecture** with hybrid data
 - [Business Requirements Document](./cloudshelf-business-requirements.md)
 - [Architecture Decision Records](../architecture/cloudshelf-architecture-decisions.md)
 - [System Architecture Diagrams](../architecture/cloudshelf-system-architecture.md)
-- [Security Architecture](../architecture/cloudshelf-security-architecture.md)
+- [IAM Security Setup](../architecture/security/cloudshelf-iam-security-setup.md) - Security implementation guide
 
 ### Appendix B: AWS Well-Architected Assessment
 

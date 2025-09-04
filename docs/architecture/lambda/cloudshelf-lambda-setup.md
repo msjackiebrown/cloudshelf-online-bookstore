@@ -6,6 +6,27 @@ This guide provides setup instructions for AWS Lambda functions, implementing th
 
 ---
 
+## 🔒 Lambda Security Best Practices
+
+### **🛡️ Serverless Security Principles**
+
+**Key Security Considerations**:
+
+- **IAM Roles**: Each Lambda function gets minimal required permissions
+- **VPC Configuration**: Lambda functions in VPC for database access
+- **Environment Variables**: Secure configuration without hardcoded secrets
+- **Resource Policies**: Control which services can invoke Lambda functions
+
+**Security Checklist**:
+
+- [ ] Use least privilege IAM roles
+- [ ] Enable VPC for database connectivity
+- [ ] Never hardcode database credentials
+- [ ] Use AWS Secrets Manager for sensitive data
+- [ ] Configure security groups for network access
+
+---
+
 ## 🏛️ Architecture Overview
 
 Based on **ADR-004**, Lambda functions provide the compute layer for CloudShelf with:

@@ -6,6 +6,29 @@ This guide provides setup instructions for Amazon RDS PostgreSQL, implementing t
 
 ---
 
+## 🔒 Database Security Essentials
+
+### **🛡️ RDS Security Requirements**
+
+**Critical Security Configurations**:
+
+- **Private Subnet Deployment** - Database never accessible from internet
+- **Security Group Restrictions** - Only Lambda functions can connect
+- **Encryption at Rest** - All data encrypted using AWS KMS
+- **Backup Encryption** - Automated backups are also encrypted
+- **SSL/TLS Connections** - Enforce encrypted connections only
+
+**Security Checklist**:
+
+- [ ] Deploy RDS in private subnets only
+- [ ] Configure security group to allow Lambda access only
+- [ ] Enable encryption at rest with KMS
+- [ ] Use strong database passwords (AWS Secrets Manager)
+- [ ] Enable automated backups with encryption
+- [ ] Configure VPC security groups properly
+
+---
+
 ## 🏛️ Architecture Overview
 
 Based on **ADR-002**, PostgreSQL RDS provides the book catalog storage layer for CloudShelf with:
