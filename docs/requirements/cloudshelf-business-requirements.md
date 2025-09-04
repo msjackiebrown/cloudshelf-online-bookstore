@@ -1,155 +1,194 @@
 # 📋 CloudShelf Business Requirements Document (BRD)
 
-> **Original business stakeholder requirements as provided to Solutions Architect**
+> **Fictional business requirements for AWS Solutions Architect learning project**
 >
-> _What the business needs - no technical implementation details_
+> _What the business needs - tutorial project scope and objectives_
 
 ---
 
-## 🎯 Executive Summary
+## 🎯 Project Summary
 
-CloudShelf aims to capture 2% of the $2.3B online book market within 3 years by providing a superior customer experience for book discovery and purchase. This document contains the original business requirements as provided by stakeholders.
-
----
-
-## 🏢 Business Context
-
-### **Company Background**
-
-- **Industry**: Online retail (books and e-books)
-- **Market**: English-speaking markets (US, UK, Canada, Australia)
-- **Stage**: Solo founder project / Personal portfolio demonstration
-- **Business Vision**: Become the preferred online bookstore for book lovers who value personalized recommendations
-
-### **Market Opportunity**
-
-- **Total Market**: $2.3B online book sales annually
-- **Target**: 2% market share within 3 years ($46M revenue)
-- **Competitive Edge**: Personalized recommendations, support for indie bookstores
+CloudShelf is a **fictional online bookstore** created as an AWS Solutions Architect learning project. This document defines the business requirements for a realistic e-commerce scenario to demonstrate serverless architecture best practices.
 
 ---
 
-## 🎯 Business Objectives (Stakeholder Requirements)
+## 🏢 Project Context
 
-### **Primary Business Goals**
+### **Learning Objectives**
 
-| **Business Goal**       | **Requirement**                               | **Success Criteria**                                 | **Why This Matters**                     |
-| ----------------------- | --------------------------------------------- | ---------------------------------------------------- | ---------------------------------------- |
-| **Revenue Growth**      | Grow from $2M to $46M in 3 years              | 23x revenue increase without hitting limits          | Market opportunity, investor commitments |
-| **Customer Experience** | Fast, responsive website for global customers | Loads quickly anywhere in our target markets         | Customer retention, beat competitors     |
-| **Cost Control**        | Keep technology costs reasonable              | Costs grow proportionally with revenue               | Business sustainability, profitability   |
-| **Market Reach**        | Serve customers in 4 countries                | Simultaneous availability: US, UK, Canada, Australia | Revenue diversification, brand expansion |
-| **Business Growth**     | Accept both individual and business customers | Support larger orders, meet business standards       | Higher order values, B2B opportunities   |
+- **Primary Goal**: Demonstrate AWS serverless architecture for e-commerce
+- **Target Audience**: Solutions Architects learning AWS implementation
+- **Scope**: Book catalog, shopping cart, and basic e-commerce functionality
+- **Architecture Focus**: Serverless, scalable, cost-effective AWS services
+
+### **Fictional Business Scenario**
+
+**CloudShelf** is a modern online bookstore that needs:
+
+- Fast, responsive website for book browsing
+- Reliable shopping cart functionality
+- Scalable architecture for growth
+- Cost-effective cloud infrastructure
+
+---
+
+## 🎯 Functional Requirements
+
+### **Core Features Needed**
+
+| **Feature Category**    | **Requirements**                     | **Implementation Priority** |
+| ----------------------- | ------------------------------------ | --------------------------- |
+| **Book Catalog**        | Browse, search books by title/author | ✅ **Phase 1** (Core)       |
+| **Shopping Cart**       | Add/remove items, manage cart state  | ✅ **Phase 1** (Core)       |
+| **Product Display**     | Book details, pricing, availability  | ✅ **Phase 1** (Core)       |
+| **User Authentication** | User accounts, login/logout          | ⏳ **Phase 2** (Enhanced)   |
+| **Order Processing**    | Checkout, payment, order history     | ⏳ **Phase 2** (Enhanced)   |
+| **Admin Functions**     | Add/edit books, inventory management | 🔄 **Phase 3** (Advanced)   |
+
+### **Technical Requirements**
+
+- **Performance**: Sub-2 second page load times
+- **Availability**: 99.9% uptime for core functionality
+- **Scalability**: Handle traffic spikes without performance degradation
+- **Security**: Secure data storage and transmission
+- **Cost**: Pay-per-use serverless pricing model
+
+---
+
+## 🛍️ User Experience Requirements
+
+### **Book Shopping Experience**
+
+- **Search & Browse**: Find books by title, author, category
+- **Product Details**: Book information, pricing, cover images
+- **Shopping Cart**: Add/remove items, persist cart across sessions
+- **Mobile-Friendly**: Responsive design for all device types
 
 ### **Performance Expectations**
 
-- **Speed**: Website should be fast (customers won't wait)
-- **Reliability**: Always available when customers want to shop
-- **Scale**: Handle growth from thousands to tens of thousands of customers
-- **Global**: Work well for customers in all target countries
-
-### **Revenue Projections**
-
-| **Year** | **Revenue Target** | **Customers** | **Average Order** | **Key Milestone** |
-| -------- | ------------------ | ------------- | ----------------- | ----------------- |
-| Year 1   | $2M                | 10,000        | $25               | Prove concept     |
-| Year 2   | $12M               | 35,000        | $28               | Scale operations  |
-| Year 3   | $46M               | 85,000        | $32               | Market leadership |
+- **Fast Loading**: Pages load in under 2 seconds
+- **Global Access**: Good performance from multiple regions
+- **Reliable**: Website available 99.9% of the time
+- **Intuitive**: Easy navigation and clear user interface
 
 ---
 
-## 🛍️ Business Feature Requirements
+## 📊 Success Criteria
 
-### **Customer Features (What Customers Need)**
+### **Learning Project Metrics**
 
-#### **Book Shopping**
-
-- Find books by searching for titles, authors, or topics
-- Browse books by category (fiction, non-fiction, etc.)
-- See what's popular, new, or featured
-- Get personalized book recommendations
-- Read reviews and ratings from other customers
-
-#### **Purchase Process**
-
-- Add books to cart, save for later
-- Checkout as guest or registered customer
-- Pay with credit card, PayPal, or digital wallet
-- Track orders and view purchase history
-
-#### **User Accounts**
-
-- Create account, manage profile and addresses
-- Keep track of past purchases
-- Create reading lists and book collections
-
-### **Business Operations (What We Need to Run the Business)**
-
-#### **Inventory Management**
-
-- Add new books to our catalog
-- Track stock levels, get alerts when low
-- Import book data from suppliers
-- Automatic reordering when inventory is low
-
-#### **Order Processing**
-
-- Process customer orders efficiently
-- Generate shipping labels
-- Handle returns and refunds
-- Customer service tools for support
-
-#### **Business Analytics**
-
-- Track sales and revenue
-- Understand customer behavior
-- Monitor inventory turnover
-- Generate reports for accounting
+| **Category**     | **Success Indicator**              | **Learning Objective**              |
+| ---------------- | ---------------------------------- | ----------------------------------- |
+| **Architecture** | Serverless solution implemented    | AWS Lambda, API Gateway, DynamoDB   |
+| **Performance**  | Fast response times (< 2 seconds)  | CloudFront CDN implementation       |
+| **Scalability**  | Auto-scaling without configuration | Serverless scaling benefits         |
+| **Security**     | Proper AWS security best practices | IAM, VPC, encryption implementation |
+| **Cost**         | Pay-per-use pricing model          | Serverless cost optimization        |
 
 ---
 
-## � Business Constraints & Requirements
+## 🔄 Implementation Phases
 
-### **Customer Expectations**
+### **Phase 1: Core Functionality** ✅
 
-- **Speed**: Customers expect pages to load quickly (like Amazon)
-- **Reliability**: Store must be available 24/7 for shopping
-- **Mobile**: Many customers shop on phones/tablets
-- **Security**: Safe payment processing, protect customer data
+- Book catalog display
+- Shopping cart functionality
+- Basic product pages
+- Static website hosting
 
-### **Business Growth Phases**
+### **Phase 2: Enhanced Features** ⏳
 
-| **Phase**  | **Timeline** | **Expected Traffic** | **Daily Orders** | **Catalog Size** |
-| ---------- | ------------ | -------------------- | ---------------- | ---------------- |
-| **Launch** | 0-6 months   | Hundreds of visitors | ~100 orders      | 10,000 books     |
-| **Growth** | 6-18 months  | Thousands daily      | ~2,000 orders    | 50,000 books     |
-| **Scale**  | 18-36 months | Tens of thousands    | ~10,000 orders   | 200,000 books    |
+- User authentication
+- Search functionality
+- Improved UI/UX
+- Performance optimization
 
-### **Business Compliance Needs**
+### **Phase 3: Advanced Features** 🔄
 
-- **Payment Security**: Must protect customer payment information
-- **Data Privacy**: Follow data protection laws (GDPR in UK/EU)
-- **Business Customers**: Meet security standards for B2B sales
-- **Taxes**: Handle sales tax for different countries/states
+- Order processing
+- Admin functionality
+- Advanced analytics
+- Third-party integrations
 
 ---
 
-**Document Control:**
+## 📚 Business Rules
 
-- **Document Type**: Business Requirements Document (BRD)
-- **Version**: 1.3
-- **Created**: September 1, 2025
-- **Last Updated**: September 3, 2025
-- **Next Review**: December 1, 2025
+### **Catalog Management**
 
-**Related Documents:**
+- **Book Information**: Title, author, price, description, cover image
+- **Categories**: Fiction, Non-Fiction, Textbooks, Children's Books
+- **Pricing**: Fixed pricing, no dynamic pricing for tutorial simplicity
+- **Inventory**: Simple available/unavailable status
 
-- [Solutions Architect Technical Analysis](./cloudshelf-technical-analysis.md) - Technical interpretation of these requirements
-- [System Architecture](../architecture/cloudshelf-system-architecture.md) - Detailed technical implementation
+### **Shopping Cart**
 
-**Business Stakeholder Approval:**
+- **Cart Persistence**: 7 days for tutorial purposes
+- **Quantity Limits**: Maximum 10 copies per book
+- **Cart Size**: Maximum 20 items for performance testing
 
-- **Business Owner**: [Name], CEO
-- **Product Manager**: [Name], Head of Product
-- **Finance**: [Name], CFO
-- **Legal**: [Name], General Counsel
+### **User Experience**
+
+- **Response Time**: Target under 2 seconds for all pages
+- **Availability**: Design for high availability using AWS best practices
+- **Mobile**: Responsive design for mobile devices
+
+---
+
+## 🚀 Project Scope
+
+### **What's Included** ✅
+
+- AWS serverless architecture demonstration
+- Book catalog with real sample data
+- Functional shopping cart
+- Modern, responsive web interface
+- AWS security best practices
+- Cost-effective infrastructure
+
+### **What's Not Included** ❌
+
+- Real payment processing (tutorial only)
+- Complex user authentication (Phase 2)
+- Inventory management system (Phase 3)
+- Real business operations (fictional scenario)
+
+---
+
+## 🎯 Tutorial Learning Goals
+
+### **AWS Services to Demonstrate**
+
+- **Compute**: AWS Lambda for serverless functions
+- **Storage**: S3 for static hosting, DynamoDB for data
+- **Network**: CloudFront CDN, API Gateway
+- **Security**: IAM roles, VPC, encryption
+- **Monitoring**: CloudWatch for logging and metrics
+
+### **Architecture Patterns**
+
+- **Serverless**: Event-driven, auto-scaling architecture
+- **Microservices**: Separate functions for different features
+- **JAMstack**: JavaScript, APIs, and Markup for modern web
+- **Security**: Defense in depth, least privilege access
+
+---
+
+## 📝 Project Notes
+
+> **Important**: This is a **fictional business scenario** designed for learning AWS Solutions Architecture. All business requirements are crafted to demonstrate real-world e-commerce patterns while maintaining tutorial project scope.
+
+**Learning Focus Areas:**
+
+- Serverless architecture patterns
+- AWS service integration
+- Security implementation
+- Performance optimization
+- Cost management
+- Scalability planning
+
+---
+
+_Tutorial project documentation_  
+_Designed for AWS Solutions Architect learning_  
+_CloudShelf: Fictional online bookstore for demonstration purposes_
