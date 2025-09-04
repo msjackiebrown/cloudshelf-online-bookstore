@@ -6,7 +6,7 @@ CloudShelf is a serverless online bookstore built on AWS, following microservice
 
 ## High-Level Architecture
 
-![CloudShelf Architecture](cloudshelf-architecture-diagram.png)
+![CloudShelf Architecture](diagrams/source/cloudshelf-architecture-diagram.png)
 
 **📋 Implementation Guides**: Individual setup guides contain practical diagrams and implementation details for each AWS service component.
 
