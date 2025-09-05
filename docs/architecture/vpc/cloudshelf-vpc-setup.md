@@ -37,7 +37,12 @@ Based on **ADR-001**, VPC provides the network foundation for CloudShelf with:
 
 **Architecture Decision Reference**: See [ADR-001](../cloudshelf-architecture-decisions.md#adr-001) for the complete rationale behind VPC-first approach.
 
-### **🏗️ VPC Architecture Design**
+### **� VPC Overview**
+
+![CloudShelf VPC Overview](screenshots/cloudshelf-vpc-overview.png)
+_AWS Console view of the complete CloudShelf VPC setup with all components_
+
+### **�🏗️ VPC Architecture Design**
 
 ![CloudShelf VPC Architecture Diagram](cloudshelf-vpc-architecture-diagram.png)
 _Complete VPC architecture showing subnets, gateways, security groups, and routing relationships_
