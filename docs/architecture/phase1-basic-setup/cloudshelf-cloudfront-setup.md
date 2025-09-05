@@ -30,7 +30,7 @@ CloudFront serves as the global CDN layer for CloudShelf's static web assets, pr
 
 Navigate to **CloudFront Console → Create Distribution**
 
-![Create CloudFront Distribution](screenshots/CloudFront%20Distribution%20Screenshot%201.png)
+![Create CloudFront Distribution](../screenshots/cloudfront/CloudFront%20Distribution%20Screenshot%201.png)
 
 ### 2. Configure Origin Settings
 
@@ -49,7 +49,7 @@ Navigate to **CloudFront Console → Create Distribution**
 }
 ```
 
-![Origin Settings Configuration](screenshots/CloudFront%20Distribution%20Screenshot%202.png)
+![Origin Settings Configuration](../screenshots/cloudfront/CloudFront%20Distribution%20Screenshot%202.png)
 
 ### 3. Configure Distribution Settings
 
@@ -57,7 +57,7 @@ Navigate to **CloudFront Console → Create Distribution**
 **Viewer Protocol Policy**: Redirect HTTP to HTTPS  
 **Allowed HTTP Methods**: GET, HEAD, OPTIONS
 
-![Distribution Settings](screenshots/CloudFront%20Distribution%20Screenshot%203.png)
+![Distribution Settings](../screenshots/cloudfront/CloudFront%20Distribution%20Screenshot%203.png)
 
 ### 4. Update S3 Bucket Policy
 
@@ -85,7 +85,7 @@ Replace `YOUR-BUCKET-NAME` and `YOUR-DISTRIBUTION-ID` with actual values:
 }
 ```
 
-![S3 Bucket Policy Update](screenshots/CloudFront%20Distribution%20Screenshot%204.png)
+![S3 Bucket Policy Update](../screenshots/cloudfront/CloudFront%20Distribution%20Screenshot%204.png)
 
 ### 5. Verify Distribution Deployment
 
@@ -99,7 +99,7 @@ curl -I https://d1234567890abc.cloudfront.net
 curl -H "Cache-Control: no-cache" https://d1234567890abc.cloudfront.net
 ```
 
-![Distribution Verification](screenshots/CloudFront%20Distribution%20Screenshot%205.png)
+![Distribution Verification](../screenshots/cloudfront/CloudFront%20Distribution%20Screenshot%205.png)
 
 ---
 
