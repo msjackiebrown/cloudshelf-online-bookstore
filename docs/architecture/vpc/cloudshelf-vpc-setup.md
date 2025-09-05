@@ -360,44 +360,6 @@ For standard public API Gateway deployment, no additional security groups are ne
 
 ---
 
-### **Step 7: VPC Endpoints (Optional)**
-
-Configure VPC endpoints for cost-effective AWS service access without internet gateway.
-
-#### DynamoDB VPC Endpoint
-
-**Configuration Requirements:**
-
-- **Service**: `com.amazonaws.region.dynamodb`
-- **Type**: Gateway endpoint
-- **Route Tables**: Associate with private route table
-
-![DynamoDB VPC Endpoint Configuration](screenshots/cloudshelf-dynamodb-vpc-endpoint.png)
-
-#### S3 VPC Endpoint
-
-**Configuration Requirements:**
-
-- **Service**: `com.amazonaws.region.s3`
-- **Type**: Gateway endpoint
-- **Route Tables**: Associate with private route table
-
-![S3 VPC Endpoint Configuration](screenshots/cloudshelf-s3-vpc-endpoint.png)
-
----
-
-### **Step 8: NAT Gateway (Optional)**
-
-> ⚠️ **Cost Warning**: NAT Gateway costs approximately $45/month and is not needed for this tutorial.
-
-**Alternatives for development:**
-
-- ✅ **Skip NAT Gateway** - Keep private subnets truly private
-- ✅ **Use public subnets** - For development/testing (not production)
-- ✅ **NAT Instance** - Cheaper EC2-based alternative (more maintenance required)
-
----
-
 **Next Step**: Complete the [🔐 IAM Security Setup Guide](../security/cloudshelf-iam-security-setup.md) for comprehensive security group configuration.
 
 ---
