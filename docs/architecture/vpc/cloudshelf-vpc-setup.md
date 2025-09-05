@@ -42,7 +42,7 @@ Based on **ADR-001**, VPC provides the network foundation for CloudShelf with:
 ![CloudShelf VPC Architecture Diagram](cloudshelf-vpc-architecture-diagram.png)
 _Complete VPC architecture showing subnets, gateways, security groups, and routing relationships_
 
-![CloudShelf Network Security Architecture](cloudshelf-network-security-architecture.png)
+![CloudShelf Security Groups Configuration](cloudshelf-security-groups-configuration.png)
 _Security group relationships and traffic flow patterns_
 
 ---
