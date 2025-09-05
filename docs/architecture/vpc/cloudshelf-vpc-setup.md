@@ -42,8 +42,125 @@ Based on **ADR-001**, VPC provides the network foundation for CloudShelf with:
 ![CloudShelf VPC Architecture Diagram](cloudshelf-vpc-architecture-diagram.png)
 _Complete VPC architecture showing subnets, gateways, security groups, and routing relationships_
 
-![CloudShelf Security Groups Configuration](cloudshelf-security-groups-configuration.png)
-_Security group relationships and traffic flow patterns_
+```
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│                         CloudShelf VPC Architecture                             │
+├─────────────────────────────────────────────────────────────────────────────────┤
+│                              AWS Region (us-east-1)                             │
+│                                                                                 │
+│  ┌───────────────────────────────────────────────────────────────────────────┐ │
+│  │                        CloudShelf VPC (10.0.0.0/16)                      │ │
+│  │                                                                           │ │
+│  │  ┌─────────────────┐                                                     │ │
+│  │  │ Internet Gateway │ ◄──────────── Internet                            │ │
+│  │  │  (cloudshelf-igw)│                                                     │ │
+│  │  └─────────────────┘                                                     │ │
+│  │           │                                                               │ │
+│  │           ▼                                                               │ │
+│  │  ┌─────────────────────────────────────────────────────────────────────┐ │ │
+│  │  │                     Route Tables                                    │ │ │
+│  │  │  ┌─────────────────┐           ┌─────────────────┐                   │ │ │
+│  │  │  │ Public Route    │           │ Private Route   │                   │ │ │
+│  │  │  │ Table           │           │ Table           │                   │ │ │
+│  │  │  │ 0.0.0.0/0 → IGW │           │ Local VPC only  │                   │ │ │
+│  │  │  └─────────────────┘           └─────────────────┘                   │ │ │
+│  │  └─────────────────────────────────────────────────────────────────────┘ │ │
+│  │           │                                   │                           │ │
+│  │           ▼                                   ▼                           │ │
+│  │  ┌─────────────────┐                   ┌─────────────────┐               │ │
+│  │  │ Availability    │                   │ Availability    │               │ │
+│  │  │ Zone A          │                   │ Zone B          │               │ │
+│  │  │                 │                   │                 │               │ │
+│  │  │ ┌─────────────┐ │                   │ ┌─────────────┐ │               │ │
+│  │  │ │Public Subnet│ │                   │ │Private      │ │               │ │
+│  │  │ │10.0.1.0/24  │ │                   │ │Subnet       │ │               │ │
+│  │  │ │             │ │                   │ │10.0.2.0/24  │ │               │ │
+│  │  │ │(Reserved    │ │                   │ │             │ │               │ │
+│  │  │ │for future)  │ │                   │ │┌─────────── │ │               │ │
+│  │  │ │             │ │                   │ ││Lambda      │ │               │ │
+│  │  │ │             │ │                   │ ││Functions   │ │               │ │
+│  │  │ │             │ │                   │ │└─────────── │ │               │ │
+│  │  │ │             │ │                   │ │             │ │               │ │
+│  │  │ │             │ │                   │ │┌─────────── │ │               │ │
+│  │  │ │             │ │                   │ ││RDS         │ │               │ │
+│  │  │ │             │ │                   │ ││PostgreSQL  │ │               │ │
+│  │  │ │             │ │                   │ │└─────────── │ │               │ │
+│  │  │ └─────────────┘ │                   │ └─────────────┘ │               │ │
+│  │  └─────────────────┘                   └─────────────────┘               │ │
+│  │                                                                           │ │
+│  │  Network ACLs: Default (Allow All)                                       │ │
+│  │  DNS Resolution: Enabled                                                 │ │
+│  │  DNS Hostnames: Enabled                                                  │ │
+│  └───────────────────────────────────────────────────────────────────────────┘ │
+│                                                                                 │
+│  External Services (Outside VPC):                                              │
+│  • API Gateway (Regional Service)                                              │
+│  • DynamoDB (Managed Service)                                                  │
+│  • CloudFront (Global CDN)                                                     │
+│  • S3 (Regional Service)                                                       │
+└─────────────────────────────────────────────────────────────────────────────────┘
+```
+
+_**Placeholder for cloudshelf-vpc-architecture-diagram** - Complete VPC layout with subnets, routing, and AWS service integration_
+
+```
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│                          CloudShelf Security Architecture                       │
+├─────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                 │
+│  ┌─────────────────────────────────────────────────────────────────────────┐   │
+│  │                        AWS Managed Services                             │   │
+│  │  ┌─────────────────┐                                                    │   │
+│  │  │   API Gateway   │  (Regional Service - Internet Accessible)         │   │
+│  │  │   (Managed)     │                                                    │   │
+│  │  └─────────────────┘                                                    │   │
+│  └─────────────────────────────────────────────────────────────────────────┘   │
+│              │                                                                  │
+│              ▼ (invokes)                                                        │
+│  ┌─────────────────────────────────────────────────────────────────────────┐   │
+│  │                          CloudShelf VPC                                 │   │
+│  │                                                                         │   │
+│  │  Internet Gateway                                                       │   │
+│  │       │                                                                 │   │
+│  │       ▼                                                                 │   │
+│  │  ┌─────────────────┐                    ┌─────────────────┐            │   │
+│  │  │  Public Subnet  │                    │ Private Subnet  │            │   │
+│  │  │   10.0.1.0/24   │                    │   10.0.2.0/24   │            │   │
+│  │  │                 │                    │                 │            │   │
+│  │  │ (Reserved for   │                    │ ┌─────────────┐ │            │   │
+│  │  │  future use)    │                    │ │   Lambda    │ │            │   │
+│  │  │                 │                    │ │ Functions   │ │            │   │
+│  │  │                 │                    │ └─────────────┘ │            │   │
+│  │  └─────────────────┘                    └─────────────────┘            │   │
+│  │                                                  │                      │   │
+│  │                                                  ▼                      │   │
+│  │                           ┌─────────────────────────────────┐          │   │
+│  │                           │      Security Groups            │          │   │
+│  │                           │                                 │          │   │
+│  │                           │  ┌─────────────────────────┐    │          │   │
+│  │                           │  │   Lambda Security       │    │          │   │
+│  │                           │  │   Group (SG-Lambda)     │    │          │   │
+│  │                           │  │   • HTTPS (443) OUT    │    │          │   │
+│  │                           │  │   • PostgreSQL (5432)  │────┼──────┐   │   │
+│  │                           │  └─────────────────────────┘    │      │   │   │
+│  │                           │                                 │      ▼   │   │
+│  │                           │  ┌─────────────────────────┐    │  ┌─────────────┐
+│  │                           │  │   RDS Security Group    │    │  │    RDS      │
+│  │                           │  │   (SG-RDS)              │    │  │ PostgreSQL  │
+│  │                           │  │   • PostgreSQL (5432)  │◄───┼──┤  Database   │
+│  │                           │  │     FROM Lambda ONLY    │    │  │             │
+│  │                           │  └─────────────────────────┘    │  └─────────────┘
+│  │                           └─────────────────────────────────┘          │   │
+│  └─────────────────────────────────────────────────────────────────────────┘   │
+│                                                                                 │
+│  External Access:                Internal Communication:                       │
+│  • API Gateway: Regional service  • Lambda ↔ RDS: Port 5432                   │
+│  • HTTPS only via API Gateway     • Lambda ↔ DynamoDB: HTTPS                  │
+│  • No direct VPC access           • Lambda ↔ AWS APIs: HTTPS                  │
+└─────────────────────────────────────────────────────────────────────────────────┘
+```
+
+_Security group relationships and traffic flow patterns - **Placeholder for cloudshelf-security-architecture-diagram**_
 
 ---
 
