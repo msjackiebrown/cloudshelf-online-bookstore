@@ -74,6 +74,35 @@ screenshots/
 | `S3 Screenshot 5.png` | S3 static hosting - Step 5       | S3 setup guide |
 | `S3 Screenshot 6.png` | S3 permissions - Step 6          | S3 setup guide |
 
+#### **🗃️ RDS PostgreSQL** (`rds/`)
+
+| Screenshot                             | Description                        | Used In         |
+| -------------------------------------- | ---------------------------------- | --------------- |
+| `RDS Database Options.png`             | Database engine selection overview | RDS setup guide |
+| `RDS-Database-Creation-Step1.png`      | Database creation - Step 1         | RDS setup guide |
+| `RDS-Engine-Selection-Step2.png`       | Engine selection - Step 2          | RDS setup guide |
+| `RDS-Instance-Configuration-Step3.png` | Instance configuration - Step 3    | RDS setup guide |
+| `RDS-Connectivity-Settings-Step4.png`  | Connectivity settings - Step 4     | RDS setup guide |
+| `RDS-Final-Review-Step5.png`           | Final review - Step 5              | RDS setup guide |
+
+#### **🌐 VPC Networking** (`vpc/`)
+
+| Screenshot                                     | Description                   | Used In         |
+| ---------------------------------------------- | ----------------------------- | --------------- |
+| `cloudshelf-security-groups-configuration.png` | Security groups configuration | VPC setup guide |
+
+#### **🔐 IAM Security** (`iam/`)
+
+| Screenshot                        | Description                     | Used In          |
+| --------------------------------- | ------------------------------- | ---------------- |
+| _Ready for IAM setup screenshots_ | Placeholder for IAM screenshots | IAM setup guides |
+
+#### **📊 Monitoring** (`monitoring/`)
+
+| Screenshot                         | Description                            | Used In                 |
+| ---------------------------------- | -------------------------------------- | ----------------------- |
+| _Ready for CloudWatch screenshots_ | Placeholder for monitoring screenshots | CloudWatch setup guides |
+
 ---
 
 ## 📋 Screenshot Guidelines

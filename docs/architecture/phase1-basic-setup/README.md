@@ -20,7 +20,7 @@ This folder contains all the detailed setup guides needed to implement Phase 1 o
 
 - **Total**: 2-5 hours for complete setup
 - **Prerequisites**: 30 minutes
-- **Core services**: 3-4 hours
+- **Core services**: 3.5-4.5 hours
 - **Testing & validation**: 30 minutes
 
 ---
@@ -59,6 +59,11 @@ Phase 1 Implementation Flow:
 │  ├─── S3 origin                         ├─── Caching rules                 │
 │  ├─── API integration                   ├─── SSL certificate               │
 │  └─── Custom domain                     └─── Performance optimization      │
+│       ↓                                                                     │
+│  6️⃣ Basic Monitoring (15 min)          📊 Essential Observability         │
+│  ├─── CloudWatch logs                   ├─── Error alarms                  │
+│  ├─── Simple dashboard                  ├─── Billing alerts               │
+│  └─── Basic troubleshooting             └─── Cost monitoring               │
 │                                                                             │
 └─────────────────────────────────────────────────────────────────────────────┘
 ```
@@ -85,7 +90,25 @@ Phase 1 Implementation Flow:
 - 📊 **Sample data** loaded for testing
 - ⚡ **High performance** with single-digit millisecond latency
 
-### **2️⃣ Serverless Functions (45 minutes)**
+### **2️⃣ Basic IAM Setup (15 minutes)**
+
+📖 **Guide**: [`basic-iam-setup.md`](basic-iam-setup.md)
+
+**What you'll create**:
+
+- ✅ Lambda execution role with essential permissions
+- ✅ CloudWatch logging access for troubleshooting
+- ✅ DynamoDB read/write permissions for shopping cart
+- ✅ AWS managed policies for quick, secure setup
+
+**Key outcomes**:
+
+- 🔒 **Essential security** - Functions have needed permissions only
+- 📊 **Automatic logging** - CloudWatch access for debugging
+- 🛡️ **Best practices** - AWS managed policies where appropriate
+- ⚡ **Quick setup** - Working security in 15 minutes
+
+### **3️⃣ Serverless Functions (45 minutes)**
 
 📖 **Guide**: [`cloudshelf-lambda-setup.md`](cloudshelf-lambda-setup.md)
 
@@ -103,7 +126,7 @@ Phase 1 Implementation Flow:
 - 📊 **Error handling** with proper HTTP responses
 - 🧪 **Testing endpoints** for validation
 
-### **3️⃣ API Layer (30 minutes)**
+### **4️⃣ API Layer (30 minutes)**
 
 📖 **Guide**: [`cloudshelf-apigateway-setup.md`](cloudshelf-apigateway-setup.md)
 
@@ -121,7 +144,7 @@ Phase 1 Implementation Flow:
 - 🌍 **CORS enabled** for browser compatibility
 - 📋 **API documentation** with example requests
 
-### **4️⃣ Web Hosting (20 minutes)**
+### **5️⃣ Web Hosting (20 minutes)**
 
 📖 **Guide**: [`cloudshelf-s3-setup.md`](cloudshelf-s3-setup.md)
 
@@ -139,7 +162,7 @@ Phase 1 Implementation Flow:
 - 📱 **Mobile-responsive** design ready for content
 - 🚀 **Fast loading** with S3's global infrastructure
 
-### **5️⃣ Global CDN (15 minutes)**
+### **6️⃣ Global CDN (15 minutes)**
 
 📖 **Guide**: [`cloudshelf-cloudfront-setup.md`](cloudshelf-cloudfront-setup.md)
 
@@ -157,7 +180,27 @@ Phase 1 Implementation Flow:
 - 🔒 **HTTPS by default** for security
 - 📊 **Caching optimization** for better performance
 
+### **7️⃣ Basic Monitoring (15 minutes)**
+
+📖 **Guide**: [`basic-cloudwatch-monitoring.md`](basic-cloudwatch-monitoring.md)
+
+**What you'll create**:
+
+- ✅ Lambda function log access for debugging
+- ✅ Basic error alarms for Lambda and API Gateway
+- ✅ Simple CloudShelf dashboard for overview
+- ✅ Billing alerts for cost control
+
+**Key outcomes**:
+
+- 🔍 **Essential troubleshooting** - Quick access to logs and errors
+- 🚨 **Error notifications** - Get alerted when functions fail
+- 💰 **Cost awareness** - Monitor AWS spending
+- 📊 **Basic observability** - Simple dashboard for health overview
+
 ---
+
+### **8️⃣ Testing & Validation (30 minutes)**
 
 ## 🧪 Testing & Validation
 
@@ -227,10 +270,11 @@ curl -I "https://your-cloudfront-domain.cloudfront.net"
 
 #### **🔧 Technical Requirements**
 
-- [ ] **All services deployed** - DynamoDB, Lambda, API Gateway, S3, CloudFront
+- [ ] **All services deployed** - DynamoDB, Lambda, API Gateway, S3, CloudFront, CloudWatch
 - [ ] **API fully functional** - All endpoints responding correctly
 - [ ] **Frontend operational** - Static site serving content
 - [ ] **Data flow working** - Can create, read, update data
+- [ ] **Monitoring active** - Basic logging and alarms configured
 - [ ] **Performance targets met** - API responses under 500ms
 
 #### **🏢 Business Requirements**
@@ -262,7 +306,8 @@ curl -I "https://your-cloudfront-domain.cloudfront.net"
 | **API Gateway** | 100K API calls            | $0.35 - $1.00      |
 | **S3**          | 1GB storage, 10K requests | $0.25 - $0.50      |
 | **CloudFront**  | 10GB transfer             | $0.85 - $2.00      |
-| **Total**       | Light usage               | **$2.90 - $7.00**  |
+| **CloudWatch**  | Basic monitoring          | $0.10 - $1.00      |
+| **Total**       | Light usage               | **$3.00 - $8.00**  |
 
 **💡 Cost Optimization Tips**:
 

@@ -189,7 +189,26 @@ This phase focuses on building a complete, working CloudShelf application using 
 - ✅ Global edge location caching
 - ✅ Fast content delivery worldwide
 
-### **🧪 Step 6: Testing & Validation (15 minutes)**
+### **📊 Step 6: Basic Monitoring (15 minutes)**
+
+**File**: `basic-cloudwatch-monitoring.md`
+
+**Objectives**:
+
+- Set up essential CloudWatch monitoring
+- Configure basic error alarms
+- Create simple dashboard for troubleshooting
+- Enable billing alerts for cost control
+
+**Deliverables**:
+
+- ✅ Lambda function log access configured
+- ✅ Basic error alarms for Lambda and API Gateway
+- ✅ Simple CloudShelf dashboard
+- ✅ Billing alerts for cost monitoring
+- ✅ Basic troubleshooting capabilities
+
+### **🧪 Step 7: Testing & Validation (15 minutes)**
 
 **File**: `testing-and-validation.md`
 
@@ -220,7 +239,8 @@ This phase focuses on building a complete, working CloudShelf application using 
 | **API Gateway** | $1-3        | $5-10          | $20-30           |
 | **S3**          | $1-2        | $3-5           | $10-15           |
 | **CloudFront**  | $1-2        | $5-10          | $15-25           |
-| **Total**       | **$5-14**   | **$28-50**     | **$90-145**      |
+| **CloudWatch**  | $0-1        | $2-5           | $5-10            |
+| **Total**       | **$5-15**   | **$30-55**     | **$95-155**      |
 
 **Cost Benefits**:
 
@@ -305,7 +325,8 @@ This phase focuses on building a complete, working CloudShelf application using 
 4. **🌐 Configure API Gateway** - Follow `api-gateway-setup.md`
 5. **📦 Set up S3 hosting** - Follow `s3-setup.md`
 6. **🌍 Add CloudFront** - Follow `cloudfront-setup.md`
-7. **🧪 Test everything** - Follow `testing-and-validation.md`
+7. **📊 Enable monitoring** - Follow `basic-cloudwatch-monitoring.md`
+8. **🧪 Test everything** - Follow `testing-and-validation.md`
 
 ### **Time Commitment**
 
@@ -326,7 +347,8 @@ This phase focuses on building a complete, working CloudShelf application using 
 4. 🌐 [**API Gateway Setup**](api-gateway-setup.md) - REST endpoints
 5. 📦 [**S3 Setup**](s3-setup.md) - Static website hosting
 6. 🌍 [**CloudFront Setup**](cloudfront-setup.md) - Global delivery
-7. 🧪 [**Testing & Validation**](testing-and-validation.md) - Verify deployment
+7. 📊 [**Basic Monitoring**](basic-cloudwatch-monitoring.md) - Essential observability
+8. 🧪 [**Testing & Validation**](testing-and-validation.md) - Verify deployment
 
 ### **Reference Documentation**
 
