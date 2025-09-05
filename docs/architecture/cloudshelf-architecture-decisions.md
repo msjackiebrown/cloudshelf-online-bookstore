@@ -724,3 +724,139 @@ Phase 3: Configure Resource-Based Policies (THIRD)
 - Major application architecture changes
 
 ---
+
+## ADR-007: Security Group Creation Strategy
+
+**Date**: 2025-09-05  
+**Status**: ✅ Accepted  
+**Decision Makers**: Solutions Architect
+
+### Context
+
+AWS Security Groups often need to reference each other (e.g., Lambda security group needs to access RDS security group, RDS security group needs to allow access from Lambda security group). This creates circular dependency issues during infrastructure creation that can cause deployment failures and confusion.
+
+### Decision
+
+**Create Security Groups in Two Phases**:
+
+1. **Phase 1**: Create all security groups empty (no rules)
+2. **Phase 2**: Add rules that reference other security groups
+
+### Implementation Strategy
+
+```
+Security Group Creation Flow:
+┌─────────────────────────────────────────────────────────┐
+│                  Phase 1: Create Empty Groups           │
+├─────────────────────────────────────────────────────────┤
+│  1. Create RDS Security Group (no rules)               │
+│  2. Create Lambda Security Group (no rules)            │
+│  3. Create any other needed security groups (no rules) │
+└─────────────────────────────────────────────────────────┘
+                          │
+                          ▼
+┌─────────────────────────────────────────────────────────┐
+│                  Phase 2: Add Rules                    │
+├─────────────────────────────────────────────────────────┤
+│  1. Add RDS inbound rule: Allow 5432 FROM Lambda SG    │
+│  2. Add Lambda outbound rule: Allow 5432 TO RDS SG     │
+│  3. Add any other cross-referenced rules               │
+└─────────────────────────────────────────────────────────┘
+```
+
+### Options Considered
+
+| Approach                     | Pros                                           | Cons                                         | Decision      |
+| ---------------------------- | ---------------------------------------------- | -------------------------------------------- | ------------- |
+| **Two-Phase Creation**       | No circular dependencies, clean implementation | Requires two steps, slightly more complex    | ✅ **Chosen** |
+| **Create with Rules**        | Single step per security group                 | Fails with circular dependencies             | ❌            |
+| **CloudFormation DependsOn** | Automated dependency resolution                | Complex templates, harder to debug           | ❌            |
+| **Separate Deployments**     | Each service owns its security group           | Cross-service dependencies still problematic | ❌            |
+
+### Rationale
+
+**Why Two-Phase Creation:**
+
+1. **Eliminates Circular Dependencies**:
+
+   - Security groups exist before rules reference them
+   - No "security group not found" errors
+   - Clean, predictable deployment sequence
+
+2. **Better Error Handling**:
+
+   - Clear separation between resource creation and configuration
+   - Easier to troubleshoot rule configuration issues
+   - Partial rollback is more manageable
+
+3. **Follows AWS Best Practices**:
+
+   - CloudFormation and Terraform use similar patterns
+   - Matches Infrastructure as Code deployment patterns
+   - Aligns with AWS security recommendations
+
+4. **Implementation Simplicity**:
+   - Clear step-by-step process
+   - Reduces cognitive load during manual deployment
+   - Easy to document and train team members
+
+### Architecture Implications
+
+**VPC Setup Process**:
+
+```
+Network Foundation Setup:
+1. VPC and Subnets                    (Physical network)
+2. Internet Gateway and Routing       (Connectivity)
+3. Security Groups Creation (Empty)   (Security foundation)
+4. Security Group Rules Configuration (Access control)
+5. Application Resources              (RDS, Lambda, etc.)
+```
+
+**Security Group Dependencies**:
+
+- **RDS Security Group**: Allows PostgreSQL (5432) FROM Lambda SG
+- **Lambda Security Group**: Allows PostgreSQL (5432) TO RDS SG
+- **No circular reference issues**: Both groups exist before rules are added
+
+### Consequences
+
+**Positive:**
+
+- ✅ Eliminates circular dependency errors during deployment
+- ✅ Provides clear, repeatable deployment process
+- ✅ Easier troubleshooting of security group issues
+- ✅ Better alignment with Infrastructure as Code practices
+- ✅ Reduces confusion for team members doing manual deployments
+- ✅ Supports modular infrastructure deployment
+
+**Considerations:**
+
+- ⚠️ Requires two distinct phases in deployment process
+- ⚠️ Team must understand the dependency rationale
+- ⚠️ Documentation must clearly specify the phase approach
+
+**Mitigation**:
+
+- Document clear phase separation in setup guides
+- Include dependency diagrams in VPC documentation
+- Provide example AWS console screenshots for each phase
+- Add warnings about circular dependency pitfalls
+
+### Monitoring
+
+**Success Metrics**:
+
+- Zero circular dependency errors during infrastructure deployment
+- Security group deployment time < 2 minutes per phase
+- 100% successful cross-service connectivity after deployment
+- No security group configuration errors requiring rollback
+
+**Review Triggers**:
+
+- New service requiring security group integration
+- Security group deployment failures
+- Team feedback on deployment complexity
+- Infrastructure as Code template updates
+
+---

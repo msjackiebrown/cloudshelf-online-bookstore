@@ -188,8 +188,38 @@ Per ADR-001, infrastructure creation follows this sequence:
 
 1. **VPC and Subnets** (Network Foundation)
 2. **Internet Gateway and Routing** (Connectivity)
-3. **Security Configuration** (Access Control - see [IAM Security Setup](../security/cloudshelf-iam-security-setup.md))
-4. **Application Resources** (RDS, Lambda, etc.)
+3. **Security Groups Creation** (Empty security groups first)
+4. **Security Group Rules Configuration** (Add rules with cross-references)
+5. **Application Resources** (RDS, Lambda, etc.)
+
+```
+Dependency Flow for Security Groups:
+┌─────────────────────────────────────────────────────────┐
+│                   Security Group Dependencies           │
+├─────────────────────────────────────────────────────────┤
+│                                                         │
+│  Step 1: Create Empty Security Groups                   │
+│  ┌─────────────────┐    ┌─────────────────┐           │
+│  │ RDS Security    │    │ Lambda Security │           │
+│  │ Group (Empty)   │    │ Group (Empty)   │           │
+│  └─────────────────┘    └─────────────────┘           │
+│                                                         │
+│  Step 2: Add Rules with References                     │
+│  ┌─────────────────┐    ┌─────────────────┐           │
+│  │ RDS Security    │◄───┤ Lambda Security │           │
+│  │ Group:          │    │ Group:          │           │
+│  │ Allow port 5432 │    │ Access port 5432│           │
+│  │ FROM Lambda SG  │    │ TO RDS SG       │           │
+│  └─────────────────┘    └─────────────────┘           │
+│                                                         │
+│  ✅ No circular dependency - both groups exist first    │
+└─────────────────────────────────────────────────────────┘
+```
+
+**Why This Order Matters:**
+
+- ❌ **Wrong**: Try to create RDS SG with Lambda SG reference (Lambda SG doesn't exist yet)
+- ✅ **Right**: Create both empty, then add cross-references
 
 ---
 
@@ -204,7 +234,14 @@ Create a Virtual Private Cloud to isolate your resources.
 - CIDR Block: `10.0.0.0/16` (provides 65,536 IP addresses)
 - Enable DNS support and DNS hostnames
 
-![VPC Creation Configuration](screenshots/cloudshelf-vpc-dns-settings.png)
+**AWS Console Navigation:**
+
+1. Navigate to **VPC Console** → **Your VPCs**
+2. Select your VPC → **Actions** → **Edit VPC settings**
+3. Enable both **DNS resolution** and **DNS hostnames**
+
+![VPC DNS Settings Configuration](screenshots/cloudshelf-vpc-dns-settings.png)
+_VPC DNS settings dialog showing both DNS resolution and DNS hostnames enabled_
 
 ---
 
@@ -266,33 +303,38 @@ Set up routing to direct traffic properly between subnets and the internet.
 
 Configure security groups to control network traffic at the instance level.
 
-#### Lambda Security Group
+> **⚠️ Important**: Following **[ADR-007: Security Group Creation Strategy](../cloudshelf-architecture-decisions.md#adr-007)**, security groups that reference each other must be created in two phases to avoid circular dependencies.
 
-**Configuration Requirements:**
+#### Phase 1: Create Empty Security Groups
 
-- **Name**: `cloudshelf-lambda-sg`
-- **Description**: "Security group for Lambda functions"
-- **VPC**: CloudShelf VPC
-
-**Outbound Rules:**
-
-- **HTTPS (443)** to `0.0.0.0/0` (AWS API calls)
-- **PostgreSQL (5432)** to RDS security group
-- **HTTPS (443)** to DynamoDB VPC endpoint
-
-![Lambda Security Group Configuration](screenshots/cloudshelf-lambda-security-group-configuration.png)
-
-#### RDS Security Group
+**Create RDS Security Group (Empty)**
 
 **Configuration Requirements:**
 
 - **Name**: `cloudshelf-rds-sg`
 - **Description**: "Security group for RDS PostgreSQL database"
 - **VPC**: CloudShelf VPC
+- **Rules**: Leave empty for now
+
+**Create Lambda Security Group (Empty)**
+
+**Configuration Requirements:**
+
+- **Name**: `cloudshelf-lambda-sg`
+- **Description**: "Security group for Lambda functions"
+- **VPC**: CloudShelf VPC
+- **Rules**: Leave empty for now
+
+![Security Groups Creation](screenshots/cloudshelf-security-groups-creation.png)
+_Creating both security groups with no rules initially_
+
+#### Phase 2: Configure Security Group Rules
+
+**Configure RDS Security Group Rules**
 
 **Inbound Rules:**
 
-- **PostgreSQL (5432)** from Lambda security group only
+- **PostgreSQL (5432)** from Lambda security group (`cloudshelf-lambda-sg`)
 - **No public access**
 
 **Outbound Rules:**
@@ -300,6 +342,15 @@ Configure security groups to control network traffic at the instance level.
 - **All traffic** to `0.0.0.0/0` (default - for maintenance)
 
 ![RDS Security Group Configuration](screenshots/cloudshelf-rds-security-group-configuration.png)
+
+**Configure Lambda Security Group Rules**
+
+**Outbound Rules:**
+
+- **HTTPS (443)** to `0.0.0.0/0` (AWS API calls, including DynamoDB)
+- **PostgreSQL (5432)** to RDS security group (`cloudshelf-rds-sg`)
+
+![Lambda Security Group Configuration](screenshots/cloudshelf-lambda-security-group-configuration.png)
 
 #### API Gateway Security Group (Optional)
 
