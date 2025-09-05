@@ -860,3 +860,156 @@ Network Foundation Setup:
 - Infrastructure as Code template updates
 
 ---
+
+## ADR-008: IAM Policy Creation Strategy
+
+**Date**: 2025-09-05  
+**Status**: ✅ Accepted  
+**Decision Makers**: Solutions Architect
+
+### Context
+
+AWS IAM Roles require policies to define permissions, but policies can be either AWS Managed or Customer Managed. For CloudShelf application-specific permissions, we need to decide whether to create inline policies directly on roles or create customer-managed policies first and then attach them to roles.
+
+### Decision
+
+**Create Customer-Managed Policies First**, then attach them to IAM roles for better governance and reusability.
+
+### Implementation Strategy
+
+```
+IAM Policy and Role Creation Flow:
+┌─────────────────────────────────────────────────────────┐
+│                 Phase 1: Create Policies                │
+├─────────────────────────────────────────────────────────┤
+│  1. Create CloudShelf-RDS-BookCatalog-Access           │
+│  2. Create CloudShelf-DynamoDB-ShoppingCart-Access     │
+│  3. Create CloudShelf-S3-Assets-Access                 │
+│  4. Create CloudShelf-Lambda-Invoke-Access             │
+└─────────────────────────────────────────────────────────┘
+                          │
+                          ▼
+┌─────────────────────────────────────────────────────────┐
+│                 Phase 2: Create Roles                  │
+├─────────────────────────────────────────────────────────┤
+│  1. Create Lambda Role (Book Catalog)                  │
+│     → Attach AWS Managed: VPC + CloudWatch             │
+│     → Attach Custom: RDS-BookCatalog-Access            │
+│                                                         │
+│  2. Create Lambda Role (Shopping Cart)                 │
+│     → Attach AWS Managed: VPC + CloudWatch             │
+│     → Attach Custom: DynamoDB-ShoppingCart-Access      │
+└─────────────────────────────────────────────────────────┘
+```
+
+### Options Considered
+
+| Approach                   | Pros                                          | Cons                                 | Decision      |
+| -------------------------- | --------------------------------------------- | ------------------------------------ | ------------- |
+| **Customer-Managed First** | Reusable, governance, versioning, centralized | Two-step process, initial complexity | ✅ **Chosen** |
+| **Inline Policies**        | Simple single-step, tight coupling            | No reusability, hard to govern       | ❌            |
+| **AWS Managed Only**       | No maintenance, AWS best practices            | Too broad permissions, not specific  | ❌            |
+| **Mixed Approach**         | Flexibility per use case                      | Inconsistent governance, complexity  | ❌            |
+
+### Rationale
+
+**Why Customer-Managed Policies First:**
+
+1. **Governance and Compliance**:
+
+   - Central policy management and versioning
+   - Easy auditing of permissions across all roles
+   - Clear separation of policy definition and role assignment
+   - Support for policy compliance scanning
+
+2. **Reusability and Scalability**:
+
+   - Same policy can be attached to multiple roles
+   - Easy to update permissions across all consumers
+   - Supports service expansion without policy duplication
+   - Facilitates Infrastructure as Code patterns
+
+3. **Security Benefits**:
+
+   - Explicit least-privilege permissions per service
+   - Clear documentation of required permissions
+   - Easier to review and validate specific service needs
+   - Reduced risk of permission drift or bloat
+
+4. **Operational Excellence**:
+   - Clear dependency order prevents deployment issues
+   - Policies exist before roles try to reference them
+   - Better error handling and troubleshooting
+   - Supports automated deployment pipelines
+
+### Architecture Implications
+
+**CloudShelf IAM Structure**:
+
+```
+Customer-Managed Policies:
+├── CloudShelf-RDS-BookCatalog-Access
+│   ├── rds:DescribeDBInstances
+│   └── rds-db:connect (specific user)
+├── CloudShelf-DynamoDB-ShoppingCart-Access
+│   ├── dynamodb:GetItem/PutItem/UpdateItem/DeleteItem
+│   └── dynamodb:Query/Scan (specific table)
+├── CloudShelf-S3-Assets-Access
+│   ├── s3:GetObject/PutObject
+│   └── (specific buckets)
+└── CloudShelf-Lambda-Invoke-Access
+    └── lambda:InvokeFunction (specific functions)
+
+IAM Roles (attach policies):
+├── cloudshelf-book-catalog-lambda-role
+│   ├── AWS Managed: AWSLambdaVPCAccessExecutionRole
+│   ├── AWS Managed: CloudWatchLogsFullAccess
+│   └── Custom: CloudShelf-RDS-BookCatalog-Access
+└── cloudshelf-shopping-cart-lambda-role
+    ├── AWS Managed: AWSLambdaVPCAccessExecutionRole
+    ├── AWS Managed: CloudWatchLogsFullAccess
+    └── Custom: CloudShelf-DynamoDB-ShoppingCart-Access
+```
+
+### Consequences
+
+**Positive:**
+
+- ✅ Improved governance and policy lifecycle management
+- ✅ Better security through explicit, service-specific permissions
+- ✅ Enhanced reusability across multiple roles and services
+- ✅ Easier compliance auditing and permission reviews
+- ✅ Supports Infrastructure as Code deployment patterns
+- ✅ Clear separation of policy definition and role assignment
+- ✅ Eliminates dependency issues during deployment
+
+**Considerations:**
+
+- ⚠️ Requires two-phase deployment (policies then roles)
+- ⚠️ Initial setup complexity higher than inline policies
+- ⚠️ Team must understand policy attachment patterns
+
+**Mitigation**:
+
+- Document clear policy-first creation process
+- Provide step-by-step implementation guides
+- Include screenshots for AWS console policy creation
+- Automate policy and role creation with IaC templates
+
+### Monitoring
+
+**Success Metrics**:
+
+- Zero policy attachment errors during role creation
+- Policy creation time < 1 minute per policy
+- 100% successful role creation after policies exist
+- No permission escalation incidents due to broad policies
+
+**Review Triggers**:
+
+- New AWS service integration requiring permissions
+- Policy attachment failures or role creation errors
+- Security audit findings related to IAM permissions
+- Application feature requiring new service permissions
+
+---

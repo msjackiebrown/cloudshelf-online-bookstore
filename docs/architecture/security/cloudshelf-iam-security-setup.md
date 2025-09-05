@@ -46,7 +46,72 @@ IAM security provides the foundation for all CloudShelf services with:
 
 **IAM Security Strategy**: CloudShelf implements a role-based security model with customer-managed policies for governance, least-privilege access principles, and network-level security groups for defense in depth. The security model follows AWS Well-Architected Framework principles with explicit trust relationships between services.
 
-![CloudShelf IAM Security Architecture Diagram](screenshots/cloudshelf-iam-security-architecture.png)
+```
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│                         CloudShelf IAM Security Architecture                    │
+├─────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                 │
+│  ┌─────────────────────────────────────────────────────────────────────────┐   │
+│  │                            IAM Roles & Policies                         │   │
+│  │                                                                         │   │
+│  │  ┌─────────────────┐                 ┌─────────────────┐               │   │
+│  │  │   Lambda Role   │                 │   Lambda Role   │               │   │
+│  │  │  (Book Catalog) │                 │ (Shopping Cart) │               │   │
+│  │  │                 │                 │                 │               │   │
+│  │  │ ┌─────────────┐ │                 │ ┌─────────────┐ │               │   │
+│  │  │ │AWS Managed: │ │                 │ │AWS Managed: │ │               │   │
+│  │  │ │VPC Execution│ │                 │ │VPC Execution│ │               │   │
+│  │  │ │CloudWatch   │ │                 │ │CloudWatch   │ │               │   │
+│  │  │ └─────────────┘ │                 │ └─────────────┘ │               │   │
+│  │  │ ┌─────────────┐ │                 │ ┌─────────────┐ │               │   │
+│  │  │ │Custom:      │ │                 │ │Custom:      │ │               │   │
+│  │  │ │RDS-BookCata-│ │                 │ │DynamoDB-    │ │               │   │
+│  │  │ │log-Access   │ │                 │ │ShoppingCart │ │               │   │
+│  │  │ └─────────────┘ │                 │ └─────────────┘ │               │   │
+│  │  └─────────────────┘                 └─────────────────┘               │   │
+│  │           │                                   │                         │   │
+│  │           ▼                                   ▼                         │   │
+│  └─────────────────────────────────────────────────────────────────────────┘   │
+│              │                                   │                             │
+│              ▼                                   ▼                             │
+│  ┌─────────────────────────────────────────────────────────────────────────┐   │
+│  │                        AWS Services Access                              │   │
+│  │                                                                         │   │
+│  │  ┌─────────────────┐                 ┌─────────────────┐               │   │
+│  │  │   RDS PostgreSQL│                 │    DynamoDB     │               │   │
+│  │  │                 │                 │                 │               │   │
+│  │  │ • IAM DB Auth   │                 │ • Item-level    │               │   │
+│  │  │ • VPC Private   │                 │   permissions   │               │   │
+│  │  │ • Encryption    │                 │ • Encryption    │               │   │
+│  │  │ • CloudWatch    │                 │ • CloudWatch    │               │   │
+│  │  │   Logs          │                 │   Logs          │               │   │
+│  │  └─────────────────┘                 └─────────────────┘               │   │
+│  └─────────────────────────────────────────────────────────────────────────┘   │
+│                                                                                 │
+│  Security Principles:                    Access Controls:                      │
+│  • Least Privilege Access               • Network Security Groups              │
+│  • Customer-Managed Policies            • VPC Private Subnets                  │
+│  • Service-Specific Roles               • Resource-Level Permissions           │
+│  • No Hardcoded Credentials             • HTTPS-Only Communication             │
+│                                                                                 │
+│  ┌─────────────────────────────────────────────────────────────────────────┐   │
+│  │                          Policy Structure                               │   │
+│  │                                                                         │   │
+│  │  Customer-Managed Policies:                                            │   │
+│  │  ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐       │   │
+│  │  │CloudShelf-RDS-  │  │CloudShelf-      │  │CloudShelf-S3-   │       │   │
+│  │  │BookCatalog-     │  │DynamoDB-        │  │Assets-Access    │       │   │
+│  │  │Access           │  │ShoppingCart-    │  │                 │       │   │
+│  │  │                 │  │Access           │  │                 │       │   │
+│  │  │• RDS Describe   │  │• Get/Put/Update │  │• GetObject      │       │   │
+│  │  │• DB Connect     │  │• Delete/Query   │  │• PutObject      │       │   │
+│  │  │                 │  │• Scan           │  │                 │       │   │
+│  │  └─────────────────┘  └─────────────────┘  └─────────────────┘       │   │
+│  └─────────────────────────────────────────────────────────────────────────┘   │
+└─────────────────────────────────────────────────────────────────────────────────┘
+```
+
+_**Placeholder for cloudshelf-iam-security-architecture-diagram** - Complete IAM role relationships, policy attachments, and service access patterns_
 
 ---
 
@@ -54,7 +119,7 @@ IAM security provides the foundation for all CloudShelf services with:
 
 ### Step 1: Create Custom IAM Policies
 
-> **📝 Best Practice**: Create customer-managed policies first, then attach them to roles for better governance and reusability.
+> **📝 Best Practice**: Following **[ADR-008: IAM Policy Creation Strategy](../cloudshelf-architecture-decisions.md#adr-008)**, create customer-managed policies first, then attach them to roles for better governance and reusability.
 
 #### CloudShelf RDS Access Policy
 
@@ -78,8 +143,6 @@ IAM security provides the foundation for all CloudShelf services with:
   ]
 }
 ```
-
-![CloudShelf RDS Book Catalog Access Policy](screenshots/Cloudshelf-RDS-Book-Catalog-Access.png)
 
 #### CloudShelf DynamoDB Access Policy
 
@@ -109,8 +172,6 @@ IAM security provides the foundation for all CloudShelf services with:
 }
 ```
 
-![CloudShelf DynamoDB Shopping Cart Access Policy](screenshots/Cloudshelf-DynamoDB-ShoppingCart-Access.png)
-
 #### CloudShelf Lambda Invoke Policy
 
 > **📝 Note**: This policy is for future use cases where other AWS services might need to invoke Lambda functions programmatically. API Gateway uses resource-based policies instead.
@@ -134,8 +195,6 @@ IAM security provides the foundation for all CloudShelf services with:
 }
 ```
 
-![CloudShelf Lambda Invoke Access Policy](screenshots/Cloudshelf-Lambda-Invoke-Access.png)
-
 #### CloudShelf S3 Access Policy
 
 **Policy Name**: `CloudShelf-S3-Assets-Access`  
@@ -156,8 +215,6 @@ IAM security provides the foundation for all CloudShelf services with:
   ]
 }
 ```
-
-![CloudShelf S3 Assets Access Policy](screenshots/Cloudshelf-S3-Assets-Access.png)
 
 ---
 
@@ -224,96 +281,9 @@ Now create roles and attach the custom policies created in Step 1.
 
 </details>
 
-<details>
-<summary><strong>🛡️ Security Validation & Testing</strong></summary>
+---
 
-### Role Testing
-
-**Lambda Role Validation:**
-
-- Navigate to Lambda Console → Test tab
-- Create test event with payload: `{"action":"test-db-connection"}`
-- Execute test and review CloudWatch logs for connection success
-
-![Lambda Function Test Configuration](screenshots/lambda-test-configuration.png)
-![Lambda Test Results and CloudWatch Logs](screenshots/lambda-test-results-cloudwatch.png)
-
-**API Gateway Integration Test:**
-
-- Use API Gateway Console → Test feature
-- Test GET `/books` endpoint
-- Verify successful Lambda invocation and response
-
-![API Gateway Test Console Configuration](screenshots/apigateway-test-console.png)
-![API Gateway Test Results](screenshots/apigateway-test-results.png)
-
-### Permission Validation
-
-**IAM Role Verification:**
-
-- Navigate to IAM Console → Roles
-- Select Lambda role and review attached policies
-- Use IAM Policy Simulator to test specific actions
-
-![IAM Policy Simulator Results](screenshots/iam-policy-simulator-results.png)
-
-- Use IAM Policy Simulator to test specific actions
-
-**Security Group Validation:**
-
-- Navigate to VPC Console → Security Groups
-- Verify Lambda security group outbound rules
-- Confirm RDS security group inbound rules
-
-</details>
-
-<details>
-<summary><strong>🚨 Security Monitoring</strong></summary>
-
-### CloudWatch Alarms
-
-- **Failed Authentication Attempts**: >10 failed attempts in 5 minutes
-- **Unusual API Activity**: 4xx/5xx error rate spikes
-- **Database Connection Monitoring**: Connection count approaching limits
-
-![CloudWatch Security Alarms Dashboard](screenshots/cloudwatch-security-alarms-dashboard.png)
-
-### Security Metrics
-
-- **Authentication Success Rate**: >99.5%
-- **Authorization Failures**: <0.1% of requests
-- **Security Group Violations**: 0 attempts
-- **Credential Exposure**: 0 incidents
-
-![Security Metrics Dashboard](screenshots/security-metrics-dashboard.png)
-
-### Troubleshooting Common Issues
-
-**Lambda Permission Denied:**
-
-- Verify execution role has required policies
-- Check resource ARNs in policy statements
-- Confirm VPC configuration if applicable
-
-![IAM Role Troubleshooting Console](screenshots/iam-role-troubleshooting.png)
-
-**RDS Connection Failures:**
-
-- Verify IAM database authentication enabled
-- Check security group rules
-- Confirm database user permissions
-
-![RDS Security Configuration Validation](screenshots/rds-security-validation.png)
-
-**API Gateway 403 Errors:**
-
-- Verify Lambda resource-based policies
-- Check API Gateway execution role
-- Confirm CORS configuration
-
-![API Gateway Permission Troubleshooting](screenshots/apigateway-permission-troubleshooting.png)
-
-</details>
+**Next Step**: Complete the [🗃️ RDS Database Setup Guide](../rds/cloudshelf-rds-setup.md) to deploy the PostgreSQL database that will use the IAM roles and policies configured in this guide.
 
 ---
 
