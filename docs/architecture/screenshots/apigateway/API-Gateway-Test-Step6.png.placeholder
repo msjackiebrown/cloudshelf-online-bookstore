@@ -1,0 +1,25 @@
+# API Gateway Testing Screenshot
+
+**Purpose**: Shows testing the API endpoint using AWS Console's built-in test feature
+
+**Should Include**:
+- API Gateway console TEST tab interface
+- Method selection (GET, POST, PUT, DELETE)
+- Path parameters filled in (userId, itemId)
+- Request body JSON for POST/PUT methods
+- Headers section (if needed)
+- Test button
+- Response display showing status code (200 OK)
+- Response body from Lambda function
+
+**Referenced in**: `cloudshelf-apigateway-setup.md`
+**Status**: Placeholder - Needs actual screenshot
+
+**Instructions for Screenshot**:
+1. Select a method (GET, POST, etc.) in API Gateway console
+2. Click "TEST" tab
+3. Fill in path parameters (userId: user123, itemId: item789)
+4. For POST/PUT: Add JSON request body
+5. Click "Test" button
+6. Show successful response (200 OK) with Lambda output
+7. Save as `API-Gateway-Test-Step6.png`

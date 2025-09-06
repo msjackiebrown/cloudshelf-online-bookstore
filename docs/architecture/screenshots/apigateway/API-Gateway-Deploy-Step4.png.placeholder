@@ -1,0 +1,21 @@
+# API Gateway Deploy Screenshot
+
+**Purpose**: Shows deploying the API to a stage for testing
+
+**Should Include**:
+- "Deploy API" dialog box
+- Deployment stage dropdown with "dev" selected
+- Deployment description field
+- Deploy button
+- Resulting invoke URL display
+
+**Referenced in**: `cloudshelf-apigateway-setup.md`
+**Status**: Placeholder - Needs actual screenshot
+
+**Instructions for Screenshot**:
+1. Select "Deploy API" from Actions dropdown
+2. Choose or create "dev" stage
+3. Add deployment description
+4. Click Deploy
+5. Show the resulting invoke URL
+6. Save as `API-Gateway-Deploy-Step5.png`

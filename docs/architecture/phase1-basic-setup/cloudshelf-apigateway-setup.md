@@ -41,49 +41,71 @@ Based on **ADR-005**, API Gateway provides the unified API layer for CloudShelf 
 
 ### **🌐 API Gateway Architecture Design**
 
-![CloudShelf API Gateway Architecture](API-Gateway-Architecture-Diagram.png)
-_RESTful API architecture showing endpoints, Lambda integrations, and security configurations_
+```
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│                       CloudShelf API Gateway Architecture                      │
+├─────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                 │
+│  📱 Web/Mobile Clients                                                         │
+│       │                                                                         │
+│       ▼                                                                         │
+│  ┌─────────────────────────────────────────────────────────────────────────┐   │
+│  │                        🌐 API Gateway                                   │   │
+│  │                    cloudshelf-api (REST)                               │   │
+│  └─────────────────────────────────────────────────────────────────────────┘   │
+│       │                                                                         │
+│       ▼                                                                         │
+│  ┌─────────────────────────────────────────────────────────────────────────┐   │
+│  │                          API Endpoints                                 │   │
+│  │  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐   │   │
+│  │  │   /books    │  │   /cart     │  │   /users    │  │  /orders    │   │   │
+│  │  │GET POST PUT │  │GET POST DEL │  │GET POST PUT │  │GET POST PUT │   │   │
+│  │  │   DELETE    │  │             │  │   DELETE    │  │   DELETE    │   │   │
+│  │  └─────────────┘  └─────────────┘  └─────────────┘  └─────────────┘   │   │
+│  └─────────────────────────────────────────────────────────────────────────┘   │
+│       │                                                                         │
+│       ▼                                                                         │
+│  ┌─────────────────────────────────────────────────────────────────────────┐   │
+│  │                         Lambda Functions                               │   │
+│  │  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐   │   │
+│  │  │Book Catalog │  │Shopping Cart│  │User Mgmt    │  │Order Process│   │   │
+│  │  │  Handler    │  │  Handler    │  │  Handler    │  │  Handler    │   │   │
+│  │  │   (Java)    │  │   (Java)    │  │ (To Create) │  │ (To Create) │   │   │
+│  │  └─────────────┘  └─────────────┘  └─────────────┘  └─────────────┘   │   │
+│  └─────────────────────────────────────────────────────────────────────────┘   │
+│       │                                                                         │
+│       ▼                                                                         │
+│  ┌─────────────────────────────────────────────────────────────────────────┐   │
+│  │                         DynamoDB Tables                                │   │
+│  │  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐   │   │
+│  │  │cloudshelf-  │  │cloudshelf-  │  │cloudshelf-  │  │cloudshelf-  │   │   │
+│  │  │   books     │  │   carts     │  │   users     │  │  orders     │   │   │
+│  │  └─────────────┘  └─────────────┘  └─────────────┘  └─────────────┘   │   │
+│  └─────────────────────────────────────────────────────────────────────────┘   │
+│                                                                                 │
+└─────────────────────────────────────────────────────────────────────────────────┘
+```
+
+_RESTful API architecture showing endpoints, Lambda integrations, and DynamoDB tables_
 
 ---
 
-## 🚀 Implementation Guide
-
-### Step 1: Create REST API
-
-1. **Open API Gateway Console**
-
-   - Sign in to AWS Management Console
-   - Navigate to API Gateway service
-   - Choose "Create API"
-
-   ![API Gateway Console - Create API](screenshots/01-api-gateway-create-api.png)
-
-2. **Configure API**
-
-   - Select **REST API** (not HTTP API for full feature support)
-   - Choose **New API**
-   - API Name: `cloudshelf-api`
-   - Description: `CloudShelf Online Bookstore API`
-   - Endpoint Type: **Regional**
-
-   ![API Gateway Configuration](screenshots/02-api-gateway-configure.png)
-
-### Step 2: Create Resources and Methods
-
----
-
-## 📊 Architecture Configuration
+## Architecture Configuration
 
 ### **API Design Strategy**
 
-Following ADR-005 RESTful architecture approach:
+Following ADR-005 RESTful architecture approach for Phase 1:
 
-| API Resource      | HTTP Methods      | Lambda Integration         | Purpose                    |
-| ----------------- | ----------------- | -------------------------- | -------------------------- |
-| **`/books`**      | GET, POST         | `cloudshelf-book-catalog`  | Book inventory operations  |
-| **`/books/{id}`** | GET, PUT, DELETE  | `cloudshelf-book-catalog`  | Individual book operations |
-| **`/cart`**       | GET, POST, DELETE | `cloudshelf-shopping-cart` | Shopping cart operations   |
-| **`/cart/items`** | POST, PUT, DELETE | `cloudshelf-shopping-cart` | Cart item management       |
+| API Resource               | HTTP Methods      | Lambda Integration            | Status                        | Purpose                   |
+| -------------------------- | ----------------- | ----------------------------- | ----------------------------- | ------------------------- |
+| **`/cart`**                | GET, POST, DELETE | `cloudshelf-shopping-cart`    | ✅ **Available**              | Shopping cart operations  |
+| **`/cart/{userId}`**       | GET, POST, DELETE | `cloudshelf-shopping-cart`    | ✅ **Available**              | User-specific cart access |
+| **`/cart/{userId}/items`** | POST, PUT, DELETE | `cloudshelf-shopping-cart`    | ✅ **Available**              | Cart item management      |
+| **`/books`**               | GET, POST         | `cloudshelf-book-catalog`     | ⚠️ **Needs DynamoDB adapter** | Book inventory operations |
+| **`/users`**               | GET, POST, PUT    | `cloudshelf-user-management`  | ❌ **Missing**                | User profile operations   |
+| **`/orders`**              | GET, POST, PUT    | `cloudshelf-order-processing` | ❌ **Missing**                | Order operations          |
+
+> **📋 Phase 1 Implementation Priority**: Start with `/cart` endpoints (available), then create missing Lambda functions for `/users` and `/orders`. `/books` needs DynamoDB adaptation.
 
 ### **Integration Patterns**
 
@@ -109,43 +131,13 @@ Create the main API Gateway instance.
 - **Description**: `CloudShelf Online Bookstore API`
 - **Endpoint Type**: Regional
 
-![API Gateway Create API](API-Gateway-Create-API-Step1.png)
+![API Gateway Create API](../screenshots/apigateway/API-Gateway-Create-API-Step1.png)
 
 ---
 
-### **Step 2: Create Book Catalog Resources**
+### **Step 2: Create Shopping Cart Resources**
 
-Set up the books API endpoints and methods.
-
-**Resource Configuration:**
-
-- **Resource Name**: `books`
-- **Resource Path**: `/books`
-- **Enable CORS**: Yes
-- **Methods**: GET, POST
-
-![Create Books Resource](API-Gateway-Books-Resource-Step2.png)
-
----
-
-### **Step 3: Configure Lambda Integration**
-
-Connect API methods to Lambda functions.
-
-**Integration Configuration:**
-
-- **Integration Type**: Lambda Function
-- **Lambda Region**: Your AWS region
-- **Lambda Function**: `cloudshelf-book-catalog`
-- **Use Lambda Proxy**: Enabled
-
-![Lambda Integration Setup](API-Gateway-Lambda-Integration-Step3.png)
-
----
-
-### **Step 4: Create Shopping Cart Resources**
-
-Set up the cart API endpoints and methods.
+Set up the cart API endpoints first since the Lambda function is ready.
 
 **Resource Configuration:**
 
@@ -154,7 +146,43 @@ Set up the cart API endpoints and methods.
 - **Enable CORS**: Yes
 - **Methods**: GET, POST, DELETE
 
-![Create Cart Resource](API-Gateway-Cart-Resource-Step4.png)
+![Create Cart Resource](../screenshots/apigateway/API-Gateway-Cart-Resource-Step2.png)
+
+---
+
+### **Step 3: Configure Lambda Integration**
+
+Connect cart API methods to the available shopping cart Lambda function.
+
+**Integration Configuration:**
+
+- **Integration Type**: Lambda Function
+- **Lambda Region**: Your AWS region
+- **Lambda Function**: `CloudShelf-ShoppingCart-Phase1`
+- **Use Lambda Proxy**: Enabled
+
+![Lambda Integration Setup](../screenshots/apigateway/API-Gateway-Lambda-Integration-Step3.png)
+
+---
+
+### **Step 4: Create User-Specific Cart Resources**
+
+Set up user-specific cart endpoints with path parameters.
+
+**Resource Configuration:**
+
+- **Parent Resource**: `/cart`
+- **Resource Path**: `{userId}`
+- **Enable CORS**: Yes
+- **Methods**: GET, POST, DELETE
+
+**Items Sub-Resource:**
+
+- **Parent Resource**: `/cart/{userId}`
+- **Resource Path**: `items`
+- **Methods**: POST, PUT, DELETE
+
+![User Cart Resource](../screenshots/apigateway/API-Gateway-User-Cart-Resource-Step4.png)
 
 ---
 
@@ -164,91 +192,60 @@ Create a deployment stage for the API.
 
 **Deployment Configuration:**
 
-- **Stage Name**: `dev`, `staging`, or `prod`
+- **Stage Name**: `dev` (or `staging`, `prod`)
 - **Description**: Environment-specific deployment
 - **Enable CloudWatch Logs**: Yes
 - **Enable X-Ray Tracing**: Yes (optional)
 
-![API Gateway Deployment](API-Gateway-Deploy-Step5.png)
-
-2. **Create User Path Parameter**
-
-   - Select `/cart` resource
-   - Actions → Create Resource
-   - Resource Path: `{userId}`
-   - Create GET, POST, DELETE methods
-   - Integration: `cloudshelf-shopping-cart` Lambda
-
-   ![Cart User ID Resource](screenshots/08-cart-userid-resource.png)
-
-3. **Create Items Sub-resource**
-
-   - Select `/cart/{userId}` resource
-   - Actions → Create Resource
-   - Resource Name: `items`
-   - Create POST method for adding items
-
-   ![Cart Items Resource](screenshots/09-cart-items-resource.png)
-
-### Step 3: Configure CORS
-
-1. **Enable CORS for Each Resource**
-
-   - Select resource
-   - Actions → Enable CORS
-   - Access-Control-Allow-Origin: `*`
-   - Access-Control-Allow-Headers: `Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token`
-   - Access-Control-Allow-Methods: Select all needed methods
-
-   ![CORS Configuration](screenshots/10-cors-configuration.png)
-
-### Step 4: Deploy API
-
-1. **Create Deployment**
-
-   - Actions → Deploy API
-   - Deployment stage: `dev` (create new stage)
-   - Stage description: `Development environment`
-
-   ![Deploy API](screenshots/11-deploy-api.png)
-
-2. **Get Invoke URL**
-
-   - Note the Invoke URL from the stage (e.g., `https://abc123.execute-api.us-east-1.amazonaws.com/dev`)
-
-   ![API Gateway Invoke URL](screenshots/12-invoke-url.png)
-
-### Step 5: Test API Endpoints
-
-1. **Test Book Catalog**
-
-   ```bash
-   # List books
-   curl https://your-api-id.execute-api.region.amazonaws.com/dev/books
-
-   # Get specific book
-   curl https://your-api-id.execute-api.region.amazonaws.com/dev/books/123
-   ```
-
-2. **Test Shopping Cart**
-
-   ```bash
-   # Get user cart
-   curl https://your-api-id.execute-api.region.amazonaws.com/dev/cart/user123
-
-   # Add item to cart
-   curl -X POST https://your-api-id.execute-api.region.amazonaws.com/dev/cart/user123/items \
-        -H "Content-Type: application/json" \
-        -d '{"bookId":"123","quantity":1}'
-   ```
-
-   ![API Testing Results](screenshots/13-api-testing-results.png)
+![API Gateway Deployment](../screenshots/apigateway/API-Gateway-Deploy-Step5.png)
 
 ---
 
-## Complete API Structure Overview
+### **Step 6: Test API Endpoints**
 
-![Complete API Gateway Structure](screenshots/14-complete-api-structure.png)
+Test the deployed API using the AWS Console's built-in testing feature.
+
+**Available Tests (Shopping Cart):**
+
+1. **Test Get Cart Endpoint**
+
+   - Select GET method under `/cart/{userId}`
+   - Click "TEST" tab
+   - Enter `user123` for `userId` path parameter
+   - Click "Test" button
+
+2. **Test Add Item to Cart**
+
+   - Select POST method under `/cart/{userId}/items`
+   - Click "TEST" tab
+   - Enter `user123` for `userId` path parameter
+   - Add Request Body:
+     ```json
+     {
+       "bookId": "book456",
+       "quantity": 2
+     }
+     ```
+   - Click "Test" button
+
+3. **Test Update Item Quantity**
+
+   - Select PUT method under `/cart/{userId}/items/{itemId}`
+   - Enter path parameters: `userId`: `user123`, `itemId`: `item789`
+   - Add Request Body:
+     ```json
+     {
+       "quantity": 3
+     }
+     ```
+   - Click "Test" button
+
+4. **Test Remove Item**
+   - Select DELETE method under `/cart/{userId}/items/{itemId}`
+   - Enter path parameters: `userId`: `user123`, `itemId`: `item789`
+   - Click "Test" button
+
+![API Gateway Testing](../screenshots/apigateway/API-Gateway-Test-Step6.png)
 
 ---
 
@@ -304,13 +301,45 @@ graph TD
 
 ---
 
-## � API Endpoints Reference
+## 📋 API Endpoints Reference
 
-### **📚 Book Catalog API**
+### **� Shopping Cart API (Phase 1 - Available)**
 
-**Base URL**: `https://{api-id}.execute-api.{region}.amazonaws.com/prod`
+**Base URL**: `https://{api-id}.execute-api.{region}.amazonaws.com/dev`
 
-#### **Books Endpoints**
+#### **Cart Endpoints**
+
+```
+GET    /cart/{userId}                    - Get user's cart
+POST   /cart/{userId}/items              - Add item to cart
+PUT    /cart/{userId}/items/{itemId}     - Update item quantity
+DELETE /cart/{userId}/items/{itemId}     - Remove item from cart
+DELETE /cart/{userId}                    - Clear entire cart
+```
+
+**Example Add to Cart:**
+
+```bash
+curl -X POST "https://your-api-id.execute-api.us-east-1.amazonaws.com/dev/cart/user123/items" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "bookId": "book456",
+    "quantity": 2
+  }'
+```
+
+**Example Get Cart:**
+
+```bash
+curl -X GET "https://your-api-id.execute-api.us-east-1.amazonaws.com/dev/cart/user123" \
+  -H "Content-Type: application/json"
+```
+
+### **📚 Book Catalog API (Phase 1 - Needs Implementation)**
+
+> **⚠️ Status**: Lambda function exists but needs DynamoDB adapter
+
+#### **Books Endpoints (Future)**
 
 ```
 GET    /books              - List all books
@@ -321,52 +350,36 @@ PUT    /books/{id}         - Update book (admin)
 DELETE /books/{id}         - Delete book (admin)
 ```
 
-**Example Request:**
+### **� User Management API (Phase 1 - Missing)**
 
-```bash
-curl -X GET "https://your-api-id.execute-api.us-east-1.amazonaws.com/prod/books" \
-  -H "Content-Type: application/json"
-```
+> **❌ Status**: Lambda function needs to be created
 
-**Example Response:**
-
-```json
-{
-  "books": [
-    {
-      "id": 1,
-      "title": "The Great Gatsby",
-      "author": "F. Scott Fitzgerald",
-      "price": 12.99,
-      "stock": 50,
-      "category": "Fiction"
-    }
-  ],
-  "totalCount": 1
-}
-```
-
-### **🛒 Shopping Cart API**
-
-#### **Cart Endpoints**
+#### **User Endpoints (Future)**
 
 ```
-GET    /cart/{userId}           - Get user's cart
-POST   /cart/{userId}/items     - Add item to cart
-PUT    /cart/{userId}/items/{itemId} - Update item quantity
-DELETE /cart/{userId}/items/{itemId} - Remove item from cart
-DELETE /cart/{userId}           - Clear entire cart
+GET    /users/{userId}     - Get user profile
+POST   /users              - Create user account
+PUT    /users/{userId}     - Update user profile
+DELETE /users/{userId}     - Delete user account
 ```
 
-**Example Add to Cart:**
+### **📦 Order Processing API (Phase 1 - Missing)**
 
-```bash
-curl -X POST "https://your-api-id.execute-api.us-east-1.amazonaws.com/prod/cart/user123/items" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "bookId": 1,
+> **❌ Status**: Lambda function needs to be created
+
+#### **Order Endpoints (Future)**
+
+```
+GET    /orders/{userId}    - Get user's order history
+POST   /orders             - Create new order
+PUT    /orders/{orderId}   - Update order status
+GET    /orders/{orderId}   - Get order details
+```
+
     "quantity": 2
-  }'
+
+}'
+
 ```
 
 ### **🔒 Authentication**
@@ -457,5 +470,6 @@ For this tutorial, APIs are public. In production, implement:
 
 ---
 
-_📋 **Documentation Status**: Complete | ✅ **Client Ready**: Yes | 🔄 **Last Updated**: Implementation Phase_  
+_📋 **Documentation Status**: Complete | ✅ **Client Ready**: Yes | 🔄 **Last Updated**: Implementation Phase_
 _🏗️ **Architecture Phase**: Core Services | 👥 **Team**: Solutions Architecture | 📋 **Next**: CloudFront Distribution_
+```

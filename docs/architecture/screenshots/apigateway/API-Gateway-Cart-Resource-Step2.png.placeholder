@@ -1,0 +1,22 @@
+# API Gateway Cart Resource Screenshot
+
+**Purpose**: Shows creating a new resource in API Gateway for the shopping cart
+
+**Should Include**:
+- API Gateway resource tree view
+- "Create Resource" dialog box
+- Resource Name: "cart" 
+- Resource Path: "/cart"
+- CORS checkbox enabled
+- "Create Resource" button
+
+**Referenced in**: `cloudshelf-apigateway-setup.md`
+**Status**: Placeholder - Needs actual screenshot
+
+**Instructions for Screenshot**:
+1. In API Gateway console, select the root resource "/"
+2. Click Actions → Create Resource
+3. Fill in Resource Name: "cart"
+4. Resource Path should show "/cart"
+5. Check "Enable API Gateway CORS"
+6. Save as `API-Gateway-Cart-Resource-Step2.png`

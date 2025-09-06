@@ -110,7 +110,7 @@ Phase 1 Implementation Flow:
 
 ### **3️⃣ Serverless Functions (45 minutes)**
 
-📖 **Guide**: [`cloudshelf-lambda-setup.md`](cloudshelf-lambda-setup.md)
+📖 **Guide**: [`cloudshelf-basic-lambda-setup.md`](cloudshelf-basic-lambda-setup.md)
 
 **What you'll create**:
 

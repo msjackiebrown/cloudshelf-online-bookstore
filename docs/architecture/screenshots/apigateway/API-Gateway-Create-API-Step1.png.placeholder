@@ -1,0 +1,19 @@
+# API Gateway Create API Screenshot
+
+**Purpose**: Shows the AWS API Gateway console "Create API" interface
+
+**Should Include**:
+- API Gateway console main page
+- "Create API" button highlighted
+- REST API option selected (not HTTP API)
+- "Build" button for REST API
+
+**Referenced in**: `cloudshelf-apigateway-setup.md`
+**Status**: Placeholder - Needs actual screenshot
+
+**Instructions for Screenshot**:
+1. Go to AWS Console → API Gateway
+2. Click "Create API"
+3. Show REST API selection (not HTTP API)
+4. Highlight the "Build" button for REST API
+5. Save as `API-Gateway-Create-API-Step1.png`

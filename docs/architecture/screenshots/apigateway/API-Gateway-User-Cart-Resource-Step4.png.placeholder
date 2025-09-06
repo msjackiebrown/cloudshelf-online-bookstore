@@ -1,0 +1,24 @@
+# API Gateway User Cart Resource Screenshot
+
+**Purpose**: Shows creating user-specific cart resources with path parameters
+
+**Should Include**:
+- Resource tree showing /cart parent resource
+- New resource creation with {userId} path parameter
+- Resource configuration dialog
+- Path parameter setup: {userId}
+- Enable CORS checkbox checked
+- Methods being added (GET, POST, DELETE)
+
+**Referenced in**: `cloudshelf-apigateway-setup.md`
+**Status**: Placeholder - Needs actual screenshot
+
+**Instructions for Screenshot**:
+1. Select /cart resource in the resource tree
+2. Click "Actions" → "Create Resource"
+3. Show Resource Name: (empty or "User Cart")
+4. Show Resource Path: {userId}
+5. Show "Enable API Gateway CORS" checked
+6. After creation, show the resource tree with /cart/{userId}
+7. Show methods being added: GET, POST, DELETE
+8. Save as `API-Gateway-User-Cart-Resource-Step4.png`

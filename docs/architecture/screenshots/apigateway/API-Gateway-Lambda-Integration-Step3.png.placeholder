@@ -1,0 +1,24 @@
+# API Gateway Lambda Integration Screenshot
+
+**Purpose**: Shows setting up Lambda function integration for API Gateway method
+
+**Should Include**:
+- Method execution flow diagram
+- Integration Request configuration
+- Integration Type: "Lambda Function" selected
+- Lambda Region dropdown
+- Lambda Function field with "CloudShelf-ShoppingCart-Phase1"
+- "Use Lambda Proxy integration" checkbox checked
+- Save button
+
+**Referenced in**: `cloudshelf-apigateway-setup.md`
+**Status**: Placeholder - Needs actual screenshot
+
+**Instructions for Screenshot**:
+1. Select a method (GET, POST, etc.) in the API Gateway resource
+2. Click on "Integration Request"
+3. Show Integration Type: Lambda Function
+4. Lambda Region: (your region)
+5. Lambda Function: CloudShelf-ShoppingCart-Phase1
+6. Use Lambda Proxy integration: CHECKED
+7. Save as `API-Gateway-Lambda-Integration-Step3.png`
