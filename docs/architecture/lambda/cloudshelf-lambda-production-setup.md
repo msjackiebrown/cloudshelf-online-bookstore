@@ -95,17 +95,17 @@ Following ADR-004 serverless-first approach:
 
 ## 🚀 Implementation Guide
 
-### **Step 1: Create IAM Execution Role**
+### **Step 1: Verify IAM Execution Role**
 
-Create the execution role that Lambda functions will assume.
+Ensure you have completed the IAM setup from the previous guide.
 
-**Configuration:**
+**Prerequisites:**
 
-- **Role Name**: `cloudshelf-lambda-execution-role`
-- **Trusted Entity**: AWS Lambda service
-- **Policies**: Basic execution + VPC access + custom permissions
+- ✅ **IAM Role**: `CloudShelf-Lambda-ExecutionRole-Phase1` (created in [IAM Setup Guide](cloudshelf-basic-iam-setup.md))
+- ✅ **Policies Attached**: `AWSLambdaBasicExecutionRole`, `AmazonDynamoDBFullAccess`
+- ✅ **Trust Policy**: Lambda service can assume the role
 
-![Lambda IAM Role Setup](Lambda-IAM-Role-Setup-Step1.png)
+> **📋 Reference**: See [CloudShelf Basic IAM Setup](cloudshelf-basic-iam-setup.md) for complete role creation steps
 
 ---
 
