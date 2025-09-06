@@ -14,7 +14,11 @@ This guide provides setup instructions for DynamoDB-only data storage, implement
 
 - ✅ **No VPC complexity** - Fully managed, serverless
 - ✅ **Faster setup** - Get working app in hours, not days
-- ✅ **Cost effective** - Pay per request, no idle database costs
+- ✅ \*\*Co## 📚 Related Documentation
+
+- 🔒 [**Basic IAM Setup**](basic-iam-setup.md) - Set up security roles (next step)
+- ⚡ [**Lambda Setup Guide**](cloudshelf-lambda-setup.md) - Connect functions to DynamoDB
+- 📋 [**Phase 1 Overview**](README.md) - Complete Phase 1 implementation guidefective\*\* - Pay per request, no idle database costs
 - ✅ **AWS best practices** - Learn serverless-first patterns
 - ✅ **Real application** - Full CloudShelf functionality
 
@@ -563,14 +567,14 @@ _Testing table queries in DynamoDB console_
 Once your DynamoDB tables are created and populated:
 
 1. ✅ **DynamoDB Setup Complete** - You've finished this guide
-2. ⚡ **Next**: [Lambda Setup Guide](../lambda/cloudshelf-lambda-setup.md) - Connect Lambda functions to your tables
-3. 🌐 **Then**: [API Gateway Setup](../apigateway/cloudshelf-apigateway-setup.md) - Create REST API endpoints
+2. 🔒 **Next**: [Basic IAM Setup](basic-iam-setup.md) - Set up security roles for Lambda functions
+3. ⚡ **Then**: [Lambda Setup Guide](cloudshelf-lambda-setup.md) - Connect Lambda functions to your tables
 
 ---
 
 ## 📚 Related Documentation
 
-- ⚡ [**Lambda Setup Guide**](../lambda/cloudshelf-lambda-setup.md) - Connect functions to DynamoDB
+- ⚡ [**Lambda Setup Guide**](cloudshelf-lambda-setup.md) - Connect functions to DynamoDB
 - 🌐 [**API Gateway Setup**](../apigateway/cloudshelf-apigateway-setup.md) - Create REST endpoints
 - � [**Phase 1 Overview**](README.md) - Complete Phase 1 implementation guide
 
