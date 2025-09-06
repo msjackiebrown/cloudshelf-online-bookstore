@@ -74,7 +74,7 @@ Phase 1 Implementation Flow:
 
 ### **1️⃣ Database Setup (30 minutes)**
 
-📖 **Guide**: [`dynamodb-setup.md`](dynamodb-setup.md)
+📖 **Guide**: [`cloudshelf-dynamodb-setup.md`](cloudshelf-dynamodb-setup.md)
 
 **What you'll create**:
 
