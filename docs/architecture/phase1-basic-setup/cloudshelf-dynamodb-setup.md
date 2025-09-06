@@ -309,7 +309,7 @@ Navigate to the DynamoDB console and create each table:
    - **Sort key**: `book_id` (String)
    - **Billing mode**: On-demand
 
-![DynamoDB Books Table Creation](screenshots/dynamodb-books-table-creation.png)
+![DynamoDB Books Table Creation](../screenshots/dynamodb/dynamodb-books-table-creation.png)
 _Configure the books table with category and book_id as keys_
 
 3. **Add Global Secondary Index**:
@@ -317,7 +317,7 @@ _Configure the books table with category and book_id as keys_
    - **Partition key**: `title` (String)
    - **Projection**: All attributes
 
-![DynamoDB Books GSI Configuration](screenshots/dynamodb-books-gsi-configuration.png)
+![DynamoDB Books GSI Configuration](../screenshots/dynamodb/dynamodb-books-gsi-configuration.png)
 _Add title search index for book lookup functionality_
 
 #### **Create Shopping Carts Table**
@@ -333,7 +333,7 @@ _Add title search index for book lookup functionality_
    - **TTL attribute**: `expires_at`
    - **Status**: Enabled
 
-![DynamoDB Carts Table with TTL](screenshots/dynamodb-carts-table-ttl.png)
+![DynamoDB Carts Table with TTL](../screenshots/dynamodb/dynamodb-carts-table-ttl.png)
 _Shopping carts table with TTL for automatic cleanup_
 
 #### **Create Users Table**
@@ -349,7 +349,7 @@ _Shopping carts table with TTL for automatic cleanup_
    - **Partition key**: `email` (String)
    - **Projection**: All attributes
 
-![DynamoDB Users Table with Email Index](screenshots/dynamodb-users-email-index.png)
+![DynamoDB Users Table with Email Index](../screenshots/dynamodb/dynamodb-users-email-index.png)
 _Users table with email lookup capability_
 
 #### **Create Orders Table**
@@ -367,7 +367,7 @@ _Users table with email lookup capability_
    - **Sort key**: `order_id` (String)
    - **Projection**: All attributes
 
-![DynamoDB Orders Table with Date Index](screenshots/dynamodb-orders-date-index.png)
+![DynamoDB Orders Table with Date Index](../screenshots/dynamodb/dynamodb-orders-date-index.png)
 _Orders table with date-based querying capability_
 
 ---
@@ -516,7 +516,7 @@ _Orders table with date-based querying capability_
    }
    ```
 
-![DynamoDB Sample Data Population](screenshots/dynamodb-sample-data-population.png)
+![DynamoDB Sample Data Population](../screenshots/dynamodb/dynamodb-sample-data-population.png)
 _Adding sample books to the books table using DynamoDB console_
 
 ---
@@ -553,7 +553,7 @@ _Adding sample books to the books table using DynamoDB console_
    - Check that indexes are created properly
    - Confirm sample data appears as expected
 
-![DynamoDB Query Testing](screenshots/dynamodb-query-testing.png)
+![DynamoDB Query Testing](../screenshots/dynamodb/dynamodb-query-testing.png)
 _Testing table queries in DynamoDB console_
 
 ---
