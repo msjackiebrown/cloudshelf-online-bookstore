@@ -1,9 +1,9 @@
-# ⚡ CloudShelf Basic L**What You Get**:
+# ⚡ CloudShelf Basic Lambda Setup (Phase 1)
 
-- 🛒 **Shopping Cart Service** - Template for cart operations with DynamoDB (`cloudshelf-carts`)
-- 📚 **Book Catalog Service** - Template for book queries using DynamoDB (`cloudshelf-books`)
-- 👤 **User Management Service** - _Needs to be created_ for user operations (`cloudshelf-users`)
-- 📦 **Order Processing Service** - _Needs to be created_ for order operations (`cloudshelf-orders`)
+**What You Get**:
+
+- 🛒 **Shopping Cart Service** - Template for cart operations with DynamoDB
+- 📚 **Book Catalog Service** - Template for book queries (PostgreSQL integration)
 - 🌐 **REST endpoints** - API Gateway integration ready
 - 📊 **Automatic logging** - CloudWatch monitoringSetup (Phase 1)
 
