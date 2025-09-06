@@ -1,8 +1,8 @@
-# 🔐 Basic IAM Setup (Phase 1)
+# 🔐 CloudShelf Basic IAM Setup (Phase 1)
 
 > Essential IAM roles and permissions for serverless CloudShelf deployment
 
-This guide provides the minimal IAM configuration needed for Phase 1 serverless deployment, focusing on the essential roles and permissions required to get CloudShelf running quickly and securely.
+This guide provides the minimal IAM configuration needed for Phase 1 serverless deployment, implementing the strategy defined in [ADR-003: Phased IAM Security Strategy](../cloudshelf-adr-003-phased-iam-security.md).
 
 ---
 
@@ -10,9 +10,7 @@ This guide provides the minimal IAM configuration needed for Phase 1 serverless 
 
 ### **🚀 Why Basic IAM First?**
 
-> **📋 Architectural Decision**: This phased IAM approach is documented in [ADR-003: Phased IAM Security Strategy](../cloudshelf-adr-003-phased-iam-security.md)
-
-**Phase 1 Learning Benefits**:
+**Learning Benefits**:
 
 - ✅ **Essential security** - Minimal roles needed for functioning app
 - ✅ **AWS managed policies** - Use proven, secure policies where possible
@@ -102,8 +100,6 @@ Required Policies:
 - Type "AmazonDynamoDBFull" to find `AmazonDynamoDBFullAccess`
 
 **⚠️ Phase 1 Note**: We use `DynamoDBFullAccess` for simplicity. Phase 2 will implement least-privilege custom policies.
-
-![IAM Policy Attachment](../screenshots/iam/IAM-Policy-Attachment-Step2.png)
 
 4. **🏷️ Name and Create Role**
 
@@ -261,7 +257,8 @@ When you're ready for production security:
 
 ## 📖 Related Documentation
 
-- 🔗 [Lambda Setup Guide](cloudshelf-lambda-setup.md) - Use this IAM role
+- � [**ADR-003: Phased IAM Security Strategy**](../cloudshelf-adr-003-phased-iam-security.md) - Why we use this approach
+- �🔗 [Lambda Setup Guide](cloudshelf-lambda-setup.md) - Use this IAM role
 - 🔗 [DynamoDB Setup Guide](cloudshelf-dynamodb-setup.md) - Tables this role accesses
 - 🔗 [CloudWatch Monitoring](basic-cloudwatch-monitoring.md) - Logging enabled by this role
 - 🔗 [Phase 2 IAM Security](../phase2-production-setup/cloudshelf-iam-security-setup.md) - Advanced security setup

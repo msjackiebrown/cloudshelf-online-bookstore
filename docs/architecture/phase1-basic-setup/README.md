@@ -92,7 +92,7 @@ Phase 1 Implementation Flow:
 
 ### **2️⃣ Basic IAM Setup (15 minutes)**
 
-📖 **Guide**: [`basic-iam-setup.md`](basic-iam-setup.md)
+📖 **Guide**: [`cloudshelf-basic-iam-setup.md`](cloudshelf-basic-iam-setup.md)
 
 **What you'll create**:
 

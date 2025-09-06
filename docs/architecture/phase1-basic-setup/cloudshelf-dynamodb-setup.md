@@ -16,7 +16,7 @@ This guide provides setup instructions for DynamoDB-only data storage, implement
 - ✅ **Faster setup** - Get working app in hours, not days
 - ✅ \*\*Co## 📚 Related Documentation
 
-- 🔒 [**Basic IAM Setup**](basic-iam-setup.md) - Set up security roles (next step)
+- 🔒 [**Basic IAM Setup**](cloudshelf-basic-iam-setup.md) - Set up security roles (next step)
 - ⚡ [**Lambda Setup Guide**](cloudshelf-lambda-setup.md) - Connect functions to DynamoDB
 - 📋 [**Phase 1 Overview**](README.md) - Complete Phase 1 implementation guidefective\*\* - Pay per request, no idle database costs
 - ✅ **AWS best practices** - Learn serverless-first patterns
@@ -567,7 +567,7 @@ _Testing table queries in DynamoDB console_
 Once your DynamoDB tables are created and populated:
 
 1. ✅ **DynamoDB Setup Complete** - You've finished this guide
-2. 🔒 **Next**: [Basic IAM Setup](basic-iam-setup.md) - Set up security roles for Lambda functions
+2. 🔒 **Next**: [Basic IAM Setup](cloudshelf-basic-iam-setup.md) - Set up security roles for Lambda functions
 3. ⚡ **Then**: [Lambda Setup Guide](cloudshelf-lambda-setup.md) - Connect Lambda functions to your tables
 
 ---
