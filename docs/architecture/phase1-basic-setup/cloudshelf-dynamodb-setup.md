@@ -11,6 +11,7 @@ This guide provides setup instructions for DynamoDB-only data storage, implement
 ### **🚀 Why Start with DynamoDB-Only?**
 
 **Learning Benefits**:
+
 - ✅ **No VPC complexity** - Fully managed, serverless
 - ✅ **Faster setup** - Get working app in hours, not days
 - ✅ **Cost effective** - Pay per request, no idle database costs
@@ -18,8 +19,9 @@ This guide provides setup instructions for DynamoDB-only data storage, implement
 - ✅ **Real application** - Full CloudShelf functionality
 
 **What You Get**:
+
 - 📚 **Book catalog browsing** and search
-- 🛒 **Shopping cart** functionality  
+- 🛒 **Shopping cart** functionality
 - 👤 **User accounts** and authentication
 - 📦 **Order processing** and history
 - 🌐 **Public API** endpoints
@@ -83,6 +85,7 @@ This guide provides setup instructions for DynamoDB-only data storage, implement
 ```
 
 **Key Benefits**:
+
 - 🚫 **No VPC Required** - All services are AWS-managed and public
 - ⚡ **Serverless Scale** - Auto-scaling based on demand
 - 💰 **Cost Efficient** - Pay only for what you use
@@ -101,27 +104,26 @@ This guide provides setup instructions for DynamoDB-only data storage, implement
   "TableName": "cloudshelf-books",
   "BillingMode": "PAY_PER_REQUEST",
   "KeySchema": [
-    {"AttributeName": "category", "KeyType": "HASH"},
-    {"AttributeName": "book_id", "KeyType": "RANGE"}
+    { "AttributeName": "category", "KeyType": "HASH" },
+    { "AttributeName": "book_id", "KeyType": "RANGE" }
   ],
   "AttributeDefinitions": [
-    {"AttributeName": "category", "AttributeType": "S"},
-    {"AttributeName": "book_id", "AttributeType": "S"},
-    {"AttributeName": "title", "AttributeType": "S"}
+    { "AttributeName": "category", "AttributeType": "S" },
+    { "AttributeName": "book_id", "AttributeType": "S" },
+    { "AttributeName": "title", "AttributeType": "S" }
   ],
   "GlobalSecondaryIndexes": [
     {
       "IndexName": "TitleSearchIndex",
-      "KeySchema": [
-        {"AttributeName": "title", "KeyType": "HASH"}
-      ],
-      "Projection": {"ProjectionType": "ALL"}
+      "KeySchema": [{ "AttributeName": "title", "KeyType": "HASH" }],
+      "Projection": { "ProjectionType": "ALL" }
     }
   ]
 }
 ```
 
 **Sample Book Item**:
+
 ```json
 {
   "category": "Technology",
@@ -147,12 +149,12 @@ This guide provides setup instructions for DynamoDB-only data storage, implement
   "TableName": "cloudshelf-carts",
   "BillingMode": "PAY_PER_REQUEST",
   "KeySchema": [
-    {"AttributeName": "user_id", "KeyType": "HASH"},
-    {"AttributeName": "cart_id", "KeyType": "RANGE"}
+    { "AttributeName": "user_id", "KeyType": "HASH" },
+    { "AttributeName": "cart_id", "KeyType": "RANGE" }
   ],
   "AttributeDefinitions": [
-    {"AttributeName": "user_id", "AttributeType": "S"},
-    {"AttributeName": "cart_id", "AttributeType": "S"}
+    { "AttributeName": "user_id", "AttributeType": "S" },
+    { "AttributeName": "cart_id", "AttributeType": "S" }
   ],
   "TimeToLiveSpecification": {
     "AttributeName": "expires_at",
@@ -162,6 +164,7 @@ This guide provides setup instructions for DynamoDB-only data storage, implement
 ```
 
 **Sample Cart Item**:
+
 ```json
 {
   "user_id": "user-12345",
@@ -191,26 +194,23 @@ This guide provides setup instructions for DynamoDB-only data storage, implement
 {
   "TableName": "cloudshelf-users",
   "BillingMode": "PAY_PER_REQUEST",
-  "KeySchema": [
-    {"AttributeName": "user_id", "KeyType": "HASH"}
-  ],
+  "KeySchema": [{ "AttributeName": "user_id", "KeyType": "HASH" }],
   "AttributeDefinitions": [
-    {"AttributeName": "user_id", "AttributeType": "S"},
-    {"AttributeName": "email", "AttributeType": "S"}
+    { "AttributeName": "user_id", "AttributeType": "S" },
+    { "AttributeName": "email", "AttributeType": "S" }
   ],
   "GlobalSecondaryIndexes": [
     {
       "IndexName": "EmailIndex",
-      "KeySchema": [
-        {"AttributeName": "email", "KeyType": "HASH"}
-      ],
-      "Projection": {"ProjectionType": "ALL"}
+      "KeySchema": [{ "AttributeName": "email", "KeyType": "HASH" }],
+      "Projection": { "ProjectionType": "ALL" }
     }
   ]
 }
 ```
 
 **Sample User Item**:
+
 ```json
 {
   "user_id": "user-12345",
@@ -240,28 +240,29 @@ This guide provides setup instructions for DynamoDB-only data storage, implement
   "TableName": "cloudshelf-orders",
   "BillingMode": "PAY_PER_REQUEST",
   "KeySchema": [
-    {"AttributeName": "user_id", "KeyType": "HASH"},
-    {"AttributeName": "order_id", "KeyType": "RANGE"}
+    { "AttributeName": "user_id", "KeyType": "HASH" },
+    { "AttributeName": "order_id", "KeyType": "RANGE" }
   ],
   "AttributeDefinitions": [
-    {"AttributeName": "user_id", "AttributeType": "S"},
-    {"AttributeName": "order_id", "AttributeType": "S"},
-    {"AttributeName": "order_date", "AttributeType": "S"}
+    { "AttributeName": "user_id", "AttributeType": "S" },
+    { "AttributeName": "order_id", "AttributeType": "S" },
+    { "AttributeName": "order_date", "AttributeType": "S" }
   ],
   "GlobalSecondaryIndexes": [
     {
       "IndexName": "OrderDateIndex",
       "KeySchema": [
-        {"AttributeName": "order_date", "KeyType": "HASH"},
-        {"AttributeName": "order_id", "KeyType": "RANGE"}
+        { "AttributeName": "order_date", "KeyType": "HASH" },
+        { "AttributeName": "order_id", "KeyType": "RANGE" }
       ],
-      "Projection": {"ProjectionType": "ALL"}
+      "Projection": { "ProjectionType": "ALL" }
     }
   ]
 }
 ```
 
 **Sample Order Item**:
+
 ```json
 {
   "user_id": "user-12345",
@@ -306,7 +307,7 @@ Navigate to the DynamoDB console and create each table:
    - **Table name**: `cloudshelf-books`
    - **Partition key**: `category` (String)
    - **Sort key**: `book_id` (String)
-   - **Billing mode**: Pay-per-request
+   - **Billing mode**: On-demand
 
 ![DynamoDB Books Table Creation](screenshots/dynamodb-books-table-creation.png)
 _Configure the books table with category and book_id as keys_
@@ -322,10 +323,11 @@ _Add title search index for book lookup functionality_
 #### **Create Shopping Carts Table**
 
 1. **Create table**:
+
    - **Table name**: `cloudshelf-carts`
    - **Partition key**: `user_id` (String)
    - **Sort key**: `cart_id` (String)
-   - **Billing mode**: Pay-per-request
+   - **Billing mode**: On-demand
 
 2. **Enable TTL**:
    - **TTL attribute**: `expires_at`
@@ -337,9 +339,10 @@ _Shopping carts table with TTL for automatic cleanup_
 #### **Create Users Table**
 
 1. **Create table**:
+
    - **Table name**: `cloudshelf-users`
    - **Partition key**: `user_id` (String)
-   - **Billing mode**: Pay-per-request
+   - **Billing mode**: On-demand
 
 2. **Add Global Secondary Index**:
    - **Index name**: `EmailIndex`
@@ -352,10 +355,11 @@ _Users table with email lookup capability_
 #### **Create Orders Table**
 
 1. **Create table**:
+
    - **Table name**: `cloudshelf-orders`
    - **Partition key**: `user_id` (String)
    - **Sort key**: `order_id` (String)
-   - **Billing mode**: Pay-per-request
+   - **Billing mode**: On-demand
 
 2. **Add Global Secondary Index**:
    - **Index name**: `OrderDateIndex`
@@ -372,54 +376,148 @@ _Orders table with date-based querying capability_
 
 #### **Add Sample Books**
 
-Use the DynamoDB console or AWS CLI to add sample book data:
+**Method 1: Using DynamoDB Console (Recommended for beginners)**
 
-```json
-[
-  {
-    "category": "Fiction",
-    "book_id": "fic-001",
-    "title": "The Great Gatsby",
-    "author": "F. Scott Fitzgerald",
-    "isbn": "9780743273565",
-    "price": 12.99,
-    "stock_quantity": 50,
-    "description": "Classic American novel about the Jazz Age",
-    "image_url": "https://cloudshelf-images.s3.amazonaws.com/great-gatsby.jpg",
-    "created_at": "2025-09-05T10:00:00Z",
-    "updated_at": "2025-09-05T10:00:00Z"
-  },
-  {
-    "category": "Technology",
-    "book_id": "tech-001",
-    "title": "Clean Code",
-    "author": "Robert C. Martin",
-    "isbn": "9780132350884",
-    "price": 42.99,
-    "stock_quantity": 25,
-    "description": "A handbook of agile software craftsmanship",
-    "image_url": "https://cloudshelf-images.s3.amazonaws.com/clean-code.jpg",
-    "created_at": "2025-09-05T10:00:00Z",
-    "updated_at": "2025-09-05T10:00:00Z"
-  },
-  {
-    "category": "Business",
-    "book_id": "bus-001",
-    "title": "The Lean Startup",
-    "author": "Eric Ries",
-    "isbn": "9780307887894",
-    "price": 26.99,
-    "stock_quantity": 30,
-    "description": "How constant innovation creates successful businesses",
-    "image_url": "https://cloudshelf-images.s3.amazonaws.com/lean-startup.jpg",
-    "created_at": "2025-09-05T10:00:00Z",
-    "updated_at": "2025-09-05T10:00:00Z"
-  }
-]
-```
+1. **Navigate to DynamoDB Console**
+
+   - Go to AWS Console → DynamoDB → Tables
+   - Click on `cloudshelf-books` table
+
+2. **Access Item Creation**
+
+   - Click **"Explore table items"** tab
+   - Click **"Create item"** button
+
+3. **Add Sample Book Data**
+
+   **Book 1: The Great Gatsby**
+
+   ```
+   Attributes to add:
+   - category (String): "Fiction"
+   - book_id (String): "fic-001"
+   - title (String): "The Great Gatsby"
+   - author (String): "F. Scott Fitzgerald"
+   - isbn (String): "9780743273565"
+   - price (Number): 12.99
+   - stock_quantity (Number): 50
+   - description (String): "Classic American novel about the Jazz Age"
+   - image_url (String): "https://cloudshelf-images.s3.amazonaws.com/great-gatsby.jpg"
+   - created_at (String): "2025-09-05T10:00:00Z"
+   - updated_at (String): "2025-09-05T10:00:00Z"
+   ```
+
+   **Book 2: Clean Code**
+
+   ```
+   Attributes to add:
+   - category (String): "Technology"
+   - book_id (String): "tech-001"
+   - title (String): "Clean Code"
+   - author (String): "Robert C. Martin"
+   - isbn (String): "9780132350884"
+   - price (Number): 42.99
+   - stock_quantity (Number): 25
+   - description (String): "A handbook of agile software craftsmanship"
+   - image_url (String): "https://cloudshelf-images.s3.amazonaws.com/clean-code.jpg"
+   - created_at (String): "2025-09-05T10:00:00Z"
+   - updated_at (String): "2025-09-05T10:00:00Z"
+   ```
+
+   **Book 3: The Lean Startup**
+
+   ```
+   Attributes to add:
+   - category (String): "Business"
+   - book_id (String): "bus-001"
+   - title (String): "The Lean Startup"
+   - author (String): "Eric Ries"
+   - isbn (String): "9780307887894"
+   - price (Number): 26.99
+   - stock_quantity (Number): 30
+   - description (String): "How constant innovation creates successful businesses"
+   - image_url (String): "https://cloudshelf-images.s3.amazonaws.com/lean-startup.jpg"
+   - created_at (String): "2025-09-05T10:00:00Z"
+   - updated_at (String): "2025-09-05T10:00:00Z"
+   ```
+
+4. **Create Item Steps**
+
+   - For each book, click **"Create item"**
+   - Switch to **"JSON view"** for easier data entry
+   - Copy the JSON format below for each book
+   - Paste into the JSON editor and click **"Create item"** to save
+
+5. **JSON Format for Each Book**
+
+   **Book 1: The Great Gatsby (JSON format)**
+
+6. **JSON Format for Each Book**
+
+   **Book 1: The Great Gatsby (JSON format)**
+
+   ```json
+   {
+     "category": { "S": "Fiction" },
+     "book_id": { "S": "fic-001" },
+     "title": { "S": "The Great Gatsby" },
+     "author": { "S": "F. Scott Fitzgerald" },
+     "isbn": { "S": "9780743273565" },
+     "price": { "N": "12.99" },
+     "stock_quantity": { "N": "50" },
+     "description": { "S": "Classic American novel about the Jazz Age" },
+     "image_url": {
+       "S": "https://cloudshelf-images.s3.amazonaws.com/great-gatsby.jpg"
+     },
+     "created_at": { "S": "2025-09-05T10:00:00Z" },
+     "updated_at": { "S": "2025-09-05T10:00:00Z" }
+   }
+   ```
+
+   **Book 2: Clean Code (JSON format)**
+
+   ```json
+   {
+     "category": { "S": "Technology" },
+     "book_id": { "S": "tech-001" },
+     "title": { "S": "Clean Code" },
+     "author": { "S": "Robert C. Martin" },
+     "isbn": { "S": "9780132350884" },
+     "price": { "N": "42.99" },
+     "stock_quantity": { "N": "25" },
+     "description": { "S": "A handbook of agile software craftsmanship" },
+     "image_url": {
+       "S": "https://cloudshelf-images.s3.amazonaws.com/clean-code.jpg"
+     },
+     "created_at": { "S": "2025-09-05T10:00:00Z" },
+     "updated_at": { "S": "2025-09-05T10:00:00Z" }
+   }
+   ```
+
+   **Book 3: The Lean Startup (JSON format)**
+
+   ```json
+   {
+     "category": { "S": "Business" },
+     "book_id": { "S": "bus-001" },
+     "title": { "S": "The Lean Startup" },
+     "author": { "S": "Eric Ries" },
+     "isbn": { "S": "9780307887894" },
+     "price": { "N": "26.99" },
+     "stock_quantity": { "N": "30" },
+     "description": {
+       "S": "How constant innovation creates successful businesses"
+     },
+     "image_url": {
+       "S": "https://cloudshelf-images.s3.amazonaws.com/lean-startup.jpg"
+     },
+     "created_at": { "S": "2025-09-05T10:00:00Z" },
+     "updated_at": { "S": "2025-09-05T10:00:00Z" }
+   }
+   ```
 
 ![DynamoDB Sample Data Population](screenshots/dynamodb-sample-data-population.png)
-_Adding sample books to the books table_
+_Adding sample books to the books table using DynamoDB console_
 
 ---
 
@@ -428,6 +526,7 @@ _Adding sample books to the books table_
 #### **Verify Table Creation**
 
 **Tables Checklist**:
+
 - ✅ `cloudshelf-books` with category/book_id keys and TitleSearchIndex
 - ✅ `cloudshelf-carts` with user_id/cart_id keys and TTL enabled
 - ✅ `cloudshelf-users` with user_id key and EmailIndex
@@ -435,103 +534,83 @@ _Adding sample books to the books table_
 
 #### **Test Data Operations**
 
-**Query Examples**:
+**Using DynamoDB Console**:
 
-```bash
-# Get books by category
-aws dynamodb query \
-  --table-name cloudshelf-books \
-  --key-condition-expression "category = :category" \
-  --expression-attribute-values '{":category":{"S":"Technology"}}'
+1. **Query Books by Category**:
 
-# Find user by email
-aws dynamodb query \
-  --table-name cloudshelf-users \
-  --index-name EmailIndex \
-  --key-condition-expression "email = :email" \
-  --expression-attribute-values '{":email":{"S":"customer@example.com"}}'
+   - Go to `cloudshelf-books` table → **"Explore table items"**
+   - Use **"Query"** option with condition: `category = Technology`
+   - Verify you see the "Clean Code" book
 
-# Get user's orders
-aws dynamodb query \
-  --table-name cloudshelf-orders \
-  --key-condition-expression "user_id = :user_id" \
-  --expression-attribute-values '{":user_id":{"S":"user-12345"}}'
-```
+2. **Search by Title**:
+
+   - Use the **"TitleSearchIndex"** Global Secondary Index
+   - Query with condition: `title = Clean Code`
+   - Verify the book appears in results
+
+3. **Browse All Tables**:
+   - Verify each table shows the correct structure
+   - Check that indexes are created properly
+   - Confirm sample data appears as expected
 
 ![DynamoDB Query Testing](screenshots/dynamodb-query-testing.png)
 _Testing table queries in DynamoDB console_
 
 ---
 
-## ⚡ Lambda Integration Patterns
+## 🔗 Service Integration Overview
 
-### **DynamoDB Connection from Lambda (No VPC)**
+### **How Lambda Connects to DynamoDB**
 
-```python
-import boto3
-import json
-from boto3.dynamodb.conditions import Key
+**Architectural Relationship**:
 
-# Initialize DynamoDB resource
-dynamodb = boto3.resource('dynamodb')
-
-# Table references
-books_table = dynamodb.Table('cloudshelf-books')
-carts_table = dynamodb.Table('cloudshelf-carts')
-users_table = dynamodb.Table('cloudshelf-users')
-orders_table = dynamodb.Table('cloudshelf-orders')
-
-def get_books_by_category(category):
-    """Get all books in a specific category"""
-    response = books_table.query(
-        KeyConditionExpression=Key('category').eq(category)
-    )
-    return response['Items']
-
-def search_books_by_title(title):
-    """Search books by title using GSI"""
-    response = books_table.query(
-        IndexName='TitleSearchIndex',
-        KeyConditionExpression=Key('title').eq(title)
-    )
-    return response['Items']
-
-def get_user_cart(user_id):
-    """Get user's current shopping cart"""
-    response = carts_table.query(
-        KeyConditionExpression=Key('user_id').eq(user_id),
-        ScanIndexForward=False,  # Get most recent cart
-        Limit=1
-    )
-    return response['Items'][0] if response['Items'] else None
-
-def create_order(user_id, cart_items, total_amount):
-    """Create new order from cart"""
-    import uuid
-    from datetime import datetime
-    
-    order_id = f"order-{datetime.now().strftime('%Y-%m-%d')}-{str(uuid.uuid4())[:8]}"
-    
-    order_item = {
-        'user_id': user_id,
-        'order_id': order_id,
-        'order_date': datetime.now().strftime('%Y-%m-%d'),
-        'items': cart_items,
-        'total': total_amount,
-        'status': 'confirmed',
-        'created_at': datetime.now().isoformat(),
-        'updated_at': datetime.now().isoformat()
-    }
-    
-    orders_table.put_item(Item=order_item)
-    return order_item
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                    DynamoDB Integration Flow                    │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│  🌐 API Gateway Request                                        │
+│       │                                                         │
+│       ▼                                                         │
+│  ⚡ Lambda Function                                            │
+│       │                                                         │
+│       ├── 📚 Query Books by Category                          │
+│       ├── 🔍 Search Books by Title (GSI)                      │
+│       ├── 🛒 Manage Shopping Cart Items                       │
+│       ├── 👤 Handle User Account Operations                   │
+│       └── 📦 Process Order Creation                           │
+│       │                                                         │
+│       ▼                                                         │
+│  🗂️ DynamoDB Tables                                           │
+│       │                                                         │
+│       ├── cloudshelf-books (Category + Book ID)               │
+│       ├── cloudshelf-carts (User ID + Cart ID)                │
+│       ├── cloudshelf-users (User ID + Email GSI)              │
+│       └── cloudshelf-orders (User ID + Order ID)              │
+└─────────────────────────────────────────────────────────────────┘
 ```
 
-**Key Benefits**:
-- ✅ **No VPC configuration** required
-- ✅ **Simple AWS SDK** integration
-- ✅ **Automatic scaling** with Lambda
-- ✅ **Built-in error handling** with AWS SDKs
+### **Integration Benefits for Phase 1**
+
+**Serverless Advantages**:
+
+- ✅ **No VPC Required** - Lambda and DynamoDB communicate over AWS backbone
+- ✅ **Automatic Scaling** - Both services scale independently based on demand
+- ✅ **Built-in Security** - IAM roles control access between services
+- ✅ **Cost Efficiency** - Pay only for actual usage, no idle infrastructure
+- ✅ **Simplified Operations** - AWS manages all underlying infrastructure
+
+### **Common Data Operations**
+
+**Query Patterns**:
+
+- 📚 **Browse Books**: Query by category partition key
+- 🔍 **Search Books**: Use TitleSearchIndex GSI for title lookups
+- 🛒 **Cart Management**: Query user's cart items with TTL cleanup
+- 👤 **User Lookup**: Find users by email using EmailIndex GSI
+- 📦 **Order History**: Query user's orders with date-based sorting
+
+**Next Step**: See [Lambda Setup Guide](../lambda/cloudshelf-lambda-setup.md) for detailed implementation
 
 ---
 
@@ -540,17 +619,20 @@ def create_order(user_id, cart_items, total_amount):
 ### **DynamoDB Best Practices**
 
 **Partition Key Design**:
+
 - ✅ **Books**: Category distributes load across book types
 - ✅ **Carts**: User ID ensures even distribution
 - ✅ **Users**: User ID provides unique distribution
 - ✅ **Orders**: User ID groups related orders together
 
 **Global Secondary Indexes**:
+
 - ✅ **Title search** for book discovery
 - ✅ **Email lookup** for user authentication
 - ✅ **Date-based ordering** for order history
 
 **Cost Management**:
+
 - ✅ **Pay-per-request** billing eliminates idle costs
 - ✅ **TTL on carts** automatically cleans up old data
 - ✅ **Efficient queries** minimize read costs
@@ -558,11 +640,11 @@ def create_order(user_id, cart_items, total_amount):
 
 ### **Expected Costs (Estimates)**
 
-| Usage Level | Reads/Month | Writes/Month | Storage | Estimated Cost |
-|-------------|-------------|--------------|---------|----------------|
-| **Development** | 100K | 50K | 1GB | $2-5/month |
-| **Small Business** | 1M | 500K | 10GB | $15-25/month |
-| **Growing Business** | 10M | 5M | 100GB | $100-150/month |
+| Usage Level          | Reads/Month | Writes/Month | Storage | Estimated Cost |
+| -------------------- | ----------- | ------------ | ------- | -------------- |
+| **Development**      | 100K        | 50K          | 1GB     | $2-5/month     |
+| **Small Business**   | 1M          | 500K         | 10GB    | $15-25/month   |
+| **Growing Business** | 10M         | 5M           | 100GB   | $100-150/month |
 
 ---
 
@@ -571,6 +653,7 @@ def create_order(user_id, cart_items, total_amount):
 ### **When to Consider Migration**
 
 **Phase 2 Triggers**:
+
 - 📊 **Complex reporting needs** - Need SQL aggregations and joins
 - 🔍 **Advanced search** - Full-text search capabilities required
 - 📈 **Scale requirements** - Need read replicas or caching
@@ -580,6 +663,7 @@ def create_order(user_id, cart_items, total_amount):
 ### **Migration Benefits**
 
 **From DynamoDB-Only to PostgreSQL + DynamoDB**:
+
 - 📈 **Enhanced search** - PostgreSQL full-text search
 - 🔍 **Complex queries** - SQL joins for reporting
 - 📊 **Business intelligence** - Analytics and dashboards
@@ -591,18 +675,21 @@ def create_order(user_id, cart_items, total_amount):
 ## 🎯 Next Steps
 
 ### **Immediate Implementation**
+
 1. ✅ **Create DynamoDB tables** (this guide)
 2. ⚡ **Deploy Lambda functions** with DynamoDB integration
 3. 🌐 **Setup API Gateway** endpoints
 4. 🌍 **Configure CloudFront** for content delivery
 
 ### **Learning Progression**
+
 1. 📚 **Master DynamoDB** - NoSQL patterns and best practices
 2. ⚡ **Serverless architecture** - Lambda and API Gateway
 3. 🔧 **AWS SDK integration** - Python/Node.js development
 4. 📊 **Monitoring setup** - CloudWatch metrics and logging
 
 ### **Future Evolution**
+
 1. 🗃️ **Phase 2 migration** - Add PostgreSQL for advanced features
 2. 🔒 **VPC implementation** - Enhanced security architecture
 3. 📈 **Performance optimization** - Caching and read replicas
@@ -624,19 +711,19 @@ def create_order(user_id, cart_items, total_amount):
 
 ### **DynamoDB Table Configuration**
 
-```bash
-# Table names for consistent reference
-BOOKS_TABLE="cloudshelf-books"
-CARTS_TABLE="cloudshelf-carts"  
-USERS_TABLE="cloudshelf-users"
-ORDERS_TABLE="cloudshelf-orders"
+**Table Names for Reference**:
 
-# Key patterns
-BOOKS_KEY="category + book_id"
-CARTS_KEY="user_id + cart_id"
-USERS_KEY="user_id"
-ORDERS_KEY="user_id + order_id"
-```
+- Books: `cloudshelf-books`
+- Carts: `cloudshelf-carts`
+- Users: `cloudshelf-users`
+- Orders: `cloudshelf-orders`
+
+**Key Patterns**:
+
+- Books: `category + book_id`
+- Carts: `user_id + cart_id`
+- Users: `user_id` (single key)
+- Orders: `user_id + order_id`
 
 ### **Lambda Environment Variables**
 

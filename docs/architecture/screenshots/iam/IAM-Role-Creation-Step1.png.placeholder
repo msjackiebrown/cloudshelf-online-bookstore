@@ -1,0 +1,19 @@
+# IAM Role Creation Screenshot
+
+**Purpose**: Shows the IAM console interface for creating a Lambda execution role.
+
+**Should Include**:
+- IAM Console → Roles → Create Role
+- AWS Service selected
+- Lambda use case selected
+- Role creation step 1 interface
+
+**Referenced in**: `basic-iam-setup.md`
+**Status**: Placeholder - Needs actual screenshot
+
+**Instructions for Screenshot**:
+1. Navigate to IAM Console → Roles → Create Role
+2. Select "AWS Service" as trusted entity type
+3. Select "Lambda" as the use case
+4. Capture the role creation interface
+5. Save as `IAM-Role-Creation-Step1.png`

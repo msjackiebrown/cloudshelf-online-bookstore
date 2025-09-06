@@ -46,9 +46,16 @@ screenshots/
 
 #### **🗂️ DynamoDB** (`dynamodb/`)
 
-| Screenshot                        | Description            | Used In              |
-| --------------------------------- | ---------------------- | -------------------- |
-| `DynamoDB-Create-Table-Step1.png` | Table creation process | DynamoDB setup guide |
+| Screenshot                                             | Description                    | Used In              |
+| ------------------------------------------------------ | ------------------------------ | -------------------- |
+| `DynamoDB-Create-Table-Step1.png`                      | Table creation process         | DynamoDB setup guide |
+| `dynamodb-books-table-creation.png` _(placeholder)_    | Books table creation interface | DynamoDB setup guide |
+| `dynamodb-books-gsi-configuration.png` _(placeholder)_ | Books GSI configuration        | DynamoDB setup guide |
+| `dynamodb-carts-table-ttl.png` _(placeholder)_         | Carts table with TTL enabled   | DynamoDB setup guide |
+| `dynamodb-users-email-index.png` _(placeholder)_       | Users table with EmailIndex    | DynamoDB setup guide |
+| `dynamodb-orders-date-index.png` _(placeholder)_       | Orders table with DateIndex    | DynamoDB setup guide |
+| `dynamodb-sample-data-population.png` _(placeholder)_  | Sample data being added        | DynamoDB setup guide |
+| `dynamodb-query-testing.png` _(placeholder)_           | Query testing in console       | DynamoDB setup guide |
 
 #### **⚡ Lambda Functions** (`lambda/`)
 
@@ -93,9 +100,12 @@ screenshots/
 
 #### **🔐 IAM Security** (`iam/`)
 
-| Screenshot                        | Description                     | Used In          |
-| --------------------------------- | ------------------------------- | ---------------- |
-| _Ready for IAM setup screenshots_ | Placeholder for IAM screenshots | IAM setup guides |
+| Screenshot                                        | Description                 | Used In         |
+| ------------------------------------------------- | --------------------------- | --------------- |
+| `IAM-Role-Creation-Step1.png` _(placeholder)_     | IAM role creation interface | Basic IAM setup |
+| `IAM-Policy-Attachment-Step2.png` _(placeholder)_ | Attaching managed policies  | Basic IAM setup |
+| `IAM-Role-Review-Step3.png` _(placeholder)_       | Role review and naming      | Basic IAM setup |
+| `IAM-Trust-Policy-Step4.png` _(placeholder)_      | Trust policy configuration  | Basic IAM setup |
 
 #### **📊 Monitoring** (`monitoring/`)
 

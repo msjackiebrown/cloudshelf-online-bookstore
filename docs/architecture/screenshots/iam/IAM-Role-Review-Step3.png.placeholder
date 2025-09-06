@@ -1,0 +1,19 @@
+# IAM Role Review Screenshot
+
+**Purpose**: Shows the final review and naming of the Lambda execution role.
+
+**Should Include**:
+- Role name: CloudShelf-Lambda-ExecutionRole-Phase1
+- Role description
+- Attached policies summary
+- Review interface before creating role
+
+**Referenced in**: `basic-iam-setup.md`
+**Status**: Placeholder - Needs actual screenshot
+
+**Instructions for Screenshot**:
+1. On the final step of role creation
+2. Enter role name: CloudShelf-Lambda-ExecutionRole-Phase1
+3. Add description about Phase 1 basic execution role
+4. Review attached policies
+5. Save as `IAM-Role-Review-Step3.png`

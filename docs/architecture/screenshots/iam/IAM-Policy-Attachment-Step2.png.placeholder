@@ -1,0 +1,19 @@
+# IAM Policy Attachment Screenshot
+
+**Purpose**: Shows attaching AWS managed policies to the Lambda execution role.
+
+**Should Include**:
+- Policy attachment interface
+- AWSLambdaBasicExecutionRole selected
+- AmazonDynamoDBFullAccess selected
+- Policy search and selection interface
+
+**Referenced in**: `basic-iam-setup.md`
+**Status**: Placeholder - Needs actual screenshot
+
+**Instructions for Screenshot**:
+1. During role creation, navigate to "Attach permissions policies"
+2. Search for and select AWSLambdaBasicExecutionRole
+3. Search for and select AmazonDynamoDBFullAccess
+4. Show both policies selected
+5. Save as `IAM-Policy-Attachment-Step2.png`

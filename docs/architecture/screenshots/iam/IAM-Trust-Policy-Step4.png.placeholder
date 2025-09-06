@@ -1,0 +1,19 @@
+# IAM Trust Policy Screenshot
+
+**Purpose**: Shows the trust policy configuration allowing Lambda service to assume the role.
+
+**Should Include**:
+- Trust relationships tab
+- JSON trust policy document
+- Lambda service principal visible
+- sts:AssumeRole action visible
+
+**Referenced in**: `basic-iam-setup.md`
+**Status**: Placeholder - Needs actual screenshot
+
+**Instructions for Screenshot**:
+1. After role creation, navigate to the created role
+2. Click on "Trust relationships" tab
+3. Show the trust policy JSON document
+4. Highlight Lambda service principal
+5. Save as `IAM-Trust-Policy-Step4.png`
