@@ -47,6 +47,11 @@ Phase 1 Implementation Flow:
 │  ├─── Shopping carts                    ├─── Single-digit ms latency       │
 │  └─── User sessions                     └─── Auto-scaling                   │
 │       ↓                                                                     │
+│  3️⃣ Basic IAM Setup (20 min)           🔒 Hybrid Security                  │
+│  ├─── Lambda execution roles            ├─── VPC permissions               │
+│  ├─── PostgreSQL RDS access             ├─── DynamoDB permissions          │
+│  └─── CloudWatch logging                └─── Least privilege access        │
+│       ↓                                                                     │
 │  4️⃣ Hybrid Lambda Functions (60 min)   🔗 Hybrid Integration               │
 │  ├─── Book Catalog (PostgreSQL)         ├─── Database connectivity         │
 │  ├─── User Management (PostgreSQL)      ├─── VPC integration               │
@@ -87,7 +92,7 @@ Phase 1 Implementation Flow:
 
 ### **1️⃣ PostgreSQL RDS Setup (45 minutes)**
 
-📖 **Guide**: [`cloudshelf-rds-setup.md`](cloudshelf-rds-setup.md)
+📖 **Guide**: [`cloudshelf-rds-default-vpc-setup.md`](cloudshelf-rds-default-vpc-setup.md)
 
 **What you'll create**:
 
@@ -408,7 +413,7 @@ curl -I "https://your-cloudfront-domain.cloudfront.net"
 
 ---
 
-**🚀 Ready to start? Begin with [PostgreSQL RDS Setup](cloudshelf-rds-setup.md)!**
+**🚀 Ready to start? Begin with [PostgreSQL RDS Setup](cloudshelf-rds-default-vpc-setup.md)!**
 
 _📋 **Folder Status**: Complete Hybrid Setup Guides | ✅ **Phase 1 Ready**: Yes | 🔄 **Last Updated**: Hybrid Architecture_  
 _🎯 **Phase**: Hybrid Database Setup | 👥 **Audience**: Beginners | 📋 **Duration**: 4-6 hours_
