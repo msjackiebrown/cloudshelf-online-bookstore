@@ -13,19 +13,19 @@
 
 ## 🎯 Project Overview
 
-CloudShelf is a **hands-on AWS learning project** designed as a progressive tutorial that takes you from basic serverless concepts to production-ready architecture. Build a complete online bookstore while mastering AWS Solutions Architect skills through **two distinct learning phases**.
+CloudShelf is a **hands-on AWS learning project** designed as a progressive tutorial that takes you from hybrid database fundamentals to advanced enterprise patterns. Build a complete online bookstore while mastering AWS Solutions Architect skills through **two distinct learning phases**.
 
 ### 🚀 Why Phase-Based Learning?
 
-- **🎓 Beginner-Friendly Start** - Get a working app in 3-4 hours without VPC complexity
-- **📈 Progressive Difficulty** - Master basics before advanced concepts
-- **🛠️ Real Implementation** - Build genuine functionality, not toy examples
-- **💼 Portfolio Ready** - Both phases demonstrate professional AWS skills
-- **🧭 Clear Learning Path** - Structured progression from simple to sophisticated
+- **🎓 Realistic Foundation** - Start with industry-standard hybrid database patterns
+- **📈 Smooth Progression** - Bridge from beginner concepts to advanced enterprise features
+- **🛠️ Real Implementation** - Build genuine functionality with professional patterns
+- **💼 Portfolio Ready** - Both phases demonstrate production-ready AWS skills
+- **🧭 Clear Learning Path** - Structured progression from hybrid databases to custom VPC
 
 ---
 
-## 🏗️ Learning Architecture
+## 🗯️ Learning Architecture
 
 <div align="center">
 
@@ -34,18 +34,19 @@ CloudShelf is a **hands-on AWS learning project** designed as a progressive tuto
 │                  CloudShelf Learning Progression               │
 ├─────────────────────────────────────────────────────────────────┤
 │                                                                 │
-│  📚 PHASE 1 (3-4 hours)                                        │
+│  📚 PHASE 1 (4-6 hours)                                       │
 │  ┌─────────────────────────────────────────────────────────┐   │
-│  │  Simple Serverless: DynamoDB → Lambda → API Gateway    │   │
+│  │  Hybrid Database: PostgreSQL RDS + DynamoDB            │   │
+│  │  Default VPC: Lambda VPC integration                   │   │
 │  │  Static Website: S3 + CloudFront                       │   │
-│  │  Basic Security: IAM + CloudWatch                      │   │
+│  │  Console Setup: Beginner-friendly, no CLI             │   │
 │  └─────────────────────────────────────────────────────────┘   │
-│                            ⬇️ Migration                        │
+│                            ⬇️ Enhancement                       │
 │  🏢 PHASE 2 (1-2 days)                                         │
 │  ┌─────────────────────────────────────────────────────────┐   │
-│  │  Production VPC: Private Subnets + Security Groups     │   │
-│  │  Enterprise DB: RDS PostgreSQL + DynamoDB              │   │
-│  │  Advanced Security: Custom IAM + Monitoring            │   │
+│  │  Custom VPC: Private Subnets + Advanced Security       │   │
+│  │  Advanced Patterns: GSI, Streams, Multi-AZ             │   │
+│  │  Enterprise Features: Monitoring + Disaster Recovery   │   │
 │  └─────────────────────────────────────────────────────────┘   │
 │                                                                 │
 └─────────────────────────────────────────────────────────────────┘
@@ -55,44 +56,49 @@ _Two-phase learning progression: Serverless-first → Production-ready_
 
 </div>
 
-### 📚 **Phase 1: Serverless Fundamentals** (3-4 hours)
+### 📚 **Phase 1: Hybrid Architecture** (4-6 hours)
 
-> **Perfect for**: AWS beginners, rapid prototyping, learning core serverless patterns
+> **Perfect for**: AWS beginners ready for realistic patterns, industry-standard database design
 
 **🎯 What You'll Build:**
 
-- Complete serverless bookstore with full functionality
-- DynamoDB-only data storage (books + shopping cart)
-- Public API Gateway endpoints
+- Complete hybrid database bookstore with professional patterns
+- PostgreSQL RDS for relational data (books, users, orders)
+- DynamoDB for high-performance operations (cart, sessions)
+- Default VPC introduction without complexity
+- API Gateway with unified endpoints
 - S3 static website hosting with CloudFront CDN
-- Basic IAM security and CloudWatch monitoring
+- Console-focused setup (no CLI complexity)
 
 **✅ Skills You'll Master:**
 
-- Serverless architecture patterns
-- DynamoDB design and operations
-- Lambda function development
-- API Gateway configuration
-- Basic security best practices
+- Hybrid database architecture patterns
+- PostgreSQL and DynamoDB integration
+- Default VPC and basic networking
+- Lambda VPC connectivity
+- Industry-standard data modeling
+- Console-based AWS operations
 
-### 🏢 **Phase 2: Production Architecture** (1-2 days)
+### 🏢 **Phase 2: Custom VPC & Advanced Patterns** (1-2 days)
 
-> **Perfect for**: Production deployment, enterprise requirements, advanced AWS features
+> **Perfect for**: Production deployment, enterprise requirements, advanced AWS patterns
 
 **🎯 What You'll Add:**
 
-- VPC networking with private subnets
-- RDS PostgreSQL for complex book catalog
-- Advanced IAM security policies
-- Comprehensive monitoring and logging
-- High availability and disaster recovery
+- Custom VPC with private/public subnets
+- Advanced DynamoDB patterns (GSI, streams, cross-region)
+- Multi-AZ RDS deployment for high availability
+- Advanced IAM security policies and roles
+- Comprehensive monitoring with X-Ray tracing
+- Infrastructure as Code (CloudFormation/CDK)
 
 **✅ Skills You'll Master:**
 
-- VPC networking and security groups
-- Relational database design
-- Advanced IAM and security patterns
+- Custom VPC networking and security groups
+- Advanced DynamoDB and PostgreSQL patterns
+- High availability and disaster recovery
 - Enterprise monitoring and observability
+- Infrastructure automation
 - Production deployment strategies
 
 ---
@@ -105,31 +111,32 @@ _Two-phase learning progression: Serverless-first → Production-ready_
 
 ```bash
 📂 Phase 1 Guide: docs/architecture/phase1-basic-setup/
-⏱️  Time Required: 3-4 hours
-🎯 Outcome: Working serverless bookstore
+⏱️  Time Required: 4-6 hours
+🎯 Outcome: Hybrid database bookstore with realistic patterns
+💰 Cost: $15-25/month (industry-standard expectations)
 ```
 
 **[➡️ Start Phase 1 Setup](docs/architecture/phase1-basic-setup/README.md)**
 
-#### 🏢 **Jump to Phase 2** (If you have VPC/RDS experience)
+#### 🏢 **Jump to Phase 2** (If you have VPC/advanced AWS experience)
 
 ```bash
 📂 Phase 2 Guide: docs/architecture/phase2-production-setup/
 ⏱️  Time Required: 1-2 days
-🎯 Outcome: Production-ready architecture
+🎯 Outcome: Custom VPC with advanced enterprise patterns
 ```
 
 **[➡️ Start Phase 2 Setup](docs/architecture/phase2-production-setup/README.md)**
 
-#### � **Migration Path** (Phase 1 → Phase 2)
+#### 📈 **Enhancement Path** (Phase 1 → Phase 2)
 
 ```bash
-📂 Migration Guide: docs/architecture/migration/
+📂 Enhancement Guide: docs/architecture/phase2-enhancements/
 ⏱️  Time Required: 4-6 hours
-🎯 Outcome: Seamless transition to production
+🎯 Outcome: Custom VPC and advanced AWS patterns
 ```
 
-**[➡️ Migration Guide](docs/architecture/migration/README.md)**
+**[➡️ Phase 2 Enhancement Guide](docs/architecture/phase2-enhancements/README.md)**
 
 ### 🗂️ **For Portfolio Reviewers**
 
@@ -139,82 +146,93 @@ _Two-phase learning progression: Serverless-first → Production-ready_
 
 ---
 
-## 🏗️ Architecture Services by Phase
+## 🗯️ Architecture Services by Phase
 
-### 📊 **Phase 1: Serverless Foundation**
+### 📊 **Phase 1: Hybrid Foundation**
 
-| Service            | Purpose                      | Implementation Time |
-| ------------------ | ---------------------------- | ------------------- |
-| 🗂️ **DynamoDB**    | Unified data storage         | 30 minutes          |
-| 🔐 **IAM (Basic)** | Essential Lambda permissions | 15 minutes          |
-| ⚡ **Lambda**      | Serverless compute backend   | 45 minutes          |
-| 🚪 **API Gateway** | REST API management          | 30 minutes          |
-| 🪣 **S3**          | Static website hosting       | 20 minutes          |
-| 🌐 **CloudFront**  | CDN and performance          | 15 minutes          |
-| 📊 **CloudWatch**  | Basic monitoring & logging   | 15 minutes          |
+| Service               | Purpose                           | Implementation Time |
+| --------------------- | --------------------------------- | ------------------- |
+| 🗯️ **PostgreSQL RDS** | Relational data (books, users)    | 45 minutes          |
+| 🗂️ **DynamoDB**       | High-performance (cart, sessions) | 30 minutes          |
+| 🔒 **IAM (Hybrid)**   | Database access permissions       | 20 minutes          |
+| ⚡ **Lambda (VPC)**   | Hybrid database functions         | 60 minutes          |
+| 🚪 **API Gateway**    | Unified REST API endpoints        | 30 minutes          |
+| 🪣 **S3**             | Static website hosting            | 20 minutes          |
+| 🌐 **CloudFront**     | CDN and performance               | 15 minutes          |
+| 📊 **CloudWatch**     | Monitoring & logging              | 15 minutes          |
 
-**Total Phase 1: 3-4 hours** ⚡
+**Total Phase 1: 4-6 hours** ⚡
 
-### 🏢 **Phase 2: Production Enhancements**
+### 🏢 **Phase 2: Advanced Patterns & Custom VPC**
 
-| Service                    | Purpose                      | Implementation Time |
-| -------------------------- | ---------------------------- | ------------------- |
-| 🌐 **VPC**                 | Network security foundation  | 2-3 hours           |
-| 🗄️ **RDS PostgreSQL**      | Advanced book catalog        | 1-2 hours           |
-| 🔐 **IAM (Advanced)**      | Enterprise security policies | 1 hour              |
-| 📈 **Advanced Monitoring** | Production observability     | 1 hour              |
-| 🔄 **Migration Tools**     | Phase 1 → Phase 2 transition | 1-2 hours           |
+| Service                       | Purpose                      | Implementation Time |
+| ----------------------------- | ---------------------------- | ------------------- |
+| 🌐 **Custom VPC**             | Private subnets & security   | 2-3 hours           |
+| 📈 **Advanced DynamoDB**      | GSI, streams, cross-region   | 1-2 hours           |
+| 🗄️ **Multi-AZ RDS**           | High availability PostgreSQL | 1-2 hours           |
+| 🔒 **Enterprise IAM**         | Advanced security policies   | 1 hour              |
+| 🔍 **X-Ray & Monitoring**     | Distributed tracing          | 1 hour              |
+| 🗯️ **Infrastructure as Code** | CloudFormation/CDK templates | 1-2 hours           |
 
-**Total Phase 2: 6-9 hours** 🏢
+**Total Phase 2: 7-11 hours** 🏢
 
 ---
 
 ## ✨ Implementation Features
 
-### ✅ **Phase 1 - Complete Functionality**
+### ✅ **Phase 1 - Hybrid Database Foundation**
 
-- **📚 Book Catalog** - Browse, search, and view book details
-- **🛒 Shopping Cart** - Add/remove items, persistent sessions
-- **🌐 Public API** - RESTful endpoints with CORS support
+- **📚 Book Catalog** - PostgreSQL with complex queries and relationships
+- **👤 User Management** - PostgreSQL with ACID compliance and data integrity
+- **🛒 Shopping Cart** - DynamoDB with single-digit millisecond performance
+- **🖥️ Session Management** - DynamoDB with TTL auto-cleanup
+- **🔗 Default VPC** - Introduction to VPC concepts without complexity
+- **🌐 Unified API** - RESTful endpoints with hybrid database access
 - **🎨 Static Website** - Responsive UI with CloudFront CDN
-- **🔒 Basic Security** - IAM roles and HTTPS everywhere
-- **� Essential Monitoring** - CloudWatch logs and basic alarms
-- **💰 Cost Effective** - Pay-per-request serverless pricing
+- **🔒 Security** - IAM roles for hybrid database access
+- **📊 Monitoring** - CloudWatch logs and basic alarms
+- **💰 Realistic Costs** - Industry-standard $15-25/month expectations
 
-### 🚀 **Phase 2 - Production Ready**
+### 🚀 **Phase 2 - Advanced Enterprise Patterns**
 
-- **🏢 Enterprise Security** - VPC isolation and advanced IAM
-- **📊 Advanced Database** - PostgreSQL with complex relationships
-- **🔍 Enhanced Monitoring** - Custom dashboards and X-Ray tracing
-- **⚡ High Availability** - Multi-AZ deployment and disaster recovery
-- **🔄 Seamless Migration** - Automated transition from Phase 1
-- **📈 Scalability** - Auto-scaling and performance optimization
+- **🏢 Custom VPC** - Private subnets with advanced networking
+- **📊 Advanced DynamoDB** - Global Secondary Indexes and DynamoDB Streams
+- **🗄️ Multi-AZ RDS** - High availability and automatic failover
+- **🔍 Distributed Tracing** - X-Ray for comprehensive observability
+- **⚡ Auto-scaling** - Dynamic scaling based on demand
+- **🔄 Blue/Green Deployment** - Zero-downtime deployment strategies
+- **🗯️ Infrastructure as Code** - Automated provisioning and updates
+- **📈 Custom Dashboards** - Advanced monitoring and alerting
 
 ---
 
-## � Skills Demonstrated by Phase
+## 🎓 Skills Demonstrated by Phase
 
 ### 🎓 **Phase 1 Skills**
 
-**Perfect for**: Entry-level positions, serverless specialization, rapid prototyping
+**Perfect for**: AWS beginners ready for realistic patterns, industry-standard architecture
 
-- **Serverless Architecture** - Event-driven design patterns
-- **NoSQL Database Design** - DynamoDB best practices
-- **API Development** - REST endpoint creation and management
-- **Static Website Hosting** - S3 and CloudFront integration
-- **Basic Security** - IAM roles and least-privilege access
-- **Monitoring Fundamentals** - CloudWatch logs and alarms
+- **Hybrid Database Architecture** - PostgreSQL + DynamoDB integration patterns
+- **Relational Database Design** - PostgreSQL schema design and optimization
+- **NoSQL Performance Patterns** - DynamoDB for high-speed operations
+- **Default VPC Networking** - Introduction to VPC concepts
+- **Lambda VPC Integration** - Database connectivity in VPC environment
+- **API Development** - Unified REST endpoints across databases
+- **Console Mastery** - Professional AWS Console navigation
+- **Security Fundamentals** - IAM roles for hybrid database access
 
 ### 🏢 **Phase 2 Skills**
 
 **Perfect for**: Senior positions, enterprise environments, production deployments
 
-- **Network Architecture** - VPC design and security groups
-- **Relational Database** - PostgreSQL design and optimization
-- **Advanced Security** - Defense-in-depth strategies
-- **Enterprise Monitoring** - Comprehensive observability
-- **Migration Strategies** - Seamless architecture transitions
-- **Production Operations** - High availability and disaster recovery
+- **Custom VPC Architecture** - Private subnet design and security groups
+- **Advanced Database Patterns** - Multi-AZ, read replicas, and performance tuning
+- **DynamoDB Advanced Features** - GSI, streams, cross-region replication
+- **Enterprise Security** - Defense-in-depth and compliance strategies
+- **Infrastructure as Code** - CloudFormation and CDK automation
+- **Production Operations** - Monitoring, logging, and disaster recovery
+- **Performance Optimization** - Scaling strategies and cost optimization
+- **DevOps Integration** - CI/CD pipelines and automated deployments
 
 ---
 
@@ -224,19 +242,23 @@ _Two-phase learning progression: Serverless-first → Production-ready_
 
 Start with **Phase 1** to master:
 
-- Core AWS serverless services
-- Basic security and monitoring
-- Rapid application development
-- Cost-effective architecture patterns
+- Hybrid database architecture patterns
+- PostgreSQL and DynamoDB integration
+- Default VPC and basic networking concepts
+- Console-based AWS operations
+- Industry-standard data modeling
+- Realistic cost expectations ($15-25/month)
 
 ### 🏢 **For Experienced Developers**
 
 Complete **both phases** to demonstrate:
 
-- Full-stack AWS architecture skills
-- Production deployment expertise
-- Security and compliance knowledge
-- Enterprise-grade system design
+- Full-stack hybrid database expertise
+- Custom VPC and advanced networking
+- Enterprise security and compliance
+- Production deployment automation
+- Advanced monitoring and observability
+- Infrastructure as Code proficiency
 
 ---
 
@@ -250,9 +272,9 @@ This tutorial project is licensed under the MIT License - see the [LICENSE](LICE
 
 **🎯 Ready to start your AWS Solutions Architecture journey?**
 
-**[🌟 Begin with Phase 1](docs/architecture/phase1-basic-setup/README.md)** → **[🏢 Advance to Phase 2](docs/architecture/phase2-production-setup/README.md)** → **[🔄 Migration Guide](docs/architecture/migration/README.md)**
+**[🌟 Begin with Phase 1](docs/architecture/phase1-basic-setup/README.md)** → **[🏢 Advance to Phase 2](docs/architecture/phase2-production-setup/README.md)** → **[🚀 Enhancement Guide](docs/architecture/phase2-enhancements/README.md)**
 
-_Choose your starting point based on your AWS experience level_
+_Start with realistic hybrid database patterns, then advance to custom VPC and enterprise features_
 
 [![GitHub Stars](https://img.shields.io/github/stars/msjackiebrown/cloudshelf-online-bookstore?style=social)](https://github.com/msjackiebrown/cloudshelf-online-bookstore)
 

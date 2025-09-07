@@ -10,16 +10,18 @@ This guide provides setup instructions for DynamoDB in Enhanced Phase 1, focusin
 
 ## 🎯 Enhanced Phase 1 Database Strategy
 
-### **🚀 Why Hybrid Dat## 📚 Enhanced Phase 1 Documentation
+### \*\*🚀 Why Hybrid Dat## 📚 Enhanced Phase 1 Documentation
 
 ### **Implementation Guides**
+
 - 🗃️ [PostgreSQL RDS Setup](../rds/cloudshelf-rds-default-vpc-setup.md) - Books, users, orders database
 - ⚡ [Lambda Hybrid Functions](../lambda/cloudshelf-basic-lambda-setup.md) - DynamoDB + PostgreSQL access
 - 🌐 [API Gateway Integration](../apigateway/cloudshelf-apigateway-setup.md) - Unified REST endpoints
 
-### **Architecture Documentation**  
+### **Architecture Documentation**
+
 - 📋 [Enhanced Phase 1 Plan](../../ENHANCED-PHASE1-PLAN.md) - Complete strategy overview
-- 🏗️ [ADR-004: Hybrid Architecture](../cloudshelf-adr-004-enhanced-phase1-hybrid-architecture.md) - Decision rationale Approach?**
+- 🏗️ [ADR-004: Hybrid Architecture](../cloudshelf-adr-004-enhanced-phase1-hybrid-architecture.md) - Decision rationale Approach?\*\*
 
 **Enhanced Learning Benefits**:
 
@@ -223,6 +225,7 @@ This guide provides setup instructions for DynamoDB in Enhanced Phase 1, focusin
 ### **Prerequisites**
 
 ✅ **Before You Start**:
+
 - AWS account with DynamoDB access
 - Basic understanding of NoSQL concepts
 - Completed [PostgreSQL RDS setup](../rds/cloudshelf-rds-default-vpc-setup.md) for relational data
@@ -232,16 +235,16 @@ This guide provides setup instructions for DynamoDB in Enhanced Phase 1, focusin
 
 In Enhanced Phase 1, DynamoDB handles only **high-performance operations**:
 
-| **DynamoDB Tables** | **Purpose** | **Why DynamoDB?** |
-|-------------------|-------------|-------------------|
-| `cloudshelf-carts` | Shopping cart items | Single-digit millisecond reads |
-| `cloudshelf-sessions` | User session data | TTL auto-cleanup, fast access |
+| **DynamoDB Tables**   | **Purpose**         | **Why DynamoDB?**              |
+| --------------------- | ------------------- | ------------------------------ |
+| `cloudshelf-carts`    | Shopping cart items | Single-digit millisecond reads |
+| `cloudshelf-sessions` | User session data   | TTL auto-cleanup, fast access  |
 
-| **PostgreSQL Tables** | **Purpose** | **Why PostgreSQL?** |
-|---------------------|-------------|-------------------|
-| `books` | Book catalog | Complex queries, relationships |
-| `users` | User accounts | ACID compliance, data integrity |
-| `orders` | Order history | Transaction support, reporting |
+| **PostgreSQL Tables** | **Purpose**   | **Why PostgreSQL?**             |
+| --------------------- | ------------- | ------------------------------- |
+| `books`               | Book catalog  | Complex queries, relationships  |
+| `users`               | User accounts | ACID compliance, data integrity |
+| `orders`              | Order history | Transaction support, reporting  |
 
 ---
 
@@ -322,7 +325,7 @@ Table Settings:
 │ • TTL attribute: expires_at │
 └─────────────────────────────────────────────────────────────┘
 
-````
+```
 
 2. **Configure TTL (Time to Live)**
 
@@ -361,7 +364,7 @@ _Configuring TTL for automatic session cleanup after 24 hours_
   "book_price": 29.99,
   "book_image_url": "https://cloudshelf-images.s3.amazonaws.com/books/devops-handbook.jpg"
 }
-````
+```
 
 3. **Verify Cart Operations**
 
@@ -562,16 +565,15 @@ _Testing table queries in DynamoDB console_
 
 1. **📋 Complete PostgreSQL Setup**:
    - Follow [PostgreSQL RDS setup guide](../rds/cloudshelf-rds-default-vpc-setup.md) for books, users, orders
-   
 2. **⚡ Configure Lambda Functions**:
    - Set up [Enhanced Phase 1 Lambda functions](../lambda/cloudshelf-basic-lambda-setup.md) for hybrid database access
-   
 3. **🌐 Connect API Gateway**:
    - Complete [API Gateway setup](../apigateway/cloudshelf-apigateway-setup.md) for unified API endpoints
 
 ### **Enhanced Phase 1 Achievement** 🎉:
+
 - ✅ High-performance cart operations with DynamoDB
-- ✅ Session management with TTL auto-cleanup  
+- ✅ Session management with TTL auto-cleanup
 - ✅ Hybrid database pattern preparation for Phase 2
 
 ---
@@ -589,12 +591,14 @@ _Testing table queries in DynamoDB console_
 ### **Enhanced Phase 1 Table Names**
 
 **DynamoDB Tables:**
+
 - Shopping Carts: `cloudshelf-carts`
 - User Sessions: `cloudshelf-sessions`
 
 **PostgreSQL Tables (separate guide):**
+
 - Books: `books`
-- Users: `users`  
+- Users: `users`
 - Orders: `orders`
 
 ---
