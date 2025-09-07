@@ -4,6 +4,8 @@
 
 This guide provides setup instructions for DynamoDB in Enhanced Phase 1, focusing on shopping cart and session data while PostgreSQL handles relational data needs.
 
+> 📋 **Architecture Decision**: This hybrid approach is documented in [ADR-004: Enhanced Phase 1 Hybrid Architecture](../cloudshelf-adr-004-enhanced-phase1-hybrid-architecture.md)
+
 ---
 
 ## 🎯 Enhanced Phase 1 Database Strategy
@@ -608,7 +610,7 @@ _Verifying both DynamoDB and PostgreSQL are working in hybrid architecture_
 ### **Enhanced Phase 1 Documentation**
 
 - 📋 [Enhanced Phase 1 Plan](../../ENHANCED-PHASE1-PLAN.md) - Complete architecture strategy
-- 🏗️ [ADR-004](../cloudshelf-adr-004-enhanced-phase1-hybrid-architecture.md) - Architectural decision record
+- 🏗️ [ADR-004: Enhanced Phase 1 Hybrid Architecture](../cloudshelf-adr-004-enhanced-phase1-hybrid-architecture.md) - Architectural decision record
 - 🗃️ [PostgreSQL RDS Setup](../rds/cloudshelf-rds-default-vpc-setup.md) - Relational database setup
 - ⚡ [Lambda VPC Guide](../lambda/cloudshelf-basic-lambda-setup.md) - Hybrid function deployment
 
