@@ -20,16 +20,13 @@ This guide implements the database component of Phase 1, providing relational da
 
 **Database Allocation**:
 
-```yaml
-PostgreSQL RDS (Phase 1):
-  - Books catalog (complex queries, search)
-  - User management (profiles, relationships)
-  - Order processing (ACID transactions)
-
-DynamoDB (Simplified):
-  - Shopping carts (high-performance key-value)
-  - User sessions (TTL support)
-```
+| Data Store         | Purpose/Use Case                            |
+| ------------------ | ------------------------------------------- |
+| **PostgreSQL RDS** | Books catalog (complex queries, search)     |
+|                    | User management (profiles, relationships)   |
+|                    | Order processing (ACID transactions)        |
+| **DynamoDB**       | Shopping carts (high-performance key-value) |
+|                    | User sessions (TTL support)                 |
 
 ---
 
@@ -473,13 +470,26 @@ postgresql://cloudshelf_admin:password@your-endpoint:5432/cloudshelf
 
 - ✅ **Password Storage**: Use AWS Secrets Manager (setup in Lambda guide)
 - ✅ **Network Access**: Database only accessible from Lambda security group
-- ✅ **Encryption**: RDS encryption at rest enabled
+- ✅ **Encryption at Rest**: RDS encryption at rest enabled
+- ✅ **Encryption in Transit**: Enable SSL for all database connections (see below)
 - ✅ **Backup Strategy**: 7-day automated backups for learning environment
 - ✅ **Monitoring**: CloudWatch basic monitoring enabled
+- ✅ **Security Group Review**: Regularly review and update security group rules to follow least-privilege principles
+
+#### 🔒 Enabling SSL (Encryption in Transit)
+
+1. Download the AWS RDS root certificate from the [official AWS documentation](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/UsingWithRDS.SSL.html).
+2. When connecting with `psql` or your application, specify the SSL mode:
+   ```bash
+   psql "host=your-rds-endpoint user=cloudshelf_admin dbname=cloudshelf sslmode=require"
+   ```
+3. For Lambda, set the connection string to require SSL.
 
 ---
 
-## 💰 Cost Optimization
+---
+
+## 💰 Cost Optimization & Sustainability
 
 ### **Free Tier Benefits**
 
@@ -499,7 +509,27 @@ Expected Monthly Cost:
 - ✅ **Stop/Start RDS**: For learning environment, stop RDS when not in use
 - ✅ **Single AZ**: Use single AZ deployment for Phase 1
 - ✅ **Monitor Usage**: Set up billing alerts
-- ✅ **Cleanup**: Delete instance when learning complete
+- ✅ **Cleanup**: Delete instance and unused snapshots when learning complete
+- ✅ **Monitor Storage**: Regularly check storage usage and clean up old data
+
+### **Sustainability Tips**
+
+- ✅ **Right-Size Resources**: Use the smallest instance and storage that meets your needs
+- ✅ **Minimize Resource Usage**: Stop or delete resources when not in use
+- ✅ **Automate Cleanup**: Set reminders to review and clean up resources
+
+---
+
+---
+
+## 🛠️ Operational Excellence: Runbooks & Procedures
+
+### **Recommended Runbooks**
+
+- **Restore from Backup**: Document the steps to restore your RDS instance from a snapshot
+- **Rotate Credentials**: Use AWS Secrets Manager rotation or update the master password regularly
+- **Test Failover**: If using Multi-AZ in the future, test failover and document the process
+- **Review Security Groups**: Schedule regular reviews of security group rules
 
 ---
 
