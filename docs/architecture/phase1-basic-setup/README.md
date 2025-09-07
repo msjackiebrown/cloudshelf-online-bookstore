@@ -11,17 +11,22 @@ This folder contains all the detailed setup guides needed to implement Phase 1 o
 ### **✅ What You'll Build**
 
 - 📚 **Online bookstore** - Complete book catalog and shopping functionality
-- ⚡ **Serverless architecture** - No servers to manage
-- 🌍 **Global CDN** - Fast content delivery worldwide
-- 🗂️ **NoSQL database** - DynamoDB for all data storage
-- 📱 **REST API** - Complete backend API for frontend integration
+- ⚡ **Hybrid database architecture** - PostgreSQL RDS + DynamoDB for optimal performance
+- 🗃️ **PostgreSQL RDS** - Relational data (books, users, orders) with ACID compliance
+- 🗂️ **DynamoDB** - High-performance operations (cart, sessions) with single-digit millisecond latency
+- 🌍 **Global CDN** - Fast content delivery worldwide with CloudFront
+- 📱 **Unified REST API** - Complete backend API integrating both databases
 
 ### **⏱️ Implementation Time**
 
-- **Total**: 2-5 hours for complete setup
+- **Total**: 4-6 hours for complete hybrid setup
 - **Prerequisites**: 30 minutes
-- **Core services**: 3.5-4.5 hours
-- **Testing & validation**: 30 minutes
+- **PostgreSQL RDS**: 45 minutes
+- **DynamoDB**: 30 minutes
+- **Lambda VPC integration**: 60 minutes
+- **API Gateway**: 30 minutes
+- **S3 + CloudFront**: 35 minutes
+- **Testing & validation**: 45 minutes
 
 ---
 
@@ -33,37 +38,45 @@ This folder contains all the detailed setup guides needed to implement Phase 1 o
 Phase 1 Implementation Flow:
 ┌─────────────────────────────────────────────────────────────────────────────┐
 │                                                                             │
-│  1️⃣ DynamoDB Tables (30 min)           👤 Customer Data                     │
-│  ├─── Books                             ├─── User profiles                  │
-│  ├─── Users                             ├─── Authentication                 │
-│  ├─── Orders                            └─── Order history                  │
-│  └─── Carts                                                                 │
+│  1️⃣ PostgreSQL RDS (45 min)            � Relational Data                   │
+│  ├─── Books database                    ├─── Complex queries                │
+│  ├─── Users & authentication            ├─── Data integrity                 │
+│  └─── Orders & history                  └─── ACID compliance                │
 │       ↓                                                                     │
-│  2️⃣ Lambda Functions (45 min)          ⚡ Business Logic                     │
-│  ├─── Book Catalog API                  ├─── CRUD operations               │
-│  ├─── User Management                   ├─── Search functionality           │
-│  ├─── Shopping Cart                     └─── Order processing               │
-│  └─── Order Processing                                                      │
+│  2️⃣ DynamoDB Tables (30 min)           ⚡ High-Performance Data             │
+│  ├─── Shopping carts                    ├─── Single-digit ms latency       │
+│  └─── User sessions                     └─── Auto-scaling                   │
 │       ↓                                                                     │
-│  3️⃣ API Gateway (30 min)               🌐 API Layer                         │
+│  4️⃣ Hybrid Lambda Functions (60 min)   🔗 Hybrid Integration               │
+│  ├─── Book Catalog (PostgreSQL)         ├─── Database connectivity         │
+│  ├─── User Management (PostgreSQL)      ├─── VPC integration               │
+│  ├─── Shopping Cart (DynamoDB)          └─── Unified business logic        │
+│  └─── Order Processing (Both DBs)                                           │
+│       ↓                                                                     │
+│  5️⃣ API Gateway (30 min)               🌐 Unified API Layer                │
 │  ├─── REST endpoints                    ├─── Request routing               │
 │  ├─── CORS configuration                ├─── Response formatting            │
 │  └─── Lambda integration                └─── Error handling                │
 │       ↓                                                                     │
-│  4️⃣ S3 Static Website (20 min)         🖥️ Frontend                         │
+│  6️⃣ S3 Static Website (20 min)         🖥️ Frontend                         │
 │  ├─── Web hosting                       ├─── HTML/CSS/JS files             │
 │  ├─── Static assets                     └─── API integration               │
 │  └─── Public access                                                        │
 │       ↓                                                                     │
-│  5️⃣ CloudFront CDN (15 min)            🌍 Global Distribution              │
+│  7️⃣ CloudFront CDN (15 min)            🌍 Global Distribution              │
 │  ├─── S3 origin                         ├─── Caching rules                 │
 │  ├─── API integration                   ├─── SSL certificate               │
 │  └─── Custom domain                     └─── Performance optimization      │
 │       ↓                                                                     │
-│  6️⃣ Basic Monitoring (15 min)          📊 Essential Observability         │
+│  8️⃣ Basic Monitoring (15 min)          📊 Essential Observability         │
 │  ├─── CloudWatch logs                   ├─── Error alarms                  │
 │  ├─── Simple dashboard                  ├─── Billing alerts               │
 │  └─── Basic troubleshooting             └─── Cost monitoring               │
+│       ↓                                                                     │
+│  9️⃣ Testing & Validation (45 min)      🧪 End-to-End Verification         │
+│  ├─── Database connectivity tests       ├─── API endpoint validation       │
+│  ├─── Hybrid workflow testing           ├─── Performance benchmarks        │
+│  └─── Error handling verification       └─── Complete functionality        │
 │                                                                             │
 └─────────────────────────────────────────────────────────────────────────────┘
 ```
@@ -72,61 +85,79 @@ Phase 1 Implementation Flow:
 
 ## 📚 Detailed Setup Guides
 
-### **1️⃣ Database Setup (30 minutes)**
+### **1️⃣ PostgreSQL RDS Setup (45 minutes)**
+
+📖 **Guide**: [`cloudshelf-rds-setup.md`](cloudshelf-rds-setup.md)
+
+**What you'll create**:
+
+- ✅ PostgreSQL RDS instance in default VPC
+- ✅ Books table with relational data and search
+- ✅ Users table for authentication and profiles
+- ✅ Orders table for purchase history and ACID compliance
+
+**Key outcomes**:
+
+- �️ **Relational data model** with proper relationships and constraints
+- 🔑 **Foreign keys and indexes** for data integrity and performance
+- 📊 **Sample data** loaded for testing
+- 🛡️ **ACID compliance** for critical business transactions
+
+### **2️⃣ DynamoDB High-Performance Tables (30 minutes)**
 
 📖 **Guide**: [`cloudshelf-dynamodb-setup.md`](cloudshelf-dynamodb-setup.md)
 
 **What you'll create**:
 
-- ✅ Books table with search capabilities
-- ✅ Users table for authentication
-- ✅ Orders table for purchase history
-- ✅ Carts table for shopping sessions
+- ✅ Shopping carts table for real-time cart operations
+- ✅ User sessions table with automatic TTL cleanup
 
 **Key outcomes**:
 
-- 🗂️ **NoSQL data model** designed for performance
-- 🔑 **Primary keys and indexes** for efficient queries
-- 📊 **Sample data** loaded for testing
-- ⚡ **High performance** with single-digit millisecond latency
+- ⚡ **Single-digit millisecond latency** for cart operations
+- 🔄 **Auto-scaling** for traffic spikes
+- 🗑️ **Automatic cleanup** with TTL for sessions
+- 🎯 **Optimized for performance** - only high-speed operations
 
-### **2️⃣ Basic IAM Setup (15 minutes)**
+### **3️⃣ Basic IAM Setup (20 minutes)**
 
 📖 **Guide**: [`cloudshelf-basic-iam-setup.md`](cloudshelf-basic-iam-setup.md)
 
 **What you'll create**:
 
-- ✅ Lambda execution role with essential permissions
+- ✅ Lambda execution role with VPC permissions
+- ✅ PostgreSQL RDS access for relational operations
+- ✅ DynamoDB read/write permissions for cart and sessions
 - ✅ CloudWatch logging access for troubleshooting
-- ✅ DynamoDB read/write permissions for shopping cart
-- ✅ AWS managed policies for quick, secure setup
 
 **Key outcomes**:
 
-- 🔒 **Essential security** - Functions have needed permissions only
-- 📊 **Automatic logging** - CloudWatch access for debugging
-- 🛡️ **Best practices** - AWS managed policies where appropriate
-- ⚡ **Quick setup** - Working security in 15 minutes
+- 🔒 **Hybrid database security** - Proper access to both PostgreSQL and DynamoDB
+- 🌐 **VPC connectivity** - Lambda functions can reach RDS in VPC
+- 📊 **Comprehensive logging** - CloudWatch access for both database types
+- ⚡ **Quick setup** - Working hybrid security in 20 minutes
 
-### **3️⃣ Serverless Functions (45 minutes)**
+### **4️⃣ Hybrid Lambda Functions (60 minutes)**
 
 📖 **Guide**: [`cloudshelf-basic-lambda-setup.md`](cloudshelf-basic-lambda-setup.md)
 
 **What you'll create**:
 
-- ✅ Book Catalog Lambda (search, get details)
-- ✅ User Management Lambda (registration, profile)
-- ✅ Shopping Cart Lambda (add, remove, view)
-- ✅ Order Processing Lambda (checkout, history)
+- ✅ Book Catalog Lambda (PostgreSQL: search, details, complex queries)
+- ✅ User Management Lambda (PostgreSQL: registration, profiles, authentication)
+- ✅ Shopping Cart Lambda (DynamoDB: add, remove, real-time updates)
+- ✅ Order Processing Lambda (Both DBs: checkout with transaction coordination)
 
 **Key outcomes**:
 
-- ⚡ **Auto-scaling** functions that handle any load
-- 🔒 **IAM roles** with least privilege access
+- 🔗 **Hybrid database integration** - Functions connecting to both PostgreSQL and DynamoDB
+- 🌐 **VPC configuration** - Lambda functions properly connected to RDS
+- ⚡ **Optimized performance** - Right database for the right operation
+- 🔒 **Secure connectivity** - Proper IAM roles for both database types
 - 📊 **Error handling** with proper HTTP responses
 - 🧪 **Testing endpoints** for validation
 
-### **4️⃣ API Layer (30 minutes)**
+### **5️⃣ API Layer (30 minutes)**
 
 📖 **Guide**: [`cloudshelf-apigateway-setup.md`](cloudshelf-apigateway-setup.md)
 
@@ -144,7 +175,7 @@ Phase 1 Implementation Flow:
 - 🌍 **CORS enabled** for browser compatibility
 - 📋 **API documentation** with example requests
 
-### **5️⃣ Web Hosting (20 minutes)**
+### **6️⃣ Web Hosting (20 minutes)**
 
 📖 **Guide**: [`cloudshelf-s3-setup.md`](cloudshelf-s3-setup.md)
 
@@ -162,7 +193,7 @@ Phase 1 Implementation Flow:
 - 📱 **Mobile-responsive** design ready for content
 - 🚀 **Fast loading** with S3's global infrastructure
 
-### **6️⃣ Global CDN (15 minutes)**
+### **7️⃣ Global CDN (15 minutes)**
 
 📖 **Guide**: [`cloudshelf-cloudfront-setup.md`](cloudshelf-cloudfront-setup.md)
 
@@ -180,7 +211,7 @@ Phase 1 Implementation Flow:
 - 🔒 **HTTPS by default** for security
 - 📊 **Caching optimization** for better performance
 
-### **7️⃣ Basic Monitoring (15 minutes)**
+### **8️⃣ Basic Monitoring (15 minutes)**
 
 📖 **Guide**: [`basic-cloudwatch-monitoring.md`](basic-cloudwatch-monitoring.md)
 
@@ -200,19 +231,21 @@ Phase 1 Implementation Flow:
 
 ---
 
-### **8️⃣ Testing & Validation (30 minutes)**
+### **9️⃣ Testing & Validation (45 minutes)**
 
 ## 🧪 Testing & Validation
 
 ### **📋 Phase 1 Testing Checklist**
 
-#### **🗂️ Database Tests**
+#### **�️ Hybrid Database Tests**
 
-- [ ] **Create book record** - Add new book to catalog
-- [ ] **Search functionality** - Find books by title/author
-- [ ] **User registration** - Create new user account
-- [ ] **Shopping cart** - Add/remove items from cart
-- [ ] **Order creation** - Complete purchase workflow
+- [ ] **PostgreSQL RDS Connection** - Verify Lambda can connect to RDS in VPC
+- [ ] **Book catalog operations** - Create, search, and retrieve books from PostgreSQL
+- [ ] **User management** - Registration and authentication via PostgreSQL
+- [ ] **Order processing** - ACID transactions for order creation in PostgreSQL
+- [ ] **DynamoDB cart operations** - High-speed add/remove cart items
+- [ ] **Session management** - User sessions with TTL auto-cleanup in DynamoDB
+- [ ] **Hybrid workflows** - Order checkout using both databases
 
 #### **⚡ API Tests**
 
@@ -299,22 +332,23 @@ curl -I "https://your-cloudfront-domain.cloudfront.net"
 
 ### **Expected Monthly AWS Costs**
 
-| Service         | Usage Level               | Monthly Cost (USD) |
-| --------------- | ------------------------- | ------------------ |
-| **DynamoDB**    | 1M reads, 100K writes     | $1.25 - $3.00      |
-| **Lambda**      | 100K requests/month       | $0.20 - $0.50      |
-| **API Gateway** | 100K API calls            | $0.35 - $1.00      |
-| **S3**          | 1GB storage, 10K requests | $0.25 - $0.50      |
-| **CloudFront**  | 10GB transfer             | $0.85 - $2.00      |
-| **CloudWatch**  | Basic monitoring          | $0.10 - $1.00      |
-| **Total**       | Light usage               | **$3.00 - $8.00**  |
+| Service            | Usage Level               | Monthly Cost (USD)  |
+| ------------------ | ------------------------- | ------------------- |
+| **PostgreSQL RDS** | db.t3.micro (20GB)        | $12.00 - $18.00     |
+| **DynamoDB**       | High-performance ops only | $0.50 - $2.00       |
+| **Lambda**         | 100K requests/month       | $0.20 - $0.50       |
+| **API Gateway**    | 100K API calls            | $0.35 - $1.00       |
+| **S3**             | 1GB storage, 10K requests | $0.25 - $0.50       |
+| **CloudFront**     | 10GB transfer             | $0.85 - $2.00       |
+| **CloudWatch**     | Basic monitoring          | $0.10 - $1.00       |
+| **Total**          | Light usage               | **$14.25 - $25.00** |
 
 **💡 Cost Optimization Tips**:
 
-- ✅ **Free tier eligible** - Most services have generous free tiers
-- ✅ **Pay per use** - Only pay for actual usage
-- ✅ **No upfront costs** - Zero infrastructure investment
-- ✅ **Automatic scaling** - Costs scale with usage
+- ✅ **Industry-standard pricing** - Realistic costs for hybrid database architecture
+- ✅ **RDS free tier** - 750 hours/month for new accounts (first 12 months)
+- ✅ **DynamoDB optimized** - Only pay for high-performance operations
+- ✅ **Automatic scaling** - Costs scale with actual usage
 
 ---
 
@@ -322,26 +356,26 @@ curl -I "https://your-cloudfront-domain.cloudfront.net"
 
 ### **🎯 What's Next?**
 
-#### **📈 Phase 1 → Phase 2 Migration Path**
+#### **📈 Phase 1 → Phase 2 Enhancement Path**
 
-- **When to migrate**: After understanding Phase 1 architecture
-- **Why migrate**: Need for enhanced security, complex queries, compliance
-- **Migration time**: 1-2 days with proper planning
-- **Migration guide**: [`../migration/migration-overview.md`](../migration/migration-overview.md)
+- **When to enhance**: After mastering Phase 1 hybrid architecture
+- **Why enhance**: Need for custom VPC, advanced monitoring, enterprise features
+- **Enhancement time**: 4-6 hours with proper planning
+- **Enhancement guide**: [`../phase2-enhancements/README.md`](../phase2-enhancements/README.md)
 
-#### **🏗️ Phase 2 Benefits**
+#### **🏗️ Phase 2 Enhancements**
 
-- 🔒 **Enhanced security** - VPC isolation and network controls
-- 🗃️ **PostgreSQL database** - Complex queries and reporting
-- 📊 **Advanced monitoring** - Comprehensive observability
-- 🏢 **Enterprise features** - Compliance and audit trails
+- 🔒 **Custom VPC** - Private subnets and advanced network security
+- 🗃️ **Multi-AZ RDS** - High availability and automatic failover
+- 📊 **Advanced monitoring** - X-Ray tracing and comprehensive observability
+- 🏢 **Enterprise features** - Infrastructure as Code and compliance
 
 ### **📚 Learning Path**
 
-1. **Master Phase 1** - Understand serverless patterns thoroughly
-2. **Learn VPC concepts** - Network isolation and security
-3. **Database migration** - NoSQL to SQL data modeling
-4. **Production operations** - Monitoring and troubleshooting
+1. **Master Phase 1** - Understand hybrid database patterns thoroughly
+2. **Learn VPC concepts** - Private subnets and network security
+3. **Advanced database patterns** - Multi-AZ, read replicas, performance tuning
+4. **Production operations** - Monitoring, automation, and disaster recovery
 
 ---
 
@@ -357,7 +391,7 @@ curl -I "https://your-cloudfront-domain.cloudfront.net"
 
 2. **⏱️ Time allocation**
 
-   - Block 3-5 hours for complete setup
+   - Block 4-6 hours for complete hybrid setup
    - Can be done in stages over multiple sessions
    - Each guide builds on the previous
 
@@ -374,7 +408,7 @@ curl -I "https://your-cloudfront-domain.cloudfront.net"
 
 ---
 
-**🚀 Ready to start? Begin with [DynamoDB Setup](dynamodb-setup.md)!**
+**🚀 Ready to start? Begin with [PostgreSQL RDS Setup](cloudshelf-rds-setup.md)!**
 
-_📋 **Folder Status**: Complete Setup Guides | ✅ **Phase 1 Ready**: Yes | 🔄 **Last Updated**: Organization_  
-_🎯 **Phase**: Basic Setup | 👥 **Audience**: Beginners | 📋 **Duration**: 2-5 hours_
+_📋 **Folder Status**: Complete Hybrid Setup Guides | ✅ **Phase 1 Ready**: Yes | 🔄 **Last Updated**: Hybrid Architecture_  
+_🎯 **Phase**: Hybrid Database Setup | 👥 **Audience**: Beginners | 📋 **Duration**: 4-6 hours_
