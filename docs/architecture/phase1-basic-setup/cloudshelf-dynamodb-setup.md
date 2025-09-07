@@ -10,7 +10,16 @@ This guide provides setup instructions for DynamoDB in Enhanced Phase 1, focusin
 
 ## 🎯 Enhanced Phase 1 Database Strategy
 
-### **🚀 Why Hybrid Database Approach?**
+### **🚀 Why Hybrid Dat## 📚 Enhanced Phase 1 Documentation
+
+### **Implementation Guides**
+- 🗃️ [PostgreSQL RDS Setup](../rds/cloudshelf-rds-default-vpc-setup.md) - Books, users, orders database
+- ⚡ [Lambda Hybrid Functions](../lambda/cloudshelf-basic-lambda-setup.md) - DynamoDB + PostgreSQL access
+- 🌐 [API Gateway Integration](../apigateway/cloudshelf-apigateway-setup.md) - Unified REST endpoints
+
+### **Architecture Documentation**  
+- 📋 [Enhanced Phase 1 Plan](../../ENHANCED-PHASE1-PLAN.md) - Complete strategy overview
+- 🏗️ [ADR-004: Hybrid Architecture](../cloudshelf-adr-004-enhanced-phase1-hybrid-architecture.md) - Decision rationale Approach?**
 
 **Enhanced Learning Benefits**:
 
@@ -109,44 +118,29 @@ This guide provides setup instructions for DynamoDB in Enhanced Phase 1, focusin
 
 **Purpose**: High-performance shopping cart operations with user isolation
 
-```json
-{
-  "TableName": "cloudshelf-books",
-  "BillingMode": "PAY_PER_REQUEST",
-  "KeySchema": [
-    { "AttributeName": "category", "KeyType": "HASH" },
-    { "AttributeName": "book_id", "KeyType": "RANGE" }
-  ],
-  "AttributeDefinitions": [
-    { "AttributeName": "category", "AttributeType": "S" },
-    { "AttributeName": "book_id", "AttributeType": "S" },
-    { "AttributeName": "title", "AttributeType": "S" }
-  ],
-  "GlobalSecondaryIndexes": [
-    {
-      "IndexName": "TitleSearchIndex",
-      "KeySchema": [{ "AttributeName": "title", "KeyType": "HASH" }],
-      "Projection": { "ProjectionType": "ALL" }
-    }
-  ]
-}
-```
+| **Field Name**   | **Type** | **Key Type** | **Description**                      |
+| ---------------- | -------- | ------------ | ------------------------------------ |
+| `user_id`        | String   | 🔑 PARTITION | Unique user identifier (Cognito sub) |
+| `book_id`        | String   | 🗂️ SORT      | Book ID from PostgreSQL catalog      |
+| `quantity`       | Number   |              | Number of books (min: 1, max: 99)    |
+| `added_at`       | String   |              | ISO timestamp when item was added    |
+| `updated_at`     | String   |              | ISO timestamp of last modification   |
+| `book_title`     | String   |              | Cached book title (denormalized)     |
+| `book_price`     | Number   |              | Cached book price (denormalized)     |
+| `book_image_url` | String   |              | Cached book image URL (denormalized) |
 
-**Sample Book Item**:
+**📚 Example Cart Item**:
 
 ```json
 {
-  "category": "Technology",
-  "book_id": "tech-001",
-  "title": "Clean Code",
-  "author": "Robert C. Martin",
-  "isbn": "9780132350884",
-  "price": 42.99,
-  "stock_quantity": 25,
-  "description": "A handbook of agile software craftsmanship",
-  "image_url": "https://cloudshelf-images.s3.amazonaws.com/clean-code.jpg",
-  "created_at": "2025-09-05T10:00:00Z",
-  "updated_at": "2025-09-05T10:00:00Z"
+  "user_id": "123e4567-e89b-12d3-a456-426614174000",
+  "book_id": "book-9781234567890",
+  "quantity": 2,
+  "added_at": "2024-01-15T14:30:00Z",
+  "updated_at": "2024-01-15T14:30:00Z",
+  "book_title": "The DevOps Handbook",
+  "book_price": 29.99,
+  "book_image_url": "https://cloudshelf-images.s3.amazonaws.com/books/devops-handbook.jpg"
 }
 ```
 
@@ -221,83 +215,6 @@ This guide provides setup instructions for DynamoDB in Enhanced Phase 1, focusin
 - **Get Session**: `session_id` (retrieve complete session data)
 - **Update Activity**: `session_id` (refresh last_activity and expires_at)
 - **Store Cart Summary**: `session_id` (cache cart totals for quick access)
-
-```
-
----
-
-## 🚀 Implementation Guide
-
-### **Step 1: Create DynamoDB Tables**
-
-Navigate to the DynamoDB console and create each table:
-
-#### **Create Books Table**
-
-1. **Go to DynamoDB Console** → **Tables** → **Create table**
-2. **Configure table**:
-   - **Table name**: `cloudshelf-books`
-   - **Partition key**: `category` (String)
-   - **Sort key**: `book_id` (String)
-   - **Billing mode**: On-demand
-
-![DynamoDB Books Table Creation](../screenshots/dynamodb/dynamodb-books-table-creation.png)
-_Configure the books table with category and book_id as keys_
-
-3. **Add Global Secondary Index**:
-   - **Index name**: `TitleSearchIndex`
-   - **Partition key**: `title` (String)
-   - **Projection**: All attributes
-
-![DynamoDB Books GSI Configuration](../screenshots/dynamodb/dynamodb-books-gsi-configuration.png)
-_Add title search index for book lookup functionality_
-
-#### **Create Shopping Carts Table**
-
-1. **Create table**:
-
-   - **Table name**: `cloudshelf-carts`
-   - **Partition key**: `user_id` (String)
-   - **Sort key**: `cart_id` (String)
-   - **Billing mode**: On-demand
-
-2. **Enable TTL**:
-   - **TTL attribute**: `expires_at`
-   - **Status**: Enabled
-
-![DynamoDB Carts Table with TTL](../screenshots/dynamodb/dynamodb-carts-table-ttl.png)
-_Shopping carts table with TTL for automatic cleanup_
-
-#### **Create Users Table**
-
-1. **Create table**:
-
-   - **Table name**: `cloudshelf-users`
-   - **Partition key**: `user_id` (String)
-   - **Billing mode**: On-demand
-
-2. **Add Global Secondary Index**:
-   - **Index name**: `EmailIndex`
-   - **Partition key**: `email` (String)
-   - **Projection**: All attributes
-
-![DynamoDB Users Table with Email Index](../screenshots/dynamodb/dynamodb-users-email-index.png)
-_Users table with email lookup capability_
-
-#### **Create Orders Table**
-
-1. **Create table**:
-
-   - **Table name**: `cloudshelf-orders`
-   - **Partition key**: `user_id` (String)
-   - **Sort key**: `order_id` (String)
-   - **Billing mode**: On-demand
-
-2. **Add Global Secondary Index**:
-   - **Index name**: `OrderDateIndex`
-   - **Partition key**: `order_date` (String)
-   - **Sort key**: `order_id` (String)
-   - **Projection**: All attributes
 
 ---
 
@@ -639,13 +556,23 @@ _Testing table queries in DynamoDB console_
 
 ---
 
-## 🎯 Next Steps
+## 🎯 Enhanced Phase 1 Next Steps
 
-Once your DynamoDB tables are created and populated:
+### **Immediate Next Steps**
 
-1. ✅ **DynamoDB Setup Complete** - You've finished this guide
-2. 🔒 **Next**: [Basic IAM Setup](cloudshelf-basic-iam-setup.md) - Set up security roles for Lambda functions
-3. ⚡ **Then**: [Lambda Setup Guide](cloudshelf-lambda-setup.md) - Connect Lambda functions to your tables
+1. **📋 Complete PostgreSQL Setup**:
+   - Follow [PostgreSQL RDS setup guide](../rds/cloudshelf-rds-default-vpc-setup.md) for books, users, orders
+   
+2. **⚡ Configure Lambda Functions**:
+   - Set up [Enhanced Phase 1 Lambda functions](../lambda/cloudshelf-basic-lambda-setup.md) for hybrid database access
+   
+3. **🌐 Connect API Gateway**:
+   - Complete [API Gateway setup](../apigateway/cloudshelf-apigateway-setup.md) for unified API endpoints
+
+### **Enhanced Phase 1 Achievement** 🎉:
+- ✅ High-performance cart operations with DynamoDB
+- ✅ Session management with TTL auto-cleanup  
+- ✅ Hybrid database pattern preparation for Phase 2
 
 ---
 
@@ -659,12 +586,16 @@ Once your DynamoDB tables are created and populated:
 
 ## 📋 Quick Reference
 
-### **Table Names**
+### **Enhanced Phase 1 Table Names**
 
-- Books: `cloudshelf-books`
-- Carts: `cloudshelf-carts`
-- Users: `cloudshelf-users`
-- Orders: `cloudshelf-orders`
+**DynamoDB Tables:**
+- Shopping Carts: `cloudshelf-carts`
+- User Sessions: `cloudshelf-sessions`
+
+**PostgreSQL Tables (separate guide):**
+- Books: `books`
+- Users: `users`  
+- Orders: `orders`
 
 ---
 
