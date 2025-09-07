@@ -105,7 +105,20 @@ _Two-phase learning progression: Serverless-first → Production-ready_
 
 ## 🚀 Quick Start Guide
 
-### 📖 **Choose Your Learning Path**
+### �️ **Multi-Role Implementation Schedule**
+
+> **For comprehensive AWS portfolio development across Solutions Architect, DevOps Engineer, and Developer roles**
+
+```bash
+📂 Complete Timeline: docs/architecture/cloudshelf-project-timeline.md
+⏱️  Total Duration: 4 weeks (20 working days)
+🎯 Outcome: Portfolio demonstrating all three AWS specializations
+🗓️ Schedule: September 9 - October 3, 2025
+```
+
+**[➡️ View Complete Implementation Timeline](docs/architecture/cloudshelf-project-timeline.md)**
+
+### �📖 **Choose Your Learning Path**
 
 #### 🌟 **Start with Phase 1** (Recommended for most learners)
 
