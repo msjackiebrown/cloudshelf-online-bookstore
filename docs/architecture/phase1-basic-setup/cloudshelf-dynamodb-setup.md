@@ -1,107 +1,111 @@
-# 🗂️ CloudShelf DynamoDB Setup (Phase 1)
+# 🗂️ CloudShelf DynamoDB Setup (Enhanced Phase 1)
 
-> Simple, serverless data storage implementation for learning and MVP deployment
+> Simplified DynamoDB setup for high-performance cart operations in hybrid architecture
 
-This guide provides setup instructions for DynamoDB-only data storage, implementing the Phase 1 strategy from [ADR-002-Revised: Phased Data Storage Strategy](../cloudshelf-adr-002-revised-phased-data-storage.md).
-
----
-
-## 🎯 Phase 1 Overview
-
-### **🚀 Why Start with DynamoDB-Only?**
-
-**Learning Benefits**:
-
-- ✅ **No VPC complexity** - Fully managed, serverless
-- ✅ **Faster setup** - Get working app in hours, not days
-- ✅ \*\*Co## 📚 Related Documentation
-
-- 🔒 [**Basic IAM Setup**](cloudshelf-basic-iam-setup.md) - Set up security roles (next step)
-- ⚡ [**Lambda Setup Guide**](cloudshelf-lambda-setup.md) - Connect functions to DynamoDB
-- 📋 [**Phase 1 Overview**](README.md) - Complete Phase 1 implementation guidefective\*\* - Pay per request, no idle database costs
-- ✅ **AWS best practices** - Learn serverless-first patterns
-- ✅ **Real application** - Full CloudShelf functionality
-
-**What You Get**:
-
-- 📚 **Book catalog browsing** and search
-- 🛒 **Shopping cart** functionality
-- 👤 **User accounts** and authentication
-- 📦 **Order processing** and history
-- 🌐 **Public API** endpoints
+This guide provides setup instructions for DynamoDB in Enhanced Phase 1, focusing on shopping cart and session data while PostgreSQL handles relational data needs.
 
 ---
 
-## 🏛️ Architecture Overview
+## 🎯 Enhanced Phase 1 Database Strategy
 
-### **🗂️ Phase 1 DynamoDB Architecture**
+### **🚀 Why Hybrid Database Approach?**
+
+**Enhanced Learning Benefits**:
+
+- ✅ **Realistic data patterns** - Use the right database for each use case
+- ✅ **PostgreSQL for complexity** - Books, users, orders with relational integrity
+- ✅ **DynamoDB for performance** - Shopping carts and sessions with single-digit latency
+- ✅ **Industry patterns** - Learn hybrid database strategies used in production
+- ✅ **Smooth progression** - Better preparation for Phase 2 advanced features
+
+**DynamoDB Role in Enhanced Phase 1**:
+
+- 🛒 **Shopping cart operations** - Add/remove items with high performance
+- 🔄 **User session management** - Temporary data with TTL support
+- ⚡ **Simple key-value operations** - Perfect DynamoDB use cases
+
+**PostgreSQL handles** (separate guide):
+
+- 📚 Book catalog and search
+- 👤 User profiles and authentication
+- 📦 Order processing and history
+
+---
+
+## 🏛️ Enhanced Phase 1 Hybrid Architecture
+
+### **🗂️ DynamoDB in Hybrid Architecture**
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────────┐
-│                        CloudShelf Phase 1 Architecture                         │
+│                   CloudShelf Enhanced Phase 1 Architecture                     │
 ├─────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                 │
-│  Internet Users                                                                │
+│  📱 Web/Mobile Clients                                                         │
 │       │                                                                         │
 │       ▼                                                                         │
 │  ┌─────────────────────────────────────────────────────────────────────────┐   │
-│  │                        🌍 CloudFront CDN                                │   │
-│  │                    (Global Content Delivery)                           │   │
+│  │                     🌐 API Gateway                                      │   │
+│  │                   (Unified API Layer)                                  │   │
 │  └─────────────────────────────────────────────────────────────────────────┘   │
 │       │                                                                         │
 │       ▼                                                                         │
 │  ┌─────────────────────────────────────────────────────────────────────────┐   │
-│  │                      🌐 API Gateway (Public)                           │   │
-│  │                   RESTful APIs - No VPC Required                       │   │
+│  │                 ⚡ Lambda Functions                                     │   │
+│  │  ┌─────────────┐                           ┌─────────────┐             │   │
+│  │  │Shopping Cart│                           │Session Mgmt │             │   │
+│  │  │  Service    │ ────── DynamoDB ────────▶ │  Service    │             │   │
+│  │  │(High Perf)  │                           │(TTL Support)│             │   │
+│  │  └─────────────┘                           └─────────────┘             │   │
 │  └─────────────────────────────────────────────────────────────────────────┘   │
 │       │                                                                         │
 │       ▼                                                                         │
 │  ┌─────────────────────────────────────────────────────────────────────────┐   │
-│  │                    ⚡ Lambda Functions (Public)                        │   │
+│  │              🗂️ DynamoDB Tables (Simplified)                           │   │
 │  │                                                                         │   │
-│  │  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐   │   │
-│  │  │Book Catalog │  │Shopping Cart│  │User Accounts│  │Order Process│   │   │
-│  │  │   Lambda    │  │   Lambda    │  │   Lambda    │  │   Lambda    │   │   │
-│  │  └─────────────┘  └─────────────┘  └─────────────┘  └─────────────┘   │   │
-│  └─────────────────────────────────────────────────────────────────────────┘   │
-│       │                                                                         │
-│       ▼                                                                         │
-│  ┌─────────────────────────────────────────────────────────────────────────┐   │
-│  │                      🗂️ DynamoDB Tables (Managed)                      │   │
-│  │                                                                         │   │
-│  │  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐   │   │
-│  │  │cloudshelf-  │  │cloudshelf-  │  │cloudshelf-  │  │cloudshelf-  │   │   │
-│  │  │books        │  │carts        │  │users        │  │orders       │   │   │
-│  │  │             │  │             │  │             │  │             │   │   │
-│  │  │• Category   │  │• User ID    │  │• User ID    │  │• User ID    │   │   │
-│  │  │• Book ID    │  │• Cart ID    │  │• Profile    │  │• Order ID   │   │   │
-│  │  │• Title      │  │• Items      │  │• Email      │  │• Items      │   │   │
-│  │  │• Author     │  │• TTL        │  │• Created    │  │• Total      │   │   │
-│  │  │• Price      │  │             │  │             │  │• Status     │   │   │
-│  │  └─────────────┘  └─────────────┘  └─────────────┘  └─────────────┘   │   │
+│  │  ┌─────────────┐                    ┌─────────────┐                    │   │
+│  │  │cloudshelf-  │                    │cloudshelf-  │                    │   │
+│  │  │carts        │                    │sessions     │                    │   │
+│  │  │             │                    │             │                    │   │
+│  │  │• User ID    │                    │• Session ID │                    │   │
+│  │  │• Book ID    │                    │• User Data  │                    │   │
+│  │  │• Quantity   │                    │• TTL (24h)  │                    │   │
+│  │  │• Added Date │                    │• Expires    │                    │   │
+│  │  └─────────────┘                    └─────────────┘                    │   │
 │  └─────────────────────────────────────────────────────────────────────────┘   │
 │                                                                                 │
-│  External Services (Also No VPC Required):                                     │
-│  • 📦 S3 Bucket (Book images, static assets)                                   │
-│  • 🔐 Cognito (User authentication - optional)                                 │
-│  • 📧 SES (Email notifications - optional)                                     │
+│                           📍 Default VPC                                       │
+│  ┌─────────────────────────────────────────────────────────────────────────┐   │
+│  │                ⚡ VPC-Connected Lambda Functions                        │   │
+│  │  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐                    │   │
+│  │  │Book Catalog │  │User Mgmt    │  │Order Process│                    │   │
+│  │  │  Service    │  │  Service    │  │  Service    │                    │   │
+│  │  └─────────────┘  └─────────────┘  └─────────────┘                    │   │
+│  │       │                │                │                              │   │
+│  │       ▼                ▼                ▼                              │   │
+│  │  ┌─────────────────────────────────────────────────────┐               │   │
+│  │  │           🗃️ PostgreSQL RDS                        │               │   │
+│  │  │        (books, users, orders tables)              │               │   │
+│  │  └─────────────────────────────────────────────────────┘               │   │
+│  └─────────────────────────────────────────────────────────────────────────┘   │
+│                                                                                 │
 └─────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-**Key Benefits**:
+**Key Benefits of Hybrid Approach**:
 
-- 🚫 **No VPC Required** - All services are AWS-managed and public
-- ⚡ **Serverless Scale** - Auto-scaling based on demand
-- 💰 **Cost Efficient** - Pay only for what you use
-- 🔧 **Easy Maintenance** - No infrastructure management
+- 🎯 **Right tool for the job** - DynamoDB for high-performance cart operations
+- 🗃️ **PostgreSQL for complex data** - Books, users, orders with relational integrity
+- ⚡ **Best performance** - Single-digit millisecond cart operations
+- � **Learning value** - Industry-standard hybrid database patterns
 
 ---
 
-## 📊 DynamoDB Table Design
+## 📊 Simplified DynamoDB Table Design
 
-### **Table 1: Books Catalog (`cloudshelf-books`)**
+### **Table 1: Shopping Carts (`cloudshelf-carts`)**
 
-**Purpose**: Store all book information for browsing and purchasing
+**Purpose**: High-performance shopping cart operations with user isolation
 
 ```json
 {
@@ -144,156 +148,78 @@ This guide provides setup instructions for DynamoDB-only data storage, implement
 }
 ```
 
-### **Table 2: Shopping Carts (`cloudshelf-carts`)**
+**🔍 Access Patterns**:
 
-**Purpose**: Store user shopping cart sessions with automatic cleanup
+- **Get User Cart**: `user_id` (retrieves all cart items for user)
+- **Add/Update Item**: `user_id` + `book_id` (add or modify quantity)
+- **Remove Item**: `user_id` + `book_id` (delete item from cart)
 
-```json
-{
-  "TableName": "cloudshelf-carts",
-  "BillingMode": "PAY_PER_REQUEST",
-  "KeySchema": [
-    { "AttributeName": "user_id", "KeyType": "HASH" },
-    { "AttributeName": "cart_id", "KeyType": "RANGE" }
-  ],
-  "AttributeDefinitions": [
-    { "AttributeName": "user_id", "AttributeType": "S" },
-    { "AttributeName": "cart_id", "AttributeType": "S" }
-  ],
-  "TimeToLiveSpecification": {
-    "AttributeName": "expires_at",
-    "Enabled": true
-  }
-}
-```
+---
 
-**Sample Cart Item**:
+### **Table 2: User Sessions (`cloudshelf-sessions`)**
 
-```json
-{
-  "user_id": "user-12345",
-  "cart_id": "cart-2025-09-05",
-  "items": [
-    {
-      "book_id": "tech-001",
-      "category": "Technology",
-      "title": "Clean Code",
-      "price": 42.99,
-      "quantity": 1
-    }
-  ],
-  "total_amount": 42.99,
-  "item_count": 1,
-  "created_at": "2025-09-05T10:00:00Z",
-  "updated_at": "2025-09-05T10:30:00Z",
-  "expires_at": 1725811200
-}
-```
+**Purpose**: Manage user session data with automatic TTL cleanup
 
-### **Table 3: User Accounts (`cloudshelf-users`)**
+| **Field Name**  | **Type** | **Key Type** | **Description**                         |
+| --------------- | -------- | ------------ | --------------------------------------- |
+| `session_id`    | String   | 🔑 PARTITION | Unique session identifier (UUID)        |
+| `user_id`       | String   |              | Associated user ID (if authenticated)   |
+| `session_data`  | Map      |              | Cached user preferences and state       |
+| `cart_summary`  | Map      |              | Quick cart overview (item count, total) |
+| `last_activity` | String   |              | ISO timestamp of last user action       |
+| `created_at`    | String   |              | ISO timestamp when session was created  |
+| `expires_at`    | Number   | ⏰ TTL       | Unix timestamp (24 hours from creation) |
+| `ip_address`    | String   |              | User's IP address (for analytics)       |
+| `user_agent`    | String   |              | Browser/device information              |
 
-**Purpose**: Store customer profile and account information
+**🗂️ Session Data Structure**:
 
 ```json
 {
-  "TableName": "cloudshelf-users",
-  "BillingMode": "PAY_PER_REQUEST",
-  "KeySchema": [{ "AttributeName": "user_id", "KeyType": "HASH" }],
-  "AttributeDefinitions": [
-    { "AttributeName": "user_id", "AttributeType": "S" },
-    { "AttributeName": "email", "AttributeType": "S" }
-  ],
-  "GlobalSecondaryIndexes": [
-    {
-      "IndexName": "EmailIndex",
-      "KeySchema": [{ "AttributeName": "email", "KeyType": "HASH" }],
-      "Projection": { "ProjectionType": "ALL" }
-    }
-  ]
-}
-```
-
-**Sample User Item**:
-
-```json
-{
-  "user_id": "user-12345",
-  "email": "customer@example.com",
-  "first_name": "John",
-  "last_name": "Doe",
-  "phone": "+1-555-0123",
-  "address": {
-    "street": "123 Main St",
-    "city": "Anytown",
-    "state": "ST",
-    "postal_code": "12345",
-    "country": "US"
+  "preferences": {
+    "theme": "light",
+    "language": "en",
+    "currency": "USD"
   },
-  "created_at": "2025-09-05T10:00:00Z",
-  "last_login": "2025-09-05T10:00:00Z",
-  "account_status": "active"
+  "browsing_history": ["book-9781234567890", "book-9780987654321"],
+  "search_history": ["devops", "cloud architecture"]
 }
 ```
 
-### **Table 4: Orders (`cloudshelf-orders`)**
-
-**Purpose**: Store order history and transaction records
+**📚 Example Data**:
 
 ```json
 {
-  "TableName": "cloudshelf-orders",
-  "BillingMode": "PAY_PER_REQUEST",
-  "KeySchema": [
-    { "AttributeName": "user_id", "KeyType": "HASH" },
-    { "AttributeName": "order_id", "KeyType": "RANGE" }
-  ],
-  "AttributeDefinitions": [
-    { "AttributeName": "user_id", "AttributeType": "S" },
-    { "AttributeName": "order_id", "AttributeType": "S" },
-    { "AttributeName": "order_date", "AttributeType": "S" }
-  ],
-  "GlobalSecondaryIndexes": [
-    {
-      "IndexName": "OrderDateIndex",
-      "KeySchema": [
-        { "AttributeName": "order_date", "KeyType": "HASH" },
-        { "AttributeName": "order_id", "KeyType": "RANGE" }
-      ],
-      "Projection": { "ProjectionType": "ALL" }
-    }
-  ]
-}
-```
-
-**Sample Order Item**:
-
-```json
-{
-  "user_id": "user-12345",
-  "order_id": "order-2025-09-05-001",
-  "order_date": "2025-09-05",
-  "items": [
-    {
-      "book_id": "tech-001",
-      "title": "Clean Code",
-      "price": 42.99,
-      "quantity": 1
-    }
-  ],
-  "subtotal": 42.99,
-  "tax": 3.44,
-  "shipping": 5.99,
-  "total": 52.42,
-  "status": "confirmed",
-  "shipping_address": {
-    "street": "123 Main St",
-    "city": "Anytown",
-    "state": "ST",
-    "postal_code": "12345"
+  "session_id": "sess-20240115-143000-uuid",
+  "user_id": "123e4567-e89b-12d3-a456-426614174000",
+  "session_data": {
+    "preferences": {
+      "theme": "dark",
+      "language": "en",
+      "currency": "USD"
+    },
+    "browsing_history": ["book-9781234567890", "book-9780987654321"],
+    "search_history": ["devops", "cloud architecture"]
   },
-  "created_at": "2025-09-05T10:00:00Z",
-  "updated_at": "2025-09-05T10:00:00Z"
+  "cart_summary": {
+    "item_count": 3,
+    "total_amount": 94.97,
+    "last_updated": "2024-01-15T14:35:00Z"
+  },
+  "last_activity": "2024-01-15T14:35:00Z",
+  "created_at": "2024-01-15T14:30:00Z",
+  "expires_at": 1705345800,
+  "ip_address": "192.168.1.100",
+  "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
 }
+```
+
+**🔍 Access Patterns**:
+
+- **Get Session**: `session_id` (retrieve complete session data)
+- **Update Activity**: `session_id` (refresh last_activity and expires_at)
+- **Store Cart Summary**: `session_id` (cache cart totals for quick access)
+
 ```
 
 ---
@@ -371,186 +297,335 @@ _Users table with email lookup capability_
    - **Sort key**: `order_id` (String)
    - **Projection**: All attributes
 
-![DynamoDB Orders Table with Date Index](../screenshots/dynamodb/dynamodb-orders-date-index.png)
-_Orders table with date-based querying capability_
+---
+
+## 🚀 Enhanced Phase 1 Implementation
+
+### **Prerequisites**
+
+✅ **Before You Start**:
+- AWS account with DynamoDB access
+- Basic understanding of NoSQL concepts
+- Completed [PostgreSQL RDS setup](../rds/cloudshelf-rds-default-vpc-setup.md) for relational data
+- Reviewed [Enhanced Phase 1 architecture plan](../../ENHANCED-PHASE1-PLAN.md)
+
+### **🎯 Enhanced Phase 1 Scope**
+
+In Enhanced Phase 1, DynamoDB handles only **high-performance operations**:
+
+| **DynamoDB Tables** | **Purpose** | **Why DynamoDB?** |
+|-------------------|-------------|-------------------|
+| `cloudshelf-carts` | Shopping cart items | Single-digit millisecond reads |
+| `cloudshelf-sessions` | User session data | TTL auto-cleanup, fast access |
+
+| **PostgreSQL Tables** | **Purpose** | **Why PostgreSQL?** |
+|---------------------|-------------|-------------------|
+| `books` | Book catalog | Complex queries, relationships |
+| `users` | User accounts | ACID compliance, data integrity |
+| `orders` | Order history | Transaction support, reporting |
 
 ---
 
-### **Step 2: Populate Sample Data**
+## 📋 Step-by-Step Implementation
 
-#### **Add Sample Books**
+### **Step 1: Create DynamoDB Tables**
 
-**Method 1: Using DynamoDB Console (Recommended for beginners)**
+#### **🛒 Table 1: Shopping Carts (`cloudshelf-carts`)**
 
-1. **Navigate to DynamoDB Console**
+1. **Open DynamoDB Console**
 
-   - Go to AWS Console → DynamoDB → Tables
-   - Click on `cloudshelf-books` table
+   - Go to AWS Console → Services → DynamoDB
+   - Click **"Tables"** in left navigation
+   - Click **"Create table"** button
 
-2. **Access Item Creation**
+2. **Configure Cart Table**
 
-   - Click **"Explore table items"** tab
+```
+
+Table Settings:
+┌─────────────────────────────────────────────────────────────┐
+│ Table name: cloudshelf-carts │
+│ │
+│ Partition key: │
+│ • user_id (String) │
+│ │
+│ Sort key: │
+│ • book_id (String) │
+│ │
+│ Table settings: │
+│ • Customize settings: ✓ │
+│ • Table class: DynamoDB Standard │
+│ • Capacity mode: On-demand │
+│ │
+│ Encryption: │
+│ • Encryption at rest: Amazon DynamoDB managed key │
+│ │
+│ Time to Live (TTL): │
+│ • Enable TTL: No (carts don't need automatic expiry) │
+└─────────────────────────────────────────────────────────────┘
+
+```
+
+3. **Create the Table**
+
+- Click **"Create table"** button
+- Wait for table status to show **"Active"** (usually 1-2 minutes)
+
+![DynamoDB Cart Table Creation](../screenshots/dynamodb/dynamodb-cart-table-creation.png)
+_Creating the shopping cart table with user_id and book_id composite key_
+
+#### **🖥️ Table 2: User Sessions (`cloudshelf-sessions`)**
+
+1. **Create Sessions Table**
+
+```
+
+Table Settings:
+┌─────────────────────────────────────────────────────────────┐
+│ Table name: cloudshelf-sessions │
+│ │
+│ Partition key: │
+│ • session_id (String) │
+│ │
+│ Sort key: │
+│ • None │
+│ │
+│ Table settings: │
+│ • Customize settings: ✓ │
+│ • Table class: DynamoDB Standard │
+│ • Capacity mode: On-demand │
+│ │
+│ Encryption: │
+│ • Encryption at rest: Amazon DynamoDB managed key │
+│ │
+│ Time to Live (TTL): │
+│ • Enable TTL: Yes │
+│ • TTL attribute: expires_at │
+└─────────────────────────────────────────────────────────────┘
+
+````
+
+2. **Configure TTL (Time to Live)**
+
+- After table is created, go to **"Additional settings"** tab
+- Click **"Time to Live"** section
+- Click **"Enable"** button
+- TTL attribute name: `expires_at`
+- Click **"Enable TTL"** to confirm
+
+![DynamoDB Session Table TTL](../screenshots/dynamodb/dynamodb-session-table-ttl.png)
+_Configuring TTL for automatic session cleanup after 24 hours_
+
+---
+
+### **Step 2: Test Tables with Sample Data**
+
+#### **🛒 Test Cart Table**
+
+1. **Add Sample Cart Item**
+
+- Go to `cloudshelf-carts` table
+- Click **"Explore table items"** tab
+- Click **"Create item"** button
+- Switch to **"JSON view"**
+
+2. **Sample Cart Item JSON**
+
+```json
+{
+  "user_id": "123e4567-e89b-12d3-a456-426614174000",
+  "book_id": "book-9781234567890",
+  "quantity": 2,
+  "added_at": "2024-01-15T14:30:00Z",
+  "updated_at": "2024-01-15T14:30:00Z",
+  "book_title": "The DevOps Handbook",
+  "book_price": 29.99,
+  "book_image_url": "https://cloudshelf-images.s3.amazonaws.com/books/devops-handbook.jpg"
+}
+````
+
+3. **Verify Cart Operations**
+
+   - View created item in table
+   - Test query by `user_id` to get all cart items
+   - Test get item by `user_id` + `book_id`
+
+#### **🖥️ Test Session Table**
+
+1. **Add Sample Session**
+
+   - Go to `cloudshelf-sessions` table
    - Click **"Create item"** button
+   - Switch to **"JSON view"**
 
-3. **Add Sample Book Data**
-
-   **Book 1: The Great Gatsby**
-
-   ```
-   Attributes to add:
-   - category (String): "Fiction"
-   - book_id (String): "fic-001"
-   - title (String): "The Great Gatsby"
-   - author (String): "F. Scott Fitzgerald"
-   - isbn (String): "9780743273565"
-   - price (Number): 12.99
-   - stock_quantity (Number): 50
-   - description (String): "Classic American novel about the Jazz Age"
-   - image_url (String): "https://cloudshelf-images.s3.amazonaws.com/great-gatsby.jpg"
-   - created_at (String): "2025-09-05T10:00:00Z"
-   - updated_at (String): "2025-09-05T10:00:00Z"
-   ```
-
-   **Book 2: Clean Code**
-
-   ```
-   Attributes to add:
-   - category (String): "Technology"
-   - book_id (String): "tech-001"
-   - title (String): "Clean Code"
-   - author (String): "Robert C. Martin"
-   - isbn (String): "9780132350884"
-   - price (Number): 42.99
-   - stock_quantity (Number): 25
-   - description (String): "A handbook of agile software craftsmanship"
-   - image_url (String): "https://cloudshelf-images.s3.amazonaws.com/clean-code.jpg"
-   - created_at (String): "2025-09-05T10:00:00Z"
-   - updated_at (String): "2025-09-05T10:00:00Z"
-   ```
-
-   **Book 3: The Lean Startup**
-
-   ```
-   Attributes to add:
-   - category (String): "Business"
-   - book_id (String): "bus-001"
-   - title (String): "The Lean Startup"
-   - author (String): "Eric Ries"
-   - isbn (String): "9780307887894"
-   - price (Number): 26.99
-   - stock_quantity (Number): 30
-   - description (String): "How constant innovation creates successful businesses"
-   - image_url (String): "https://cloudshelf-images.s3.amazonaws.com/lean-startup.jpg"
-   - created_at (String): "2025-09-05T10:00:00Z"
-   - updated_at (String): "2025-09-05T10:00:00Z"
-   ```
-
-4. **Create Item Steps**
-
-   - For each book, click **"Create item"**
-   - Switch to **"JSON view"** for easier data entry
-   - Copy the JSON format below for each book
-   - Paste into the JSON editor and click **"Create item"** to save
-
-5. **JSON Format for Each Book**
-
-   **Book 1: The Great Gatsby (JSON format)**
-
-6. **JSON Format for Each Book**
-
-   **Book 1: The Great Gatsby (JSON format)**
+2. **Sample Session JSON**
 
    ```json
    {
-     "category": { "S": "Fiction" },
-     "book_id": { "S": "fic-001" },
-     "title": { "S": "The Great Gatsby" },
-     "author": { "S": "F. Scott Fitzgerald" },
-     "isbn": { "S": "9780743273565" },
-     "price": { "N": "12.99" },
-     "stock_quantity": { "N": "50" },
-     "description": { "S": "Classic American novel about the Jazz Age" },
-     "image_url": {
-       "S": "https://cloudshelf-images.s3.amazonaws.com/great-gatsby.jpg"
+     "session_id": "sess-20240115-143000-uuid",
+     "user_id": "123e4567-e89b-12d3-a456-426614174000",
+     "session_data": {
+       "preferences": {
+         "theme": "light",
+         "language": "en",
+         "currency": "USD"
+       },
+       "browsing_history": ["book-9781234567890", "book-9780987654321"],
+       "search_history": ["devops", "cloud architecture"]
      },
-     "created_at": { "S": "2025-09-05T10:00:00Z" },
-     "updated_at": { "S": "2025-09-05T10:00:00Z" }
+     "cart_summary": {
+       "item_count": 2,
+       "total_amount": 59.98,
+       "last_updated": "2024-01-15T14:35:00Z"
+     },
+     "last_activity": "2024-01-15T14:35:00Z",
+     "created_at": "2024-01-15T14:30:00Z",
+     "expires_at": 1705345800,
+     "ip_address": "192.168.1.100",
+     "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
    }
    ```
 
-   **Book 2: Clean Code (JSON format)**
+3. **Verify TTL Functionality**
 
-   ```json
-   {
-     "category": { "S": "Technology" },
-     "book_id": { "S": "tech-001" },
-     "title": { "S": "Clean Code" },
-     "author": { "S": "Robert C. Martin" },
-     "isbn": { "S": "9780132350884" },
-     "price": { "N": "42.99" },
-     "stock_quantity": { "N": "25" },
-     "description": { "S": "A handbook of agile software craftsmanship" },
-     "image_url": {
-       "S": "https://cloudshelf-images.s3.amazonaws.com/clean-code.jpg"
-     },
-     "created_at": { "S": "2025-09-05T10:00:00Z" },
-     "updated_at": { "S": "2025-09-05T10:00:00Z" }
-   }
-   ```
+   - Check that `expires_at` timestamp is 24 hours in future
+   - Verify TTL is enabled on table (shows TTL attribute)
+   - Test session retrieval by `session_id`
 
-   **Book 3: The Lean Startup (JSON format)**
-
-   ```json
-   {
-     "category": { "S": "Business" },
-     "book_id": { "S": "bus-001" },
-     "title": { "S": "The Lean Startup" },
-     "author": { "S": "Eric Ries" },
-     "isbn": { "S": "9780307887894" },
-     "price": { "N": "26.99" },
-     "stock_quantity": { "N": "30" },
-     "description": {
-       "S": "How constant innovation creates successful businesses"
-     },
-     "image_url": {
-       "S": "https://cloudshelf-images.s3.amazonaws.com/lean-startup.jpg"
-     },
-     "created_at": { "S": "2025-09-05T10:00:00Z" },
-     "updated_at": { "S": "2025-09-05T10:00:00Z" }
-   }
-   ```
-
-![DynamoDB Sample Data Population](../screenshots/dynamodb/dynamodb-sample-data-population.png)
-_Adding sample books to the books table using DynamoDB console_
+![DynamoDB Sample Data Testing](../screenshots/dynamodb/dynamodb-sample-data-testing.png)
+_Testing both cart and session tables with sample data_
 
 ---
 
 ### **Step 3: Validation and Testing**
 
-#### **Verify Table Creation**
+#### **✅ Verify Enhanced Phase 1 Setup**
 
-**Tables Checklist**:
+**DynamoDB Tables Checklist**:
 
-- ✅ `cloudshelf-books` with category/book_id keys and TitleSearchIndex
-- ✅ `cloudshelf-carts` with user_id/cart_id keys and TTL enabled
-- ✅ `cloudshelf-users` with user_id key and EmailIndex
-- ✅ `cloudshelf-orders` with user_id/order_id keys and OrderDateIndex
+- ✅ `cloudshelf-carts` with user_id/book_id composite key
+- ✅ `cloudshelf-sessions` with session_id key and TTL enabled
+- ✅ Both tables set to **On-demand** billing mode
+- ✅ Sample data added successfully to both tables
 
-#### **Test Data Operations**
+#### **🔧 Test Cart Operations**
 
 **Using DynamoDB Console**:
 
-1. **Query Books by Category**:
+1. **Query Cart by User**:
 
-   - Go to `cloudshelf-books` table → **"Explore table items"**
-   - Use **"Query"** option with condition: `category = Technology`
-   - Verify you see the "Clean Code" book
+   - Go to `cloudshelf-carts` table → **"Explore table items"**
+   - Use **"Query"** option
+   - Set condition: `user_id = 123e4567-e89b-12d3-a456-426614174000`
+   - Verify you see all cart items for that user
 
-2. **Search by Title**:
+2. **Get Specific Cart Item**:
 
-   - Use the **"TitleSearchIndex"** Global Secondary Index
-   - Query with condition: `title = Clean Code`
-   - Verify the book appears in results
+   - Use **"Get item"** option
+   - Provide both keys:
+     - `user_id`: `123e4567-e89b-12d3-a456-426614174000`
+     - `book_id`: `book-9781234567890`
+   - Verify you get the specific cart item
+
+#### **🖥️ Test Session Operations**
+
+1. **Get Session by ID**:
+
+   - Go to `cloudshelf-sessions` table → **"Explore table items"**
+   - Use **"Get item"** option
+   - Provide key: `session_id = sess-20240115-143000-uuid`
+   - Verify you get complete session data
+
+2. **Verify TTL Configuration**:
+
+   - Check **"Additional settings"** tab → **"Time to Live"**
+   - Verify TTL is **Enabled** with attribute `expires_at`
+   - Confirm sample session has future expiration timestamp
+
+#### **🔗 Integration with PostgreSQL**
+
+**Verify Hybrid Architecture**:
+
+1. **Check RDS Connection**:
+
+   - Ensure [PostgreSQL RDS setup](../rds/cloudshelf-rds-default-vpc-setup.md) is complete
+   - Verify `books`, `users`, and `orders` tables exist in PostgreSQL
+   - Test basic SELECT queries on PostgreSQL tables
+
+2. **Data Consistency**:
+
+   - Cart items reference `book_id` values that exist in PostgreSQL `books` table
+   - Session `user_id` values should match PostgreSQL `users` table
+   - No duplicate data between DynamoDB and PostgreSQL
+
+![Enhanced Phase 1 Validation](../screenshots/dynamodb/enhanced-phase1-validation.png)
+_Verifying both DynamoDB and PostgreSQL are working in hybrid architecture_
+
+---
+
+## 🎯 Next Steps
+
+### **Immediate Next Steps**
+
+1. **📋 Complete Lambda Setup**:
+
+   - Follow [Enhanced Phase 1 Lambda guide](../lambda/cloudshelf-basic-lambda-setup.md)
+   - Configure cart functions (DynamoDB, no VPC)
+   - Configure book catalog functions (PostgreSQL, VPC required)
+
+2. **🌐 Connect API Gateway**:
+
+   - Complete [API Gateway setup](../apigateway/cloudshelf-apigateway-setup.md)
+   - Test cart endpoints with DynamoDB
+   - Test book catalog endpoints with PostgreSQL
+
+3. **🔒 Configure Security**:
+
+   - Set up IAM roles for hybrid database access
+   - Configure security groups for VPC Lambda functions
+   - Test end-to-end authentication flow
+
+### **Learning Path Progression**
+
+**Enhanced Phase 1 Achievement** 🎉:
+
+- ✅ Hybrid database architecture (PostgreSQL + DynamoDB)
+- ✅ Default VPC introduction without complexity
+- ✅ Industry-standard data patterns
+- ✅ Realistic cost expectations ($15-25/month)
+
+**Phase 2 Preview**:
+
+- Custom VPC with private/public subnets
+- Advanced DynamoDB patterns (GSI, streams)
+- Multi-environment deployment
+- Enhanced monitoring and logging
+
+---
+
+## 📚 Additional Resources
+
+### **Enhanced Phase 1 Documentation**
+
+- 📋 [Enhanced Phase 1 Plan](../../ENHANCED-PHASE1-PLAN.md) - Complete architecture strategy
+- 🏗️ [ADR-004](../cloudshelf-adr-004-enhanced-phase1-hybrid-architecture.md) - Architectural decision record
+- 🗃️ [PostgreSQL RDS Setup](../rds/cloudshelf-rds-default-vpc-setup.md) - Relational database setup
+- ⚡ [Lambda VPC Guide](../lambda/cloudshelf-basic-lambda-setup.md) - Hybrid function deployment
+
+### **DynamoDB Learning Resources**
+
+- 📖 [AWS DynamoDB Best Practices](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/best-practices.html)
+- 🎯 [DynamoDB Partition Key Design](https://aws.amazon.com/blogs/database/choosing-the-right-dynamodb-partition-key/)
+- ⏰ [TTL Implementation Guide](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/TTL.html)
+- 🔧 [NoSQL vs SQL Decision Guide](https://aws.amazon.com/nosql/)
+
+---
+
+**🎉 Enhanced Phase 1 DynamoDB Setup Complete!**
+
+Your CloudShelf application now has high-performance cart and session management with DynamoDB, while leveraging PostgreSQL for complex relational data. This hybrid approach provides the best of both database worlds and prepares you for advanced cloud architecture patterns.
+
+Next: [Configure Lambda Functions for Hybrid Database Access](../lambda/cloudshelf-basic-lambda-setup.md)
 
 3. **Browse All Tables**:
    - Verify each table shows the correct structure

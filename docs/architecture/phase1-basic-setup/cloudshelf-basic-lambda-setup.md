@@ -1,33 +1,33 @@
-# ⚡ CloudShelf Basic Lambda Setup (Phase 1)
+# ⚡ CloudShelf Enhanced Lambda Setup (Phase 1)
 
-**What You Get**:
+> Hybrid serverless architecture with VPC integration for realistic learning progression
 
-- 🛒 **Shopping Cart Service** - Template for cart operations with DynamoDB
-- 📚 **Book Catalog Service** - Template for book queries (PostgreSQL integration)
-- 🌐 **REST endpoints** - API Gateway integration ready
-- 📊 **Automatic logging** - CloudWatch monitoringSetup (Phase 1)
-
-> Simple Lambda function setup for serverless CloudShelf deployment
-
-This guide provides Phase 1 Lambda function setup focused on basic DynamoDB integration for learning serverless architecture fundamentals.
+This guide implements Enhanced Phase 1 Lambda functions with hybrid database architecture, introducing VPC networking concepts while maintaining learning simplicity through AWS defaults.
 
 ---
 
-## 🎯 Phase 1 Lambda Overview
+## 🎯 Enhanced Phase 1 Lambda Strategy
 
-### **🚀 Why Basic Lambda First?**
+### **🚀 Why Hybrid Database Architecture?**
 
-> **📋 Architectural Decision**: This phased Lambda approach focuses on core serverless concepts before production complexity
+> **📋 Architectural Decision**: Enhanced Phase 1 bridges the gap between pure serverless and production-ready architecture
 
-**Phase 1 Learning Benefits**:
+**Enhanced Learning Benefits**:
 
-- ✅ **Serverless fundamentals** - Focus on Lambda concepts without VPC complexity
-- ✅ **DynamoDB integration** - Simple NoSQL operations for shopping cart
-- ✅ **API Gateway triggers** - RESTful API basics
-- ✅ **CloudWatch logging** - Built-in monitoring and debugging
-- ✅ **Foundation building** - Core skills for Phase 2 production features
+- ✅ **Realistic data patterns** - SQL for complex queries, NoSQL for high performance
+- ✅ **VPC networking basics** - Default VPC without custom complexity
+- ✅ **Security group concepts** - Database access control fundamentals
+- ✅ **Existing code compatibility** - Book catalog works without modification
+- ✅ **Smoother progression** - Gradual introduction to production concepts
 
 **What You Get**:
+
+- 🛒 **Shopping Cart Service** - High-performance DynamoDB operations
+- 📚 **Book Catalog Service** - PostgreSQL RDS for complex queries
+- 👤 **User Management Service** - Relational user profiles and relationships
+- 📦 **Order Processing Service** - ACID transactions for order management
+- 🌐 **REST endpoints** - API Gateway integration ready
+- 📊 **Comprehensive logging** - CloudWatch monitoring and debugging
 
 - 🛒 **Shopping Cart Service** - Template for cart operations with DynamoDB
 - � **Book Catalog Service** - Template for book queries (PostgreSQL integration)
@@ -36,15 +36,18 @@ This guide provides Phase 1 Lambda function setup focused on basic DynamoDB inte
 
 ---
 
-## 🏛️ Basic Lambda Architecture
+## 🏛️ Enhanced Phase 1 Lambda Architecture
 
-### **🔒 Phase 1 Serverless Model**
+### **🔒 Hybrid Serverless Model**
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────────┐
-│                      CloudShelf Phase 1 Lambda Architecture                    │
+│                    CloudShelf Enhanced Phase 1 Architecture                    │
 ├─────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                 │
+│  📱 Web/Mobile Clients                                                         │
+│       │                                                                         │
+│       ▼                                                                         │
 │  ┌─────────────────────────────────────────────────────────────────────────┐   │
 │  │                      🌐 API Gateway                                     │   │
 │  │                    (REST API Endpoints)                                │   │
@@ -52,29 +55,60 @@ This guide provides Phase 1 Lambda function setup focused on basic DynamoDB inte
 │       │                                                                         │
 │       ▼                                                                         │
 │  ┌─────────────────────────────────────────────────────────────────────────┐   │
-│  │                      ⚡ Lambda Functions                                │   │
-│  │                   (Shopping Cart Logic)                                │   │
+│  │                  📍 Default VPC (AWS Managed)                          │   │
+│  │  ┌─────────────────────────────────────────────────────────────────┐   │   │
+│  │  │             ⚡ VPC-Connected Lambda Functions                   │   │   │
+│  │  │  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐            │   │   │
+│  │  │  │Book Catalog │  │User Mgmt    │  │Order Process│            │   │   │
+│  │  │  │   (RDS)     │  │   (RDS)     │  │   (RDS)     │            │   │   │
+│  │  │  └─────────────┘  └─────────────┘  └─────────────┘            │   │   │
+│  │  └─────────────────────────────────────────────────────────────────┘   │   │
+│  │       │                                                                 │   │
+│  │       ▼                                                                 │   │
+│  │  ┌─────────────┐                                                       │   │
+│  │  │🗃️ PostgreSQL │                                                       │   │
+│  │  │    RDS      │                                                       │   │
+│  │  │(Private Sub)│                                                       │   │
+│  │  └─────────────┘                                                       │   │
 │  └─────────────────────────────────────────────────────────────────────────┘   │
 │       │                                                                         │
 │       ▼                                                                         │
 │  ┌─────────────────────────────────────────────────────────────────────────┐   │
-│  │                      🗂️ DynamoDB Table                                 │   │
-│  │                    (Shopping Cart Data)                                │   │
+│  │              ⚡ Non-VPC Lambda + DynamoDB                               │   │
+│  │  ┌─────────────┐                    ┌─────────────┐                    │   │
+│  │  │Shopping Cart│                    │🗂️ DynamoDB  │                    │   │
+│  │  │  Service    │ ────────────────── │   Tables    │                    │   │
+│  │  │(High Perf)  │                    │(Carts/Sess)│                    │   │
+│  │  └─────────────┘                    └─────────────┘                    │   │
 │  └─────────────────────────────────────────────────────────────────────────┘   │
 │                                                                                 │
 └─────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-### **⚡ Essential Functions**
+### **⚡ Enhanced Function Architecture**
 
-| Function             | Purpose                 | DynamoDB Table      | Source Location              | Status                    |
-| -------------------- | ----------------------- | ------------------- | ---------------------------- | ------------------------- |
-| **Shopping Cart**    | Cart operations         | `cloudshelf-carts`  | `/src/lambda/shopping-cart/` | ✅ Available              |
-| **Book Catalog**     | Book queries (DynamoDB) | `cloudshelf-books`  | `/src/lambda/book-catalog/`  | ⚠️ Needs DynamoDB adapter |
-| **User Management**  | User operations         | `cloudshelf-users`  | _To be created_              | ❌ Missing                |
-| **Order Processing** | Order operations        | `cloudshelf-orders` | _To be created_              | ❌ Missing                |
+| Function             | Database       | VPC Required | Source Location              | Status                |
+| -------------------- | -------------- | ------------ | ---------------------------- | --------------------- |
+| **Shopping Cart**    | DynamoDB       | ❌ No        | `/src/lambda/shopping-cart/` | ✅ Available          |
+| **Book Catalog**     | PostgreSQL RDS | ✅ Yes       | `/src/lambda/book-catalog/`  | ✅ Ready (no changes) |
+| **User Management**  | PostgreSQL RDS | ✅ Yes       | _To be created_              | 🔧 Development needed |
+| **Order Processing** | PostgreSQL RDS | ✅ Yes       | _To be created_              | 🔧 Development needed |
 
-> **📋 Note**: Book Catalog currently uses PostgreSQL. For Phase 1, it needs DynamoDB adapter or will be delayed to Phase 2
+### **�️ Database Strategy**
+
+```yaml
+PostgreSQL RDS (Default VPC):
+  Tables: books, users, orders, order_items
+  Use Cases: Complex queries, transactions, relational data
+  Lambda Access: VPC-connected functions only
+
+DynamoDB (Managed):
+  Tables: cloudshelf-carts, cloudshelf-sessions
+  Use Cases: High-performance key-value operations
+  Lambda Access: Internet gateway (no VPC needed)
+```
+
+> **📋 Enhanced Benefits**: Existing book catalog code works without modification, realistic database patterns, VPC networking introduction
 
 ---
 
@@ -119,20 +153,34 @@ Based on the DynamoDB tables created, we need additional Lambda functions:
 
 ## �🚀 Implementation Steps
 
-### **Step 1: Verify Prerequisites**
+## 🚀 Implementation Steps
 
-Ensure you have completed the previous setup guides:
+### **Step 1: Verify Enhanced Phase 1 Prerequisites**
 
-- ✅ **DynamoDB Tables**: All 4 tables created ([DynamoDB Setup Guide](cloudshelf-dynamodb-setup.md))
-- ✅ **IAM Role**: `CloudShelf-Lambda-ExecutionRole-Phase1` ([IAM Setup Guide](cloudshelf-basic-iam-setup.md))
+Ensure you have completed the Enhanced Phase 1 setup guides:
 
-### **Step 2: Create Shopping Cart Lambda Function**
+- ✅ **PostgreSQL RDS**: Database instance in default VPC ([RDS Setup Guide](cloudshelf-rds-default-vpc-setup.md))
+- ✅ **DynamoDB Tables**: Shopping cart tables created ([DynamoDB Setup Guide](cloudshelf-dynamodb-setup.md))
+- ✅ **Security Groups**: VPC access configured for Lambda-RDS communication
+- ✅ **Enhanced IAM Role**: VPC permissions added ([Enhanced IAM Setup Guide](cloudshelf-enhanced-iam-setup.md))
+
+### **Database Connection Prerequisites**:
+
+```yaml
+Required Environment:
+  - PostgreSQL RDS running in default VPC
+  - Security groups configured for Lambda access
+  - Database schema with books, users, orders tables
+  - DynamoDB tables for cart operations
+```
+
+### **Step 2: Deploy Shopping Cart Lambda Function (DynamoDB)**
 
 1. **🖥️ Access Lambda Console**
 
 Navigate to: `AWS Console → Lambda → Functions → Create Function`
 
-2. **🎯 Configure Function Basics**
+2. **🎯 Configure Shopping Cart Function**
 
 ```yaml
 Function Name: CloudShelf-ShoppingCart-Phase1
@@ -140,9 +188,54 @@ Runtime: Java 21
 Architecture: x86_64
 Execution Role: Use existing role → CloudShelf-Lambda-ExecutionRole-Phase1
 Handler: com.cloudshelf.shoppingcart.ShoppingCartHandler::handleRequest
+
+VPC Configuration: None (DynamoDB accessed via internet)
 ```
 
 ![Lambda Function Creation](../screenshots/lambda/Lambda-Function-Creation-Step1.png)
+
+---
+
+### **Step 3: Deploy Book Catalog Lambda Function (VPC + RDS)**
+
+1. **📚 Create Book Catalog Function**
+
+```yaml
+Function Name: CloudShelf-BookCatalog-Phase1
+Runtime: Java 21
+Architecture: x86_64
+Execution Role: Use existing role → CloudShelf-Lambda-ExecutionRole-Phase1
+Handler: com.cloudshelf.bookcatalog.BookCatalogHandler::handleRequest
+
+VPC Configuration:
+  VPC: Default VPC
+  Subnets: Default private subnets (2+ AZs)
+  Security Groups: cloudshelf-lambda-sg-phase1
+```
+
+2. **🌐 Configure VPC Settings**
+
+In the Lambda console:
+
+- Navigate to **Configuration → VPC**
+- Select **Default VPC**
+- Choose **private subnets** in multiple AZs
+- Attach **cloudshelf-lambda-sg-phase1** security group
+
+![Lambda VPC Configuration](../screenshots/lambda/Lambda-VPC-Configuration-Step2.png)
+
+3. **🔧 Configure Environment Variables**
+
+```yaml
+Environment Variables:
+  DB_HOST: your-rds-endpoint.region.rds.amazonaws.com
+  DB_PORT: 5432
+  DB_NAME: cloudshelf
+  DB_USER: cloudshelf_admin
+  DB_PASSWORD_SECRET: arn:aws:secretsmanager:region:account:secret:cloudshelf-db-credentials
+```
+
+![Lambda Environment Variables](../screenshots/lambda/Lambda-Environment-Variables-Step3.png)
 
 3. **📝 Build and Deploy Lambda Code**
 
