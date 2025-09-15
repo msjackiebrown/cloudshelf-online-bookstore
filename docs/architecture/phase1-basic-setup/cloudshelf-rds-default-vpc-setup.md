@@ -249,13 +249,31 @@ Create the PostgreSQL database instance for CloudShelf.
    Deletion Protection: Disabled (for learning environment)
    ```
 
+**RDS Database Creation Screenshots:**
+
+_Step 1: Start Database Creation_
 ![RDS Database Creation - Step 1](../screenshots/rds/RDS-Database-Creation-Step1.png)
-![RDS Engine Selection - Step 2](../screenshots/rds/RDS-Engine-Selection-Step2.png)
-![RDS Instance Configuration - Step 3](../screenshots/rds/RDS-Instance-Configuration-Step3.png)
-![RDS Connectivity Settings - Step 4](../screenshots/rds/RDS-Connectivity-Settings-Step4.png)
-![RDS Database Options](../screenshots/rds/RDS Database Options.png)
-![RDS Final Review - Step 5](../screenshots/rds/RDS-Final-Review-Step5.png)
-![RDS Instance Creation](../screenshots/rds/RDS-Instance-Creation-Step5.png)
+
+_Step 2: Database Engine Selection_
+![RDS Database Creation - Step 2](../screenshots/rds/RDS-Database-Creation-Step2.png)
+
+_Step 3: Templates and Settings_
+![RDS Database Creation - Step 3](../screenshots/rds/RDS-Database-Creation-Step3.png)
+
+_Step 4: Instance Configuration_
+![RDS Database Creation - Step 4](../screenshots/rds/RDS-Database-Creation-Step4.png)
+
+_Step 5: Storage Settings_
+![RDS Database Creation - Step 5](../screenshots/rds/RDS-Database-Creation-Step5.png)
+
+_Step 6: Connectivity_
+![RDS Database Creation - Step 6](../screenshots/rds/RDS-Database-Creation-Step6.png)
+
+_Step 7: Additional Configuration_
+![RDS Database Creation - Step 7](../screenshots/rds/RDS-Database-Creation-Step7.png)
+
+_Step 8: Review and Launch_
+![RDS Database Creation - Step 8](../screenshots/rds/RDS-Database-Creation-Step8.png)
 
 ---
 
