@@ -198,7 +198,7 @@ Create the PostgreSQL database instance for CloudShelf.
 2. **⚙️ Configure Database Settings**
 
    ```yaml
-   Engine Version: PostgreSQL 15.x (latest)
+   Engine Version: PostgreSQL 17.x (latest)
    Templates: Free tier (for learning)
 
    Settings:
@@ -207,7 +207,7 @@ Create the PostgreSQL database instance for CloudShelf.
      Master Password: [Generate secure password]
 
    Instance Configuration:
-     DB Instance Class: db.t3.micro (free tier eligible)
+   DB Instance Class: db.t4g.micro (free tier eligible)
      Storage Type: General Purpose SSD (gp2)
      Allocated Storage: 20 GB (free tier)
      Storage Autoscaling: Disabled (keep simple)
@@ -230,9 +230,9 @@ Create the PostgreSQL database instance for CloudShelf.
 
    ```yaml
    Database Options:
-     Initial Database Name: cloudshelf
-     DB Parameter Group: default.postgres15
-     Option Group: default:postgres-15
+   Initial Database Name: cloudshelf
+   DB Parameter Group: default.postgres17
+   Option Group: default:postgres-17
 
    Backup:
      Backup Retention: 7 days (learning appropriate)
@@ -265,13 +265,13 @@ Set up the CloudShelf database schema and sample data.
    psql -h your-rds-endpoint.region.rds.amazonaws.com -U cloudshelf_admin -d cloudshelf
    ```
 
-   **Using AWS Cloud9 or EC2 instance**:
+   **Using AWS CloudShell**:
 
    ```bash
-   # Install PostgreSQL client
-   sudo yum install postgresql15 -y  # Amazon Linux
+   # Install PostgreSQL 17 client (if not already available)
+   sudo yum install postgresql17 -y  # Amazon Linux (CloudShell default)
    # or
-   sudo apt-get install postgresql-client -y  # Ubuntu
+   sudo apt-get install postgresql-client-17 -y  # Ubuntu (if applicable)
 
    # Connect to database
    psql -h your-rds-endpoint -U cloudshelf_admin -d cloudshelf
@@ -279,64 +279,71 @@ Set up the CloudShelf database schema and sample data.
 
 2. **📋 Create Database Schema**
 
+   > **PostgreSQL 17 Note:**
+   > To use `gen_random_uuid()` for UUID primary keys, you must enable the `pgcrypto` extension in your database. Run this command first (one time only):
+   >
+   > ```sql
+   > CREATE EXTENSION IF NOT EXISTS pgcrypto;
+   > ```
+
    ```sql
    -- Books table for catalog management
    CREATE TABLE books (
-       id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-       title VARCHAR(255) NOT NULL,
-       author VARCHAR(255) NOT NULL,
-       isbn VARCHAR(13) UNIQUE,
-       price DECIMAL(10,2) NOT NULL,
-       category VARCHAR(100),
-       description TEXT,
-       image_url VARCHAR(500),
-       stock_quantity INTEGER DEFAULT 0,
-       featured BOOLEAN DEFAULT false,
-       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-       updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+      title VARCHAR(255) NOT NULL,
+      author VARCHAR(255) NOT NULL,
+      isbn VARCHAR(13) UNIQUE,
+      price DECIMAL(10,2) NOT NULL,
+      category VARCHAR(100),
+      description TEXT,
+      image_url VARCHAR(500),
+      stock_quantity INTEGER DEFAULT 0,
+      featured BOOLEAN DEFAULT false,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
    );
 
    -- Users table for customer management
    CREATE TABLE users (
-       id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-       email VARCHAR(255) UNIQUE NOT NULL,
-       first_name VARCHAR(100),
-       last_name VARCHAR(100),
-       phone VARCHAR(20),
-       address_line1 VARCHAR(255),
-       address_line2 VARCHAR(255),
-       city VARCHAR(100),
-       state VARCHAR(50),
-       postal_code VARCHAR(20),
-       country VARCHAR(50) DEFAULT 'US',
-       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-       updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+      email VARCHAR(255) UNIQUE NOT NULL,
+      first_name VARCHAR(100),
+      last_name VARCHAR(100),
+      phone VARCHAR(20),
+      address_line1 VARCHAR(255),
+      address_line2 VARCHAR(255),
+      city VARCHAR(100),
+      state VARCHAR(50),
+      postal_code VARCHAR(20),
+      country VARCHAR(50) DEFAULT 'US',
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
    );
 
    -- Orders table for purchase management
    CREATE TABLE orders (
-       id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-       user_id UUID REFERENCES users(id) ON DELETE CASCADE,
-       order_number VARCHAR(50) UNIQUE NOT NULL,
-       total_amount DECIMAL(10,2) NOT NULL,
-       tax_amount DECIMAL(10,2) DEFAULT 0.00,
-       shipping_amount DECIMAL(10,2) DEFAULT 0.00,
-       status VARCHAR(50) DEFAULT 'pending',
-       payment_status VARCHAR(50) DEFAULT 'pending',
-       shipping_address TEXT,
-       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-       updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+      user_id UUID REFERENCES users(id) ON DELETE CASCADE,
+      order_number VARCHAR(50) UNIQUE NOT NULL,
+      total_amount DECIMAL(10,2) NOT NULL,
+      tax_amount DECIMAL(10,2) DEFAULT 0.00,
+      shipping_amount DECIMAL(10,2) DEFAULT 0.00,
+      status VARCHAR(50) DEFAULT 'pending',
+      payment_status VARCHAR(50) DEFAULT 'pending',
+      shipping_address TEXT,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
    );
 
    -- Order items table for order details
    CREATE TABLE order_items (
-       id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-       order_id UUID REFERENCES orders(id) ON DELETE CASCADE,
-       book_id UUID REFERENCES books(id) ON DELETE RESTRICT,
-       quantity INTEGER NOT NULL CHECK (quantity > 0),
-       unit_price DECIMAL(10,2) NOT NULL,
-       total_price DECIMAL(10,2) NOT NULL,
-       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+      order_id UUID REFERENCES orders(id) ON DELETE CASCADE,
+      book_id UUID REFERENCES books(id) ON DELETE RESTRICT,
+      quantity INTEGER NOT NULL CHECK (quantity > 0),
+      unit_price DECIMAL(10,2) NOT NULL,
+      total_price DECIMAL(10,2) NOT NULL,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
    );
 
    -- Create indexes for better performance
