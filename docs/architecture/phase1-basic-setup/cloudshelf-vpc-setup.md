@@ -87,6 +87,7 @@ _Security group creation and rule configuration_
 ## 📋 Next Steps
 
 - Deploy RDS in private subnet
+- Create jump host in public subnet ([Jump Host Setup Guide](cloudshelf-jump-host-setup.md))
 - Configure Lambda with VPC access
 - Complete IAM and security setup
 
