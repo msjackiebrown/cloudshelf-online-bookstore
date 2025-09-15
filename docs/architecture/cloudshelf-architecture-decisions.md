@@ -1,6 +1,32 @@
+---
 # Architecture Decision Records (ADRs)
 
 This document captures key architecture decisions made for the CloudShelf Online Bookstore project. Each decision includes context, options considered, rationale, and consequences.
+---
+
+## ADR-001: Use Custom VPC from Phase 1
+
+**Status:** Accepted  
+**Date:** 2025-09-15
+
+### Context
+
+While AWS provides a default VPC for quick starts and learning, AWS best practices recommend using a custom VPC for all production-grade workloads. A custom VPC provides full control over networking, security, subnetting, and future scalability. Starting with a custom VPC from the beginning avoids costly migrations and aligns the project with real-world architectures.
+
+### Decision
+
+- The CloudShelf project will use a custom VPC from Phase 1, rather than the AWS default VPC.
+- The custom VPC will be designed to be minimal and cost-effective (e.g., 2 public and 2 private subnets, single NAT gateway or none for dev, smallest CIDR blocks that meet requirements).
+- All core services (RDS, Lambda, EC2 jump host, etc.) will be deployed into this custom VPC.
+- Security groups and NACLs will be configured according to least-privilege and separation-of-concerns principles.
+- Documentation and guides will be updated to reflect this approach.
+
+### Consequences
+
+- Aligns the project with AWS Well-Architected Framework from the start.
+- Reduces future migration effort and risk.
+- Slightly increases initial setup complexity, but improves learning and portfolio value.
+- Keeps costs low by using minimal subnets, free tier resources, and careful NAT/public IP usage.
 
 ---
 

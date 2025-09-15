@@ -1,64 +1,25 @@
----
-
-### **Step 2.5: Automate Jump Host Setup with EC2 UserData**
-
-As a Solutions Architect, you should use EC2 UserData to automate the initial configuration of your jump host. This ensures consistency, security, and reduces manual effort.
-
-**Sample UserData Script (Amazon Linux 2):**
-
-```bash
-#!/bin/bash
-# Update system and install PostgreSQL 17 client
-yum update -y
-amazon-linux-extras install epel -y
-yum install -y postgresql17
-
-# (Optional) Install AWS SSM Agent for Session Manager (usually preinstalled)
-yum install -y amazon-ssm-agent
-systemctl enable amazon-ssm-agent
-systemctl start amazon-ssm-agent
-
-# (Optional) Harden SSH: disable root login, allow only ec2-user
-sed -i 's/^PermitRootLogin.*/PermitRootLogin no/' /etc/ssh/sshd_config
-systemctl restart sshd
-
-# (Optional) Install CloudWatch Agent for logging
-# yum install -y amazon-cloudwatch-agent
-# ...configure as needed...
-
-echo "Jump host bootstrap complete." > /etc/motd
-```
-
-**How to use:**
-- Paste this script into the "User data" field when launching your EC2 instance (Step 2 above).
-- Adjust as needed for your OS, security, and monitoring requirements.
-
-**Benefits:**
-- Ensures every jump host is identically and securely configured
-- Supports infrastructure-as-code and automation best practices
-- Reduces manual setup errors and improves auditability
-
----
-
 # 🗃️ CloudShelf RDS PostgreSQL Setup (Phase 1)
 
-> PostgreSQL database setup using default VPC for realistic serverless learning
+> **Note:**
+> This guide requires a custom VPC. The AWS default VPC is not supported. Please complete the [Custom VPC Setup Guide](cloudshelf-vpc-setup.md) before proceeding.
 
-This guide implements the database component of Phase 1, providing relational database capabilities while maintaining simplicity through AWS default VPC configuration.
+> PostgreSQL database setup using a custom VPC for production-aligned, secure, and cost-optimized learning
+
+This guide implements the database component of Phase 1, providing relational database capabilities in a custom VPC that follows AWS best practices for security, isolation, and future scalability.
 
 ---
 
 ## 🎯 Phase 1 Database Strategy
 
-### **🏗️ Why PostgreSQL in Default VPC?**
+### **🏗️ Why PostgreSQL in a Custom VPC?**
 
 **Learning Benefits**:
 
-- ✅ **Real relational database** experience with SQL
-- ✅ **VPC networking basics** without custom configuration complexity
-- ✅ **Security group concepts** for database access control
-- ✅ **Existing Lambda code compatibility** (no DynamoDB conversion needed)
-- ✅ **Smooth progression** to Phase 2 custom VPC
+- ✅ **Production-aligned VPC networking**: Learn real AWS networking, subnetting, and security group design
+- ✅ **Security best practices**: Databases and Lambdas are isolated in private subnets
+- ✅ **No public database access**: RDS is only accessible from allowed resources (Lambda, jump host)
+- ✅ **Hands-on with custom VPC setup**: Build skills for real-world AWS deployments
+- ✅ **Cost-optimized**: Minimal subnets, no NAT Gateway for dev, free tier resources where possible
 
 **Database Allocation**:
 
@@ -72,26 +33,26 @@ This guide implements the database component of Phase 1, providing relational da
 
 ---
 
-## 🏛️ Default VPC Architecture
+## 🏛️ Custom VPC Architecture
 
 ### **🌐 Network Design**
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────────┐
-│                        Default VPC (AWS Managed)                               │
+│                        Custom VPC (CloudShelf)                                 │
 ├─────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                 │
 │  🌍 Internet Gateway (Auto-configured)                                         │
 │       │                                                                         │
 │       ▼                                                                         │
 │  ┌─────────────────────────────────────────────────────────────────────────┐   │
-│  │                     Public Subnets                                     │   │
+│  │                     Public Subnet                                      │   │
 │  │              (Auto-assigned in each AZ)                                │   │
 │  └─────────────────────────────────────────────────────────────────────────┘   │
 │       │                                                                         │
 │       ▼                                                                         │
 │  ┌─────────────────────────────────────────────────────────────────────────┐   │
-│  │                    Private Subnets                                     │   │
+│  │                    Private Subnet                                      │   │
 │  │  ┌─────────────────────────────────────────────────────────────────┐   │   │
 │  │  │                 🗃️ RDS PostgreSQL                              │   │   │
 │  │  │              (Multi-AZ Capable)                                │   │   │
@@ -105,7 +66,7 @@ This guide implements the database component of Phase 1, providing relational da
 │       │                                                                         │
 │  ┌─────────────────────────────────────────────────────────────────────────┐   │
 │  │                  ⚡ Lambda Functions                                    │   │
-│  │              (VPC-connected for RDS access)                             │   │
+│  │              (Custom VPC: RDS and Lambda in private subnet)             │   │
 │  └─────────────────────────────────────────────────────────────────────────┘   │
 │                                                                                 │
 └─────────────────────────────────────────────────────────────────────────────────┘
@@ -115,46 +76,39 @@ This guide implements the database component of Phase 1, providing relational da
 
 ## 🚀 Implementation Guide
 
-### **Step 1: Verify Default VPC**
+### **Step 1: Verify or Create Custom VPC**
 
-Ensure your AWS account has a default VPC (most regions have this automatically).
+Ensure you have created a custom VPC for CloudShelf (see the VPC setup guide). This VPC should have:
 
-1. **🖥️ Open VPC Console**
+- At least one public subnet (for jump host, if needed)
+- At least one private subnet (for RDS and Lambda)
+- An Internet Gateway attached
+- Proper route tables for public and private subnets
+- Security groups for RDS and Lambda (created empty, then configured)
 
-   - Navigate to: `AWS Console → VPC → Your VPCs`
-   - Look for VPC marked as `Default: Yes`
+Refer to: [Custom VPC Setup Guide](cloudshelf-vpc-setup.md)
 
-2. **✅ Verify Default VPC Components**
-   ```
-   Default VPC should have:
-   ✅ Internet Gateway attached
-   ✅ Public subnets in each AZ
-   ✅ Private subnets in each AZ (for RDS)
-   ✅ Default security group
-   ✅ Route tables configured
-   ```
-
-![Default VPC Verification](../screenshots/rds/Default-VPC-Verification-Step1.png)
+_Skip this step if your custom VPC is already set up._
 
 ---
 
-### **Step 2: Create RDS Security Group**
+### **Step 2: Create RDS Security Group (Custom VPC)**
 
-Create a dedicated security group for PostgreSQL database access.
+Create a dedicated security group for PostgreSQL database access in your custom VPC.
 
 1. **🔒 Create RDS Security Group**
 
    - Navigate to: `EC2 Console → Security Groups → Create Security Group`
-   - **Name**: `cloudshelf-rds-sg-phase1`
-   - **Description**: `CloudShelf RDS PostgreSQL access for Phase 1`
-   - **VPC**: Select your default VPC
+   - **Name**: `cloudshelf-rds-sg`
+   - **Description**: `CloudShelf RDS PostgreSQL access (custom VPC)`
+   - **VPC**: Select your custom VPC (e.g., `cloudshelf-vpc`)
 
 2. **📝 Configure Inbound Rules**
 
    ```yaml
    Inbound Rules:
      - Type: PostgreSQL (5432)
-       Source: Custom (will set to Lambda SG later)
+       Source: cloudshelf-lambda-sg (Lambda SG)
        Description: Lambda function access to PostgreSQL
    ```
 
@@ -170,57 +124,56 @@ Create a dedicated security group for PostgreSQL database access.
 
 ---
 
-### **Step 3: Create Lambda Security Group**
+### **Step 3: Create Lambda Security Group (Custom VPC)**
 
-Create security group for Lambda functions that need database access.
+Create a security group for Lambda functions that need database access in your custom VPC.
 
 1. **⚡ Create Lambda Security Group**
 
-   - **Name**: `cloudshelf-lambda-sg-phase1`
-   - **Description**: `CloudShelf Lambda functions for Phase 1`
-   - **VPC**: Default VPC
+   - **Name**: `cloudshelf-lambda-sg`
+   - **Description**: `CloudShelf Lambda functions (custom VPC)`
+   - **VPC**: Select your custom VPC (e.g., `cloudshelf-vpc`)
 
 2. **📝 Configure Lambda Security Group**
 
    ```yaml
    Inbound Rules:
-     - None needed (Lambda doesn't receive direct connections)
+      - None needed (Lambda doesn't receive direct connections)
 
    Outbound Rules:
-     - Type: PostgreSQL (5432)
-       Destination: cloudshelf-rds-sg-phase1
-       Description: Access to CloudShelf PostgreSQL database
-     - Type: HTTPS (443)
-       Destination: 0.0.0.0/0
-       Description: Internet access for DynamoDB, API calls
+      - Type: PostgreSQL (5432)
+         Destination: cloudshelf-rds-sg
+         Description: Access to CloudShelf PostgreSQL database
+      - Type: HTTPS (443)
+         Destination: 0.0.0.0/0
+         Description: Internet access for DynamoDB, API calls
    ```
 
 3. **🔗 Update RDS Security Group**
-   - Go back to `cloudshelf-rds-sg-phase1`
+   - Go back to `cloudshelf-rds-sg`
    - Edit inbound rules
-   - Set PostgreSQL rule source to `cloudshelf-lambda-sg-phase1`
+   - Set PostgreSQL rule source to `cloudshelf-lambda-sg`
 
 ![Lambda Security Group Creation](../screenshots/rds/Lambda-Security-Group-Creation-Step3.png)
 
 ---
 
-### **Step 4: Create RDS Subnet Group**
+### **Step 4: Create RDS Subnet Group (Custom VPC)**
 
-Configure subnet group for RDS placement in default VPC.
+Configure a subnet group for RDS placement in your custom VPC.
 
 1. **🌐 Create DB Subnet Group**
 
    - Navigate to: `RDS Console → Subnet Groups → Create DB Subnet Group`
-   - **Name**: `cloudshelf-default-vpc-subnet-group`
-   - **Description**: `CloudShelf RDS subnet group using default VPC`
-   - **VPC**: Default VPC
+   - **Name**: `cloudshelf-rds-subnet-group`
+   - **Description**: `CloudShelf RDS subnet group (custom VPC)`
+   - **VPC**: Select your custom VPC (e.g., `cloudshelf-vpc`)
 
 2. **📍 Select Subnets**
    ```yaml
    Subnet Selection:
-     - Select at least 2 subnets in different AZs
-     - Choose private subnets if available
-     - Include subnets in primary AZs (us-east-1a, us-east-1b, etc.)
+     - Select at least 2 private subnets in different AZs
+     - Use subnets created in your custom VPC (e.g., cloudshelf-private-subnet-1a, cloudshelf-private-subnet-1b)
    ```
 
 ![RDS Subnet Group Creation](../screenshots/rds/RDS-Subnet-Group-Creation-Step4.png)
@@ -308,25 +261,38 @@ Create the PostgreSQL database instance for CloudShelf.
 
 Set up the CloudShelf database schema and sample data.
 
-1. **🔗 Connect to Database**
+1. **🔗 Connect to Database (via Jump Host)**
 
-   **Using psql (if installed locally)**:
+   To connect to your RDS database securely, use the EC2 jump host (bastion) you set up in your custom VPC. This mirrors real-world AWS best practices and ensures your database is never exposed to the public internet.
 
-   ```bash
-   psql -h your-rds-endpoint.region.rds.amazonaws.com -U cloudshelf_admin -d cloudshelf
-   ```
+   **Step-by-step jump host setup:** See [Jump Host Setup Guide](cloudshelf-jump-host-setup.md)
 
-   **Using AWS CloudShell**:
+   **From your local machine:**
 
-   ```bash
-   # Install PostgreSQL 17 client (if not already available)
-   sudo yum install postgresql17 -y  # Amazon Linux (CloudShell default)
-   # or
-   sudo apt-get install postgresql-client-17 -y  # Ubuntu (if applicable)
+   1. SSH or SSM into your jump host:
 
-   # Connect to database
-   psql -h your-rds-endpoint -U cloudshelf_admin -d cloudshelf
-   ```
+      - SSH: `ssh -i your-key.pem ec2-user@<jump-host-public-ip>`
+      - SSM: `aws ssm start-session --target <instance-id>`
+
+   2. (If needed) Install the PostgreSQL 17 client:
+
+      ```bash
+      sudo yum install postgresql17 -y  # Amazon Linux
+      # or
+      sudo apt-get install postgresql-client-17 -y  # Ubuntu
+      ```
+
+   3. Connect to the RDS database from the jump host:
+      ```bash
+      psql -h <your-rds-endpoint> -U cloudshelf_admin -d cloudshelf
+      ```
+
+   > **Tip:** You can also use port forwarding if you want to connect with a local GUI tool:
+   >
+   > ```bash
+   > ssh -i your-key.pem -L 5432:<your-rds-endpoint>:5432 ec2-user@<jump-host-public-ip>
+   > # Then connect your local tool to localhost:5432
+   > ```
 
 2. **📋 Create Database Schema**
 
