@@ -249,28 +249,15 @@ Create the PostgreSQL database instance for CloudShelf.
    Deletion Protection: Disabled (for learning environment)
    ```
 
-_Step 1: Start Database Creation_
+   Database Creation
+
 ![RDS Database Creation - Step 1](../screenshots/rds/RDS-Database-Creation-Step1.png)
-
-_Step 2: Database Engine Selection_
 ![RDS Database Creation - Step 2](../screenshots/rds/RDS-Database-Creation-Step2.png)
-
-_Step 3: Templates and Settings_
 ![RDS Database Creation - Step 3](../screenshots/rds/RDS-Database-Creation-Step3.png)
-
-_Step 4: Instance Configuration_
 ![RDS Database Creation - Step 4](../screenshots/rds/RDS-Database-Creation-Step4.png)
-
-_Step 5: Storage Settings_
 ![RDS Database Creation - Step 5](../screenshots/rds/RDS-Database-Creation-Step5.png)
-
-_Step 6: Connectivity_
 ![RDS Database Creation - Step 6](../screenshots/rds/RDS-Database-Creation-Step6.png)
-
-_Step 7: Additional Configuration_
 ![RDS Database Creation - Step 7](../screenshots/rds/RDS-Database-Creation-Step7.png)
-
-_Step 8: Review and Launch_
 ![RDS Database Creation - Step 8](../screenshots/rds/RDS-Database-Creation-Step8.png)
 
 ---
