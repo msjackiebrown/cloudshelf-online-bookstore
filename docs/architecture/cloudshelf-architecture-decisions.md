@@ -4,6 +4,105 @@ This document captures key architecture decisions made for the CloudShelf Online
 
 ---
 
+## ADR-002: Revised Phased Data Storage Strategy
+
+**Date**: 2025-09-05  
+**Status**: ✅ Accepted (Revised)  
+**Decision Makers**: Solutions Architect
+
+### Context
+
+We revised our approach to data storage. The original ADR-002 assumed immediate production deployment with PostgreSQL RDS and VPC complexity. For learning and iterative development, we now start with DynamoDB-only, then migrate to a hybrid PostgreSQL + DynamoDB architecture.
+
+### Decision
+
+**Implement a phased data storage strategy:** Start with DynamoDB-only for simplicity, with a clear migration path to production-ready PostgreSQL + DynamoDB.
+
+### Rationale
+
+- Simplifies initial setup and learning
+- Enables rapid prototyping and serverless-first experience
+- Maintains a clear upgrade path to production architecture
+
+### Impact
+
+- Reduces initial complexity and cost
+- Ensures all functionality is available from the start
+- Provides a migration plan for advanced features
+
+### Reference
+
+See [ADR-002-Revised: Phased Data Storage Strategy](cloudshelf-adr-002-revised-phased-data-storage.md) for full details, tables, and migration plan.
+
+---
+
+## ADR-003: Phased IAM Security Strategy
+
+**Date**: 2025-09-06  
+**Status**: ✅ Accepted  
+**Decision Makers**: Solutions Architect
+
+### Context
+
+IAM security is implemented in phases to balance learning and best practices. Phase 1 uses AWS managed policies for simplicity; Phase 2 migrates to least-privilege custom policies for production.
+
+### Decision
+
+**Adopt a phased IAM security approach:** Use AWS managed policies and a single execution role in Phase 1, then migrate to custom, least-privilege, function-specific roles in Phase 2.
+
+### Rationale
+
+- Enables rapid learning and prototyping
+- Reduces permission errors and complexity for beginners
+- Ensures a clear path to production-grade security
+
+### Impact
+
+- Simplifies initial IAM setup
+- Supports compliance and auditability in later phases
+- Scales to complex, multi-account environments
+
+### Reference
+
+See [ADR-003: Phased IAM Security Strategy](cloudshelf-adr-003-phased-iam-security.md) for full details, diagrams, and implementation plan.
+
+---
+
+## ADR-004: Revised Phase 1 Hybrid Architecture (Default VPC + Hybrid Database)
+
+**Date**: 2025-09-06  
+**Status**: ✅ Accepted  
+**Decision Makers**: Solutions Architect, Documentation Team
+
+### Context
+
+We revised our approach to Phase 1. The original plan used only DynamoDB, with a large jump to custom VPC and PostgreSQL in Phase 2. This created a steep learning curve and unrealistic data model for beginners.
+
+### Decision
+
+**Revise Phase 1:** Use AWS Default VPC and a hybrid database approach (PostgreSQL RDS for books, users, orders; DynamoDB for carts, sessions). Integrate Lambda with VPC for RDS access, and use security groups for access control.
+
+### Rationale
+
+- Reduces learning gap between phases
+- Enables realistic relational and NoSQL patterns
+- Gradually introduces VPC, security groups, and hybrid data strategies
+- Maintains compatibility with existing Lambda code
+
+### Impact
+
+- Adds new guides: RDS setup, hybrid data strategy, Lambda VPC, security groups
+- Slightly increases setup time and cost, but improves learning progression
+- Smoother transition to advanced architecture in Phase 2
+
+### Reference
+
+See [ADR-004: Revised Phase 1 Hybrid Architecture](cloudshelf-adr-004-enhanced-phase1-hybrid-architecture.md) for full details, alternatives, and implementation plan.
+
+---
+
+---
+
 ## ADR-001: VPC Creation Timing and Strategy
 
 **Date**: 2025-09-01  
