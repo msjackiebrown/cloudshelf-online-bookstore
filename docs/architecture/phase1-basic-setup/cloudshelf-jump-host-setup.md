@@ -1,4 +1,4 @@
----
+--
 
 # 🏗️ CloudShelf EC2 Jump Host (Bastion) Setup Guide
 
@@ -22,9 +22,13 @@
    - **Description**: SSH access for admins/developers
 
 3. **Configure Outbound Rules**
+
    - **Type**: PostgreSQL (5432)
    - **Destination**: `cloudshelf-rds-sg`
    - **Description**: Allow jump host to connect to RDS
+
+   ![Jump Host Security Group Creation Screenshot](../screenshots/jump-host/Jump-Host-Security-Group.png)
+   _Create and configure the security group for the jump host (allow SSH from trusted IPs only)_
 
 ---
 
@@ -41,8 +45,6 @@
    - **Security Group**: `cloudshelf-jump-sg-phase1`
 
 2. **Key Pair**: Create or use an existing key pair for SSH access
-
-3. **Launch Instance**
 
 ---
 

@@ -33,15 +33,19 @@ This guide provides step-by-step instructions for setting up a minimal, producti
 - Enable DNS support and hostnames
 
 ![VPC Creation Screenshot](../screenshots/vpc/CloudShelf-VPC-Creation-Step1.png)
-_VPC creation with DNS support and hostnames enabled_
+![VPC Creation Screenshot2](../screenshots/vpc/CloudShelf-VPC-Creation-Step2.png)
 
 ### **Step 2: Create Subnets**
 
 - Public Subnet: 10.0.1.0/24 (AZ1)
+
+  ![Public Subnet Creation Screenshot](../screenshots/vpc/CloudShelf-Public-Subnet-Creation.png)
+  _Public subnet creation_
+
 - Private Subnet: 10.0.2.0/24 (AZ2)
 
-![Subnet Creation Screenshot](../screenshots/vpc/CloudShelf-Subnet-Creation-Step2.png)
-_Public and private subnet creation_
+  ![Private Subnet Creation Screenshot](../screenshots/vpc/CloudShelf-Private-Subnet-Creation.png)
+  _Private subnet creation_
 
 ### **Step 3: Create and Attach Internet Gateway**
 
@@ -53,28 +57,41 @@ _Internet Gateway creation and attachment_
 ### **Step 4: Configure Route Tables**
 
 - Public Route Table: 0.0.0.0/0 → IGW, associate with public subnet
+
+  ![Public Route Table Screenshot](../screenshots/vpc/CloudShelf-Public-Route-Table.png)
+  _Public route table configuration and association_
+
 - Private Route Table: local only, associate with private subnet
 
-![Route Table Screenshot](../screenshots/vpc/CloudShelf-Route-Table-Step4.png)
-_Route table configuration and subnet association_
+  ![Private Route Table Screenshot](../screenshots/vpc/CloudShelf-Private-Route-Table.png)
+  _Private route table configuration and association_
 
 ### **Step 5: Security Groups**
 
 - Create empty security groups for RDS and Lambda (see ADR-007)
-- Add rules after both exist:
-  - RDS SG: allow 5432 from Lambda SG only
-  - Lambda SG: allow 5432 to RDS SG, 443 to 0.0.0.0/0
 
-![Security Groups Screenshot](../screenshots/vpc/CloudShelf-Security-Groups-Step5.png)
-_Security group creation and rule configuration_
+  - **RDS Security Group**: allow 5432 from Lambda SG only
 
-### **Step 6: (Optional) Jump Host**
+    ![RDS Security Group Screenshot](../screenshots/vpc/CloudShelf-RDS-Security-Group.png)
+    _RDS security group creation and inbound rule_
 
-- Place in public subnet for admin access (see jump host guide)
-  ![Jump Host Screenshot](../screenshots/vpc/CloudShelf-Jump-Host-Step6.png)
-  _Jump host EC2 instance creation (optional)_
+  - **Lambda Security Group**: allow 5432 to RDS SG, 443 to 0.0.0.0/0
 
----
+    ![Lambda Security Group Screenshot](../screenshots/vpc/CloudShelf-Lambda-Security-Group.png)
+    _Lambda security group creation and outbound rules_
+
+### **Step 6: Jump Host EC2 Security Group**
+
+- Create a dedicated security group for the jump host EC2 instance.
+
+  - **Name**: `cloudshelf-jump-sg-phase1`
+  - **Description**: `Jump host (bastion) for RDS access`
+  - **VPC**: Select your custom VPC
+  - **Inbound Rule**: Allow SSH (22) from your office IP, VPN CIDR, or trusted developer IPs (never 0.0.0.0/0 in prod)
+  - **Outbound Rule**: Allow PostgreSQL (5432) to `cloudshelf-rds-sg`
+
+  ![Jump Host Security Group Creation Screenshot](../screenshots/jump-host/Jump-Host-Security-Group.png)
+  _Create and configure the security group for the jump host (allow SSH from trusted IPs only)_
 
 ## 💡 Cost Optimization Tips
 
@@ -90,7 +107,3 @@ _Security group creation and rule configuration_
 - Create jump host in public subnet ([Jump Host Setup Guide](cloudshelf-jump-host-setup.md))
 - Configure Lambda with VPC access
 - Complete IAM and security setup
-
----
-
-_This guide replaces the default VPC setup. All new deployments should use this custom VPC foundation._
