@@ -1,4 +1,3 @@
----
 # Optional Guide: Using AWS Systems Manager (SSM) Session Manager for Secure EC2 Access
 
 > **Purpose:**
@@ -8,10 +7,10 @@
 
 ## 🚀 Prerequisites
 
-- EC2 instance (jump host) launched in your VPC (public or private subnet)
-- SSM Agent installed and running (Amazon Linux 2 AMI includes it by default)
-- IAM role attached to the EC2 instance with `AmazonSSMManagedInstanceCore` policy
-- Outbound internet access (via IGW, NAT Gateway, or SSM VPC endpoints)
+- **EC2 instance (jump host):** Launched in your VPC (can be in a public or private subnet)
+- **SSM Agent:** Installed and running (Amazon Linux 2 AMI includes it by default)
+- **IAM role:** Attach the `AmazonSSMManagedInstanceCore` policy to your EC2 instance
+- **Outbound internet access:** Required for SSM to function (via IGW, NAT Gateway, or SSM VPC endpoints)
 
 ---
 
